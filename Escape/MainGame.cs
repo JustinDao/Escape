@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
+using Tao.Sdl;
 #endregion
 
 namespace Escape
@@ -18,12 +19,22 @@ namespace Escape
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Player player;
+        Controls controls;
+        List<Wall> walls;
+        SubmissionBar SubmissionBar;
+
+        public int GAME_WIDTH = 600;
+        public int GAME_HEIGHT = 600;
 
         public MainGame()
             : base()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            graphics.PreferredBackBufferWidth = GAME_WIDTH;
+            graphics.PreferredBackBufferHeight = GAME_HEIGHT;
+            graphics.ApplyChanges();
         }
 
         /// <summary>
@@ -34,9 +45,26 @@ namespace Escape
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            walls = new List<Wall>();
 
+            for (int i = 0; i < GAME_WIDTH / 50; i++)
+            {
+                for (int j = 0; j < GAME_HEIGHT / 3 / 50; j++)
+                {
+                    walls.Add(new Wall(50 * i, GAME_HEIGHT - 50 * j));
+                }
+
+            }
+
+            //walls.Add(new Wall(400, 350));
+
+            player = new Player(this, 50, 50);
+            SubmissionBar = new SubmissionBar(50, 50, graphics);
             base.Initialize();
+
+            Joystick.Init();
+            Console.WriteLine("Number of joysticks: " + Sdl.SDL_NumJoysticks());
+            controls = new Controls();
         }
 
         /// <summary>
@@ -47,8 +75,11 @@ namespace Escape
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            // TODO: use this.Content to load your game content here
+            player.LoadContent(this.Content);
+            foreach (Wall wall in walls)
+            {
+                wall.LoadContent(this.Content);
+            }
         }
 
         /// <summary>
@@ -67,10 +98,23 @@ namespace Escape
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            //set our keyboardstate tracker update can change the gamestate on every cycle
+            controls.Update();
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             // TODO: Add your update logic here
+            //Up, down, left, right affect the coordinates of the sprite
+
+            player.Update(controls, gameTime, walls);
+
+            //foreach (Wall wall in walls)
+            //{
+            //    wall.LoadContent(this.Content);
+            //}
+
+            SubmissionBar.Update(player, graphics);
 
             base.Update(gameTime);
         }
@@ -81,9 +125,20 @@ namespace Escape
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.DarkGray);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            player.Draw(spriteBatch);
+
+            foreach (Wall wall in walls)
+            {
+                wall.Draw(spriteBatch);
+            }
+
+            SubmissionBar.Draw(spriteBatch);
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
