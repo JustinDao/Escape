@@ -19,10 +19,10 @@ namespace Escape
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Player player;
+        Castle castle;
         Controls controls;
         List<Wall> walls;
-        SubmissionBar SubmissionBar;
+        SubmissionBar submissionBar;
 
         public int GAME_WIDTH = 600;
         public int GAME_HEIGHT = 600;
@@ -45,6 +45,8 @@ namespace Escape
         /// </summary>
         protected override void Initialize()
         {
+            castle = new Castle(this);
+
             walls = new List<Wall>();
 
             for (int i = 0; i < GAME_WIDTH / 50; i++)
@@ -58,8 +60,7 @@ namespace Escape
 
             //walls.Add(new Wall(400, 350));
 
-            player = new Player(this, 50, 50);
-            SubmissionBar = new SubmissionBar(50, 50, graphics);
+            submissionBar = new SubmissionBar(50, 50, graphics);
             base.Initialize();
 
             Joystick.Init();
@@ -75,7 +76,7 @@ namespace Escape
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            player.LoadContent(this.Content);
+            castle.LoadContent(this.Content);
             foreach (Wall wall in walls)
             {
                 wall.LoadContent(this.Content);
@@ -107,14 +108,14 @@ namespace Escape
             // TODO: Add your update logic here
             //Up, down, left, right affect the coordinates of the sprite
 
-            player.Update(controls, gameTime, walls);
+            castle.Update(controls, gameTime, walls);
 
             //foreach (Wall wall in walls)
             //{
             //    wall.LoadContent(this.Content);
             //}
 
-            SubmissionBar.Update(player, graphics);
+            submissionBar.Update(castle.Player, graphics);
 
             base.Update(gameTime);
         }
@@ -129,14 +130,14 @@ namespace Escape
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            player.Draw(spriteBatch);
+            castle.Draw(spriteBatch);
 
             foreach (Wall wall in walls)
             {
                 wall.Draw(spriteBatch);
             }
 
-            SubmissionBar.Draw(spriteBatch);
+            submissionBar.Draw(spriteBatch);
 
             spriteBatch.End();
 
