@@ -10,11 +10,11 @@ namespace Escape
 {
     abstract class Screen
     {
-        public Vector2 position;
-        public Texture2D backgroundTexture;
-        public int width;
-        public int height;
-        public Song backgroundMusic;
+        public Vector2 Position { get; set; }
+        public Texture2D BackgroundTexture { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
+        public Song BackgroundMusic { get; set; }
 
         public void Initialize(ContentManager cm);
         public void Update(GameTime gt);
