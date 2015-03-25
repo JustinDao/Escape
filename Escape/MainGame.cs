@@ -49,7 +49,7 @@ namespace Escape
             castle = new Castle(this);
             currentScreen = castle;
 
-            //submissionBar = new SubmissionBar(50, 50, graphics);
+            submissionBar = new SubmissionBar(50, 50, graphics);
             base.Initialize();
 
             Joystick.Init();
@@ -95,7 +95,7 @@ namespace Escape
 
             castle.Update(controls, gameTime);
 
-            //submissionBar.Update(castle.Player, graphics);
+            submissionBar.Update(castle.Player, graphics);
 
             base.Update(gameTime);
         }
@@ -113,7 +113,7 @@ namespace Escape
 
             castle.Draw(spriteBatch);
 
-            //submissionBar.Draw(spriteBatch);
+            submissionBar.Draw(spriteBatch);
 
             spriteBatch.End();
 

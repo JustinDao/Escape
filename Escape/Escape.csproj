@@ -80,6 +80,9 @@
     <Content Include="Content\tile_1_single.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\tile_50_50.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\wall.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

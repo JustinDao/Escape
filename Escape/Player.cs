@@ -12,17 +12,22 @@ namespace Escape
 
     class Player : SpriteSheet
     {
+        public Vector2 Position { get; set; }
+        public int PlayerWidth { get; set; }
+        public int PlayerHeight { get; set; }
+
         private bool movingLeft;
         private bool movingRight;
 
         private bool grounded;
         private int speed;
         private int xAccel;
+        private int yAccel;
         private double friction;
         private int jumpPoint = 0;
         private bool pushing;
 
-        private int SubmissionInterval = 100; // Time in milliseconds
+        private int SubmissionInterval = 10; // Time in milliseconds
         private int SubmissionTime = 0;
 
         private int spriteTime = 0;
@@ -35,16 +40,13 @@ namespace Escape
 
         // false = right
         // true = left
-        private bool direction = false;
+        private bool XDirection = false;
+        private bool YDirection = false;
 
-        public int PlayerWidth;
-        public int PlayerHeight;
-
-        public int XPosition;
-        public int YPosition;
         public double XVelocity;
         public double YVelocity;
         public int MovedX;
+        public int MovedY;
 
         public int JumpSpeed = 12;
         public double Gravity = .5;
@@ -59,8 +61,7 @@ namespace Escape
             this.Game = game;
             this.Submission = 100;
 
-            this.XPosition = x;
-            this.YPosition = y;
+            this.Position = new Vector2(50, 50);
 
             this.spriteWidth = 30;
             this.spriteHeight = 48;
@@ -71,7 +72,7 @@ namespace Escape
             this.spriteX = spriteRightStart;
             this.spriteY = spriteRightHeight;
 
-            HitBox = new Rectangle(XPosition, YPosition, PlayerWidth, PlayerHeight);
+            HitBox = new Rectangle((int) Position.X, (int) Position.Y, PlayerWidth, PlayerHeight);
 
             grounded = false;
             pushing = false;
@@ -96,15 +97,15 @@ namespace Escape
         public void Draw(SpriteBatch sb)
         {
             sb.Draw(spriteSheet,
-                    new Rectangle(XPosition, YPosition, PlayerWidth, PlayerHeight),
+                    new Rectangle((int) Position.X, (int) Position.Y, PlayerWidth, PlayerHeight),
                     new Rectangle(spriteX, spriteY, spriteWidth, spriteHeight),
                     Color.White);
         }
 
-        public void Update(Controls controls, GameTime gameTime, List<Wall> walls)
+        public void Update(Controls controls, GameTime gameTime)
         {
             UpdateSubmission(gameTime);
-            Move(controls, walls);
+            Move(controls);
             Action(controls, gameTime);
             UpdateSprite(gameTime);
             UpdateHitBox();
@@ -197,7 +198,7 @@ namespace Escape
             }
         }
 
-        public void Move(Controls controls, List<Wall> walls)
+        public void Move(Controls controls)
         {
             if (PlayerControl)
             {
@@ -223,6 +224,25 @@ namespace Escape
                     xAccel += speed;
                     movingLeft = false;
                 }
+
+                // Y movement
+                if (controls.onPress(Keys.Down, Buttons.DPadDown))
+                {
+                    yAccel += speed;
+                }
+                else if (controls.onRelease(Keys.Down, Buttons.DPadDown))
+                {
+                    yAccel -= speed;
+                }
+
+                if (controls.onPress(Keys.Up, Buttons.DPadUp))
+                {
+                    yAccel -= speed;
+                }
+                else if (controls.onRelease(Keys.Up, Buttons.DPadUp))
+                {
+                    yAccel += speed;
+                }
             }
             else
             {
@@ -230,67 +250,18 @@ namespace Escape
             }
 
             double playerFriction = pushing ? (friction * 3) : friction;
+
             XVelocity = XVelocity * (1 - playerFriction) + xAccel * .10;
             MovedX = Convert.ToInt32(XVelocity);
-            XPosition += MovedX;
 
-            // Check Walls
-            HitBox.X = XPosition;
-            Wall wall = this.IntersectingWall(walls);
+            YVelocity = YVelocity * (1 - playerFriction) + yAccel * .10;
+            MovedY = Convert.ToInt32(YVelocity);
 
-            if (wall != null)
-            {
-                if (wall.XPosition < this.XPosition)
-                {
-                    XPosition = wall.XPosition + wall.Width;
-                }
-                else if (wall.XPosition >= this.XPosition)
-                {
-                    XPosition = wall.XPosition - this.PlayerWidth;
-                }
+            Position += new Vector2(MovedX, 0);
+            Position += new Vector2(0, MovedY);
 
-            }
-
-            // Check Side Walls
-            int sidePosition = checkXCollisions();
-            if (sidePosition >= 0)
-            {
-                XPosition = sidePosition;
-            }
-
-            // Gravity
-            if (!grounded)
-            {
-                YVelocity += Gravity;
-                if (YVelocity > MaxFallSpeed)
-                {
-                    YVelocity = MaxFallSpeed;
-                }
-            }
-            else
-            {
-                YVelocity += Gravity;
-                if (YVelocity > MaxFallSpeed)
-                {
-                    YVelocity = MaxFallSpeed;
-                }
-            }
-
-            YPosition += Convert.ToInt32(YVelocity);
-
-            HitBox.Y = YPosition;
-
-            Wall Ywall = this.IntersectingWall(walls);
-
-            if (Ywall != null)
-            {
-                YPosition = Ywall.YPosition - this.PlayerHeight;
-                grounded = true;
-            }
-
-            // Check up/down collisions, then left/right
-            checkYCollisions(walls);
-            checkXCollisions();
+            CheckBoundaries();
+            UpdateHitBox();
         }
 
         private void AIMove()
@@ -298,13 +269,20 @@ namespace Escape
             Random rand = new Random();
             int num = rand.Next(75);
             int num2 = rand.Next(75);
+            int num3 = rand.Next(75);
+            int num4 = rand.Next(75);
 
             if (num == num2)
             {
-                direction = !direction;
+                XDirection = !XDirection;
             }
 
-            if (direction)
+            if (num3 == num4)
+            {
+                YDirection = !YDirection;
+            }
+
+            if (XDirection)
             {
                 xAccel = -speed * 2;
                 movingLeft = true;
@@ -313,69 +291,49 @@ namespace Escape
             else
             {
                 xAccel = speed * 2;
+                yAccel = speed * 2;
                 movingLeft = false;
                 movingRight = true;
             }
 
+            if (YDirection)
+            {
+                yAccel = -speed * 2;
+            }
+            else
+            {
+                yAccel = speed * 2;
+            }
+
             num = rand.Next(75);
             num2 = rand.Next(75);
-
-
-            if (num == num2 && grounded)
-            {
-                // Jump
-                YVelocity = -JumpSpeed;
-                grounded = false;
-            }
-
-
         }
 
-        private void checkYCollisions(List<Wall> walls)
+        private void CheckBoundaries()
         {
-            foreach (Wall wall in walls)
+            if (this.Position.X < 0)
             {
-                if (this.IntersectsWall(wall))
-                {
-                    grounded = true;
-                    break;
-                }
-            }
-        }
-
-        private int checkXCollisions()
-        {
-            if (this.XPosition < 0)
-            {
-                direction = false;
-                return 0;
+                XDirection = false;
+                Position = new Vector2(0, Position.Y);
             }
 
-            if (this.XPosition > Game.GAME_WIDTH - this.PlayerWidth)
+            else if (this.Position.X > Game.GAME_WIDTH - this.PlayerWidth)
             {
-                direction = true;
-                return Game.GAME_WIDTH - this.PlayerWidth;
+                XDirection = true;
+                Position = new Vector2(Game.GAME_WIDTH - this.PlayerWidth, Position.Y);
             }
 
-            return -1;
-        }
-
-        private Boolean IntersectsWall(Wall wall)
-        {
-            return this.HitBox.Intersects(wall.HitBox);
-        }
-
-        private Wall IntersectingWall(List<Wall> walls)
-        {
-            foreach (Wall wall in walls)
+            if (this.Position.Y < 0)
             {
-                if (this.IntersectsWall(wall))
-                {
-                    return wall;
-                }
+                XDirection = false;
+                Position = new Vector2(Position.X, 0);
             }
 
-            return null;
+            else if (this.Position.Y > Game.GAME_HEIGHT - this.PlayerHeight)
+            {
+                XDirection = true;
+                Position = new Vector2(Position.X, Game.GAME_HEIGHT - this.PlayerHeight);
+            }
         }
 
         private void Action(Controls controls, GameTime gameTime)
@@ -407,8 +365,8 @@ namespace Escape
 
         private void UpdateHitBox()
         {
-            HitBox.X = XPosition;
-            HitBox.Y = YPosition;
+            HitBox.X = (int) Position.X;
+            HitBox.Y = (int) Position.Y;
         }
     }
 }

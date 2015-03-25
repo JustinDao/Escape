@@ -26,7 +26,7 @@ namespace Escape
 
         public void Update(Controls controls, GameTime gameTime)
         {
-            //Player.Update(controls, gameTime, walls);
+            Player.Update(controls, gameTime);
 
             foreach (Room r in Rooms)
             {
@@ -41,12 +41,12 @@ namespace Escape
                 r.Draw(sb);
             }
 
-            //Player.Draw(sb);
+            Player.Draw(sb);
         }
 
         public override void LoadContent(ContentManager cm)
         {
-            //Player.LoadContent(cm);
+            Player.LoadContent(cm);
             foreach (Room r in Rooms)
             {
                 r.LoadContent(cm);

@@ -17,8 +17,8 @@ namespace Escape
 
         public Floor(int x, int y)
         {
-            Width = 64;
-            Height = 64;
+            Width = 50;
+            Height = 50;
             Position = new Vector2(x, y);
         }
 
@@ -29,7 +29,7 @@ namespace Escape
 
         public void LoadContent(ContentManager cm)
         {
-            FloorTexture = cm.Load<Texture2D>("tile_1_single.png");
+            FloorTexture = cm.Load<Texture2D>("tile_50_50.png");
         }
 
     }
