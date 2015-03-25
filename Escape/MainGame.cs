@@ -19,6 +19,7 @@ namespace Escape
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Screen currentScreen;
         Castle castle;
         Controls controls;
         List<Wall> walls;
@@ -46,21 +47,9 @@ namespace Escape
         protected override void Initialize()
         {
             castle = new Castle(this);
+            currentScreen = castle;
 
-            walls = new List<Wall>();
-
-            for (int i = 0; i < GAME_WIDTH / 50; i++)
-            {
-                for (int j = 0; j < GAME_HEIGHT / 3 / 50; j++)
-                {
-                    walls.Add(new Wall(50 * i, GAME_HEIGHT - 50 * j));
-                }
-
-            }
-
-            //walls.Add(new Wall(400, 350));
-
-            submissionBar = new SubmissionBar(50, 50, graphics);
+            //submissionBar = new SubmissionBar(50, 50, graphics);
             base.Initialize();
 
             Joystick.Init();
@@ -77,10 +66,6 @@ namespace Escape
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             castle.LoadContent(this.Content);
-            foreach (Wall wall in walls)
-            {
-                wall.LoadContent(this.Content);
-            }
         }
 
         /// <summary>
@@ -108,14 +93,9 @@ namespace Escape
             // TODO: Add your update logic here
             //Up, down, left, right affect the coordinates of the sprite
 
-            castle.Update(controls, gameTime, walls);
+            castle.Update(controls, gameTime);
 
-            //foreach (Wall wall in walls)
-            //{
-            //    wall.LoadContent(this.Content);
-            //}
-
-            submissionBar.Update(castle.Player, graphics);
+            //submissionBar.Update(castle.Player, graphics);
 
             base.Update(gameTime);
         }
@@ -130,14 +110,10 @@ namespace Escape
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+
             castle.Draw(spriteBatch);
 
-            foreach (Wall wall in walls)
-            {
-                wall.Draw(spriteBatch);
-            }
-
-            submissionBar.Draw(spriteBatch);
+            //submissionBar.Draw(spriteBatch);
 
             spriteBatch.End();
 

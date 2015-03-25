@@ -39,6 +39,7 @@
     <Compile Include="Castle.cs" />
     <Compile Include="Controls.cs" />
     <Compile Include="Enemy.cs" />
+    <Compile Include="Floor.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="MainGame.cs" />
     <Compile Include="Obstacle.cs" />

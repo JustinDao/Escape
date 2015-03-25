@@ -20,11 +20,11 @@ namespace Escape
         {
             Player = new Player(mg, 50, 50);
             Rooms = new List<Room>();
+
+            Rooms.Add(new Room());
         }
 
-        override public void Initialize(ContentManager cm) { }
-
-        public void Update(Controls controls, GameTime gameTime, List<Wall> walls)
+        public void Update(Controls controls, GameTime gameTime)
         {
             //Player.Update(controls, gameTime, walls);
 
@@ -46,7 +46,12 @@ namespace Escape
 
         public override void LoadContent(ContentManager cm)
         {
-            Player.LoadContent(cm);
+            //Player.LoadContent(cm);
+            foreach (Room r in Rooms)
+            {
+                r.LoadContent(cm);
+            }
+
         }
 
         public override void Update(GameTime gt)
