@@ -121,7 +121,7 @@ namespace Escape
                 }
                 else
                 {
-                    SubmissionTime += (int) gameTime.ElapsedGameTime.TotalMilliseconds;
+                    SubmissionTime += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
                 }
 
                 if (!PlayerControl && Submission > 100)
@@ -157,7 +157,7 @@ namespace Escape
             {
                 PlayerControl = false;
             }
-             
+
 
         }
 
@@ -193,7 +193,7 @@ namespace Escape
             }
             else
             {
-                spriteTime += (int) gameTime.ElapsedGameTime.TotalMilliseconds;
+                spriteTime += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
             }
         }
 
@@ -248,7 +248,7 @@ namespace Escape
                 {
                     XPosition = wall.XPosition - this.PlayerWidth;
                 }
-                
+
             }
 
             // Check Side Walls
@@ -319,8 +319,8 @@ namespace Escape
 
             num = rand.Next(75);
             num2 = rand.Next(75);
-            
-           
+
+
             if (num == num2 && grounded)
             {
                 // Jump
@@ -381,14 +381,14 @@ namespace Escape
         private void Action(Controls controls, GameTime gameTime)
         {
             // Jump on button press
-            if (controls.onPress(Keys.Space, Buttons.A) )
+            if (controls.onPress(Keys.Space, Buttons.A))
             {
                 if (grounded && PlayerControl)
                 {
                     YVelocity = -JumpSpeed;
                     jumpPoint = (int)(gameTime.TotalGameTime.TotalMilliseconds);
                     grounded = false;
-                }               
+                }
             }
 
             // Cut jump short on button release
@@ -396,7 +396,7 @@ namespace Escape
             {
                 YVelocity /= 2;
             }
-            else if(controls.onPress(Keys.X, Buttons.X))
+            else if (controls.onPress(Keys.X, Buttons.X))
             {
                 if (!PlayerControl)
                 {

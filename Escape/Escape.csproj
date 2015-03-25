@@ -38,7 +38,10 @@
     <Compile Include="Bar.cs" />
     <Compile Include="Castle.cs" />
     <Compile Include="Controls.cs" />
+    <Compile Include="Enemy.cs" />
+    <Compile Include="Item.cs" />
     <Compile Include="MainGame.cs" />
+    <Compile Include="Obstacle.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -71,6 +74,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\soldier.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\tile_1_single.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\wall.png">
