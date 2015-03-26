@@ -164,28 +164,28 @@ namespace Escape
                 {
                     if (Dir == Direction.W || Dir == Direction.SW || Dir == Direction.NW)
                     {
-                        spriteY = spriteLeftHeight;
-                        if (spriteX > spriteLeftStart - spriteSpace * 7)
-                        {
-                            spriteX -= spriteSpace;
-                        }
-                        else
-                        {
-                            spriteX = spriteLeftStart;
-                        }
-                    }
-                    else if (Dir == Direction.E || Dir == Direction.SE || Dir == Direction.NE)
+                    spriteY = spriteLeftHeight;
+                    if (spriteX > spriteLeftStart - spriteSpace * 7)
                     {
-                        spriteY = spriteRightHeight;
-                        if (spriteX < spriteRightStart + spriteSpace * 8)
-                        {
-                            spriteX += spriteSpace;
-                        }
-                        else
-                        {
-                            spriteX = spriteRightStart;
-                        }
+                        spriteX -= spriteSpace;
                     }
+                    else
+                    {
+                        spriteX = spriteLeftStart;
+                    }
+                }
+                    else if (Dir == Direction.E || Dir == Direction.SE || Dir == Direction.NE)
+                {
+                    spriteY = spriteRightHeight;
+                    if (spriteX < spriteRightStart + spriteSpace * 8)
+                    {
+                        spriteX += spriteSpace;
+                    }
+                    else
+                    {
+                        spriteX = spriteRightStart;
+                    }
+                }
                 }
                 
                 spriteTime = 0;
@@ -257,6 +257,11 @@ namespace Escape
                 Position += new Vector2(MovedX, 0);
                 Position += new Vector2(0, MovedY);
             }
+
+			if (CheckGround(currentRoom)) 
+			{
+				Position = new Vector2(200,200);
+			}
 
             CheckBoundaries();
             UpdateHitBox();
@@ -335,8 +340,8 @@ namespace Escape
             Vector2 tempPos = new Vector2(this.Position.X, this.Position.Y);
             tempPos += new Vector2(MovedX, 0);
             tempPos += new Vector2(0, MovedY);
-
-            Rectangle tempBox = new Rectangle((int)tempPos.X, (int)tempPos.Y, this.PlayerWidth, this.PlayerHeight);
+//			(int) Position.X, (int) Position.Y + (this.PlayerHeight / 4), this.PlayerWidth, 3*(this.PlayerHeight / 4)
+			Rectangle tempBox = new Rectangle((int)tempPos.X, (int)tempPos.Y + (this.PlayerHeight / 2), this.PlayerWidth, this.PlayerHeight / 2);
 
             foreach (Wall w in currentRoom.Walls)
             {
@@ -349,13 +354,32 @@ namespace Escape
             return false;
         }
 
-        private void Action(Controls controls, GameTime gameTime, Room currentRoom)
+		private bool CheckGround(Room currentRoom)
+		{
+			int tempX = (int)this.Position.X + (this.PlayerWidth / 4);
+			int tempY = (int)this.Position.Y + 3*(this.PlayerHeight / 4);
+			int tempW = this.PlayerWidth / 2;
+			int tempH = this.PlayerHeight / 4;
+			Rectangle tempBox = new Rectangle(tempX, tempY, tempW, tempH);
+
+			foreach (Hole h in currentRoom.Obstacles) 
+			{
+				if (h.HitBox.Intersects(tempBox)) 
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+        private void Action(Controls controls, GameTime gameTime)
         {
             // Jump on button press
             if (controls.onPress(Keys.Space, Buttons.A))
             {
                 shootFireBall(currentRoom);
-            }
+                }
 
             // Cut jump short on button release
             else if (controls.onRelease(Keys.Space, Buttons.A) && YVelocity < 0)

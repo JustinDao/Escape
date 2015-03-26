@@ -30,9 +30,9 @@ namespace Escape
             this.Height = 600;
 
             Floors = new List<Floor>();
-            for (int i = 1; i < this.Width / 25; i++)
+            for (int i = 0; i < this.Width / 25; i++)
             {
-                for (int j = 1; j < this.Height / 25; j++)
+                for (int j = 0; j < this.Height / 25; j++)
                 {
                     Floors.Add(new Floor(25 * i, 25 * j));
                 }
@@ -45,8 +45,16 @@ namespace Escape
                 {
                     for (int j = 0; j < this.Height / 25; j++)
                     {
+						if (j != this.Height / 2 / 25 && j != (this.Height / 2 / 25) - 1) 
+						{
                         Walls.Add(new Wall(25 * i, 25 * j));
                     }
+                        
+                    }
+                }
+				else if (i == this.Width / 2 / 25 || i == (this.Width / 2 / 25) - 1) 
+				{
+					
                 }
                 else
                 {
@@ -136,10 +144,10 @@ namespace Escape
             }
 
             foreach (Obstacle o in Obstacles)
-            {
+			{
                 o.LoadContent(cm);
             }
-        }
+			}
 
         public void AddFireBall(Vector2 position, Direction dir)
         {
