@@ -28,17 +28,22 @@ namespace Escape
 			HitBox = new Rectangle(XPosition, YPosition, Width, Height);
 		}
 
-		public void LoadContent(ContentManager content)
+		override public void LoadContent(ContentManager content)
 		{
 			string file = string.Concat (string.Concat ("hole", this.Type.ToString()), ".png");
 			sprite = content.Load<Texture2D>(file);
 		}
 
-		public void Draw(SpriteBatch sb)
+		override public void Draw(SpriteBatch sb)
 		{
 			sb.Draw(sprite,
 				new Rectangle(XPosition, YPosition, Width, Height),
 				Color.White);
 		}
+
+        public override void Update(GameTime gt)
+        {
+            throw new NotImplementedException();
+        }
 	}
 }

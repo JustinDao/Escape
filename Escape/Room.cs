@@ -10,6 +10,8 @@ namespace Escape
 {
     class Room
     {
+        ContentManager contentManager;
+
         public Vector2 Position { get; set; }
 
         public int Width { get; set; }
@@ -73,7 +75,31 @@ namespace Escape
 
         public void Update(GameTime gameTime)
         {
+            List<Obstacle> toRemove = new List<Obstacle>();
 
+            foreach (Obstacle o in Obstacles)
+            {
+                if (!(o is Hole))
+                {
+                    o.Update(gameTime);
+
+                    if (o is FireBall)
+                    {
+                        FireBall f = (FireBall)o;
+
+                        if (f.Position.X < 0 || f.Position.X > Width)
+                        {
+                            toRemove.Add(f);
+                        }
+                        else if (f.Position.Y < 0 || f.Position.Y > Height)
+                        {
+                            toRemove.Add(f);
+                        }
+                    }
+                }
+            }
+
+            Obstacles = Obstacles.Except(toRemove).ToList();
         }
 
         public void Draw(SpriteBatch sb)
@@ -88,14 +114,17 @@ namespace Escape
                 w.Draw(sb);
             }
 			
-			foreach (Hole h in Obstacles)
+			foreach (Obstacle o in Obstacles)
 			{
-				h.Draw(sb);
+				o.Draw(sb);
 			}
+
         }
 
         public void LoadContent(ContentManager cm)
         {
+            contentManager = cm;
+
             foreach (Floor f in Floors)
             {
                 f.LoadContent(cm);
@@ -106,10 +135,17 @@ namespace Escape
                 w.LoadContent(cm);
             }
 
-			foreach (Hole h in Obstacles)
-			{
-				h.LoadContent(cm);
-			}
+            foreach (Obstacle o in Obstacles)
+            {
+                o.LoadContent(cm);
+            }
+        }
+
+        public void AddFireBall(Vector2 position, Direction dir)
+        {
+            FireBall f = new FireBall(position, dir);
+            f.LoadContent(contentManager);
+            Obstacles.Add(f);
         }
     }
 }

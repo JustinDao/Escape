@@ -22,14 +22,19 @@ namespace Escape
             Position = new Vector2(x, y);
         }
 
-        public void Draw(SpriteBatch sb)
+        override public void Draw(SpriteBatch sb)
         {
             sb.Draw(FloorTexture, new Rectangle((int)Position.X, (int)Position.Y, Width, Height), Color.White);
         }
 
-        public void LoadContent(ContentManager cm)
+        override public void LoadContent(ContentManager cm)
         {
             FloorTexture = cm.Load<Texture2D>("tile_50_50.png");
+        }
+
+        override public void Update(GameTime gt)
+        {
+            throw new NotImplementedException();
         }
 
     }
