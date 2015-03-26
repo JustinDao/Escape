@@ -322,7 +322,7 @@ namespace Escape
                 Position = new Vector2(Game.GAME_WIDTH - this.PlayerWidth, Position.Y);
             }
 
-            if (this.Position.Y < 0)
+            if (this.Position.Y < -25)
             {
                 XDirection = false;
                 Position = new Vector2(Position.X, 0);

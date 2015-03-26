@@ -39,6 +39,8 @@ namespace Escape
             }
 
             Walls = new List<Wall>();
+			Obstacles = new List<Obstacle>();
+
             for (int i = 0; i < this.Width / 25; i++)
             {
                 if (i == 0 || i == this.Width / 25 - 1)
@@ -47,14 +49,19 @@ namespace Escape
                     {
 						if (j != this.Height / 2 / 25 && j != (this.Height / 2 / 25) - 1) 
 						{
-                        Walls.Add(new Wall(25 * i, 25 * j));
-                    }
+							Walls.Add(new Wall (25 * i, 25 * j));
+						} 
+						else 
+						{
+							Obstacles.Add(new Door (25 * i, 25 * j));
+						}
                         
                     }
                 }
 				else if (i == this.Width / 2 / 25 || i == (this.Width / 2 / 25) - 1) 
 				{
-					
+					Obstacles.Add(new Door(25 * i, 0));
+					Obstacles.Add(new Door(25 * i, 25 * (this.Height / 25 - 1)));
                 }
                 else
                 {
@@ -65,7 +72,6 @@ namespace Escape
             }
 
 
-			Obstacles = new List<Obstacle>();
 			Obstacles.Add(new Hole(300, 300, 0));
 			Obstacles.Add(new Hole(400, 400, 1));
 			Obstacles.Add(new Hole(425, 400, 2));
@@ -87,7 +93,7 @@ namespace Escape
 
             foreach (Obstacle o in Obstacles)
             {
-                if (!(o is Hole))
+				if (!(o is Hole) && !(o is Door))
                 {
                     o.Update(gameTime);
 
