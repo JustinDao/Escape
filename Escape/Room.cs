@@ -53,6 +53,22 @@ namespace Escape
                 }
 
             }
+
+
+			Obstacles = new List<Obstacle>();
+			Obstacles.Add(new Hole(300, 300, 0));
+			Obstacles.Add(new Hole(400, 400, 1));
+			Obstacles.Add(new Hole(425, 400, 2));
+			Obstacles.Add(new Hole(450, 400, 2));
+			Obstacles.Add(new Hole(475, 400, 3));
+			Obstacles.Add(new Hole(475, 425, 4));
+			Obstacles.Add(new Hole(475, 450, 5));
+			Obstacles.Add(new Hole(450, 450, 6));
+			Obstacles.Add(new Hole(425, 450, 6));
+			Obstacles.Add(new Hole(400, 450, 7));
+			Obstacles.Add(new Hole(400, 425, 8));
+			Obstacles.Add(new Hole(425, 425, 9));
+			Obstacles.Add(new Hole(450, 425, 9));
         }
 
         public void Update(GameTime gameTime)
@@ -71,6 +87,11 @@ namespace Escape
             {
                 w.Draw(sb);
             }
+			
+			foreach (Hole h in Obstacles)
+			{
+				h.Draw(sb);
+			}
         }
 
         public void LoadContent(ContentManager cm)
@@ -84,6 +105,11 @@ namespace Escape
             {
                 w.LoadContent(cm);
             }
+
+			foreach (Hole h in Obstacles)
+			{
+				h.LoadContent(cm);
+			}
         }
     }
 }
