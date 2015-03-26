@@ -16,6 +16,7 @@ namespace Escape
         public int Height { get; set; }
 
         public List<Floor> Floors { get; set; }
+        public List<Wall> Walls { get; set; }
         public List<Obstacle> Obstacles { get; set; }
 
         public List<Enemy> Enemies { get; set; }
@@ -23,13 +24,34 @@ namespace Escape
 
         public Room()
         {
+            this.Width = 1000;
+            this.Height = 600;
+
             Floors = new List<Floor>();
-            for (int i = 0; i < 600 / 50; i++)
+            for (int i = 1; i < this.Width / 25; i++)
             {
-                for (int j = 0; j < 600 / 50; j++)
+                for (int j = 1; j < this.Height / 25; j++)
                 {
-                    Floors.Add(new Floor(50 * i, 50*j));
+                    Floors.Add(new Floor(25 * i, 25 * j));
                 }
+            }
+
+            Walls = new List<Wall>();
+            for (int i = 0; i < this.Width / 25; i++)
+            {
+                if (i == 0 || i == this.Width / 25 - 1)
+                {
+                    for (int j = 0; j < this.Height / 25; j++)
+                    {
+                        Walls.Add(new Wall(25 * i, 25 * j));
+                    }
+                }
+                else
+                {
+                    Walls.Add(new Wall(25 * i, 0));
+                    Walls.Add(new Wall(25 * i, 25 * (this.Height / 25 - 1)));
+                }
+
             }
         }
 
@@ -44,6 +66,11 @@ namespace Escape
             {
                 f.Draw(sb);
             }
+
+            foreach (Wall w in Walls)
+            {
+                w.Draw(sb);
+            }
         }
 
         public void LoadContent(ContentManager cm)
@@ -51,6 +78,11 @@ namespace Escape
             foreach (Floor f in Floors)
             {
                 f.LoadContent(cm);
+            }
+
+            foreach (Wall w in Walls)
+            {
+                w.LoadContent(cm);
             }
         }
     }

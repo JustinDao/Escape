@@ -25,7 +25,7 @@ namespace Escape
         List<Wall> walls;
         SubmissionBar submissionBar;
 
-        public int GAME_WIDTH = 600;
+        public int GAME_WIDTH = 1000;
         public int GAME_HEIGHT = 600;
 
         public MainGame()

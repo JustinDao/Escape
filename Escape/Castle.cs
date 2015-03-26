@@ -14,6 +14,7 @@ namespace Escape
         public int CastleHeight { get; set; }
         public int CastleWidth { get; set; }
         public List<Room> Rooms { get; set; }
+        public Room CurrentRoom { get; set; }
         public Player Player { get; set; }
 
         public Castle(MainGame mg)
@@ -22,11 +23,12 @@ namespace Escape
             Rooms = new List<Room>();
 
             Rooms.Add(new Room());
+            CurrentRoom = Rooms.First<Room>();
         }
 
         public void Update(Controls controls, GameTime gameTime)
         {
-            Player.Update(controls, gameTime);
+            Player.Update(controls, gameTime, CurrentRoom);
 
             foreach (Room r in Rooms)
             {

@@ -17,8 +17,8 @@ namespace Escape
 
         public Floor(int x, int y)
         {
-            Width = 50;
-            Height = 50;
+            Width = 25;
+            Height = 25;
             Position = new Vector2(x, y);
         }
 

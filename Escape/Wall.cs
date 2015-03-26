@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Storage;
 
 namespace Escape
 {
-    class Wall
+    class Wall : Obstacle
     {
         public Texture2D sprite;
         public int XPosition;
@@ -19,8 +19,8 @@ namespace Escape
 
         public Wall(int x, int y)
         {
-            this.Width = 50;
-            this.Height = 50;
+            this.Width = 25;
+            this.Height = 25;
             this.XPosition = x;
             this.YPosition = y;
             HitBox = new Rectangle(XPosition, YPosition, Width, Height);

@@ -27,7 +27,7 @@ namespace Escape
         private int jumpPoint = 0;
         private bool pushing;
 
-        private int SubmissionInterval = 10; // Time in milliseconds
+        private int SubmissionInterval = 1000; // Time in milliseconds
         private int SubmissionTime = 0;
 
         private int spriteTime = 0;
@@ -102,10 +102,10 @@ namespace Escape
                     Color.White);
         }
 
-        public void Update(Controls controls, GameTime gameTime)
+        public void Update(Controls controls, GameTime gameTime, Room currentRoom)
         {
             UpdateSubmission(gameTime);
-            Move(controls);
+            Move(controls, currentRoom);
             Action(controls, gameTime);
             UpdateSprite(gameTime);
             UpdateHitBox();
@@ -198,7 +198,7 @@ namespace Escape
             }
         }
 
-        public void Move(Controls controls)
+        public void Move(Controls controls, Room currentRoom)
         {
             if (PlayerControl)
             {
@@ -257,8 +257,11 @@ namespace Escape
             YVelocity = YVelocity * (1 - playerFriction) + yAccel * .10;
             MovedY = Convert.ToInt32(YVelocity);
 
-            Position += new Vector2(MovedX, 0);
-            Position += new Vector2(0, MovedY);
+            if (!CheckCollision(currentRoom))
+            {
+                Position += new Vector2(MovedX, 0);
+                Position += new Vector2(0, MovedY);
+            }
 
             CheckBoundaries();
             UpdateHitBox();
@@ -334,6 +337,25 @@ namespace Escape
                 XDirection = true;
                 Position = new Vector2(Position.X, Game.GAME_HEIGHT - this.PlayerHeight);
             }
+        }
+
+        private bool CheckCollision(Room currentRoom)
+        {
+            Vector2 tempPos = new Vector2(this.Position.X, this.Position.Y);
+            tempPos += new Vector2(MovedX, 0);
+            tempPos += new Vector2(0, MovedY);
+
+            Rectangle tempBox = new Rectangle((int)tempPos.X, (int)tempPos.Y, this.PlayerWidth, this.PlayerHeight);
+
+            foreach (Wall w in currentRoom.Walls)
+            {
+                if (w.HitBox.Intersects(tempBox))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private void Action(Controls controls, GameTime gameTime)
