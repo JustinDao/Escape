@@ -95,7 +95,7 @@ namespace Escape
             {
                 w.Draw(sb);
             }
-			
+
 			foreach (Hole h in Obstacles)
 			{
 				h.Draw(sb);
