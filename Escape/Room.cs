@@ -24,10 +24,13 @@ namespace Escape
         public List<Enemy> Enemies { get; set; }
         public List<Item> Items { get; set; }
 
-        public Room()
+        public Room(MainGame mg)
         {
             this.Width = 1000;
             this.Height = 600;
+
+            this.Enemies = new List<Enemy>();
+            Enemies.Add(new Enemy(mg, 200, 200));
 
             Floors = new List<Floor>();
             for (int i = 0; i < this.Width / 25; i++)
@@ -114,6 +117,13 @@ namespace Escape
             }
 
             Obstacles = Obstacles.Except(toRemove).ToList();
+
+            foreach (Enemy e in Enemies)
+            {
+                e.Update(gameTime, this);
+            }
+
+            checkFireBallEnemyCollisions();
         }
 
         public void Draw(SpriteBatch sb)
@@ -126,6 +136,11 @@ namespace Escape
             foreach (Wall w in Walls)
             {
                 w.Draw(sb);
+            }
+
+            foreach (Enemy e in Enemies)
+            {
+                e.Draw(sb);
             }
 			
 			foreach (Obstacle o in Obstacles)
@@ -149,17 +164,49 @@ namespace Escape
                 w.LoadContent(cm);
             }
 
+            foreach (Enemy e in Enemies)
+            {
+                e.LoadContent(cm);
+            }
+
             foreach (Obstacle o in Obstacles)
 			{
                 o.LoadContent(cm);
             }
-			}
+		}
 
         public void AddFireBall(Vector2 position, Direction dir)
         {
             FireBall f = new FireBall(position, dir);
             f.LoadContent(contentManager);
             Obstacles.Add(f);
+        }
+
+        private void checkFireBallEnemyCollisions()
+        {
+            List<Enemy> enemiesToRemove = new List<Enemy>();
+            List<Obstacle> fireBallsToRemove = new List<Obstacle>();
+
+            foreach(Obstacle o in Obstacles)
+            {
+                if(o is FireBall)
+                {
+                    FireBall f = (FireBall)o;
+
+                    foreach(Enemy e in Enemies)
+                    {
+                        if (e.HitBox.Intersects(f.HitBox))
+                        {
+                            fireBallsToRemove.Add(f);
+                            enemiesToRemove.Add(e);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            Obstacles = Obstacles.Except(fireBallsToRemove).ToList();
+            Enemies = Enemies.Except(enemiesToRemove).ToList();
         }
     }
 }
