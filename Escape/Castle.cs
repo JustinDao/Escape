@@ -16,10 +16,15 @@ namespace Escape
         public List<Room> Rooms { get; set; }
         public Room CurrentRoom { get; set; }
         public Player Player { get; set; }
+        public Enemy Enemy { get; set; }
 
         public Castle(MainGame mg)
         {
             Player = new Player(mg, 50, 50);
+
+            Enemy = new Enemy(mg, 200, 200);
+            
+
             Rooms = new List<Room>();
 
             Rooms.Add(new Room());
@@ -29,6 +34,7 @@ namespace Escape
         public void Update(Controls controls, GameTime gameTime)
         {
             Player.Update(controls, gameTime, CurrentRoom);
+            Enemy.Update(gameTime, CurrentRoom);
 
             foreach (Room r in Rooms)
             {
@@ -44,11 +50,14 @@ namespace Escape
             }
 
             Player.Draw(sb);
+            Enemy.Draw(sb);
         }
 
         public override void LoadContent(ContentManager cm)
         {
             Player.LoadContent(cm);
+            Enemy.LoadContent(cm);
+
             foreach (Room r in Rooms)
             {
                 r.LoadContent(cm);

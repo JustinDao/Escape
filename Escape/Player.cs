@@ -59,7 +59,7 @@ namespace Escape
         public Player(MainGame game, int x, int y)
         {
             this.Game = game;
-            this.Submission = 100;
+            this.Submission = 10;
 
             this.Position = new Vector2(50, 50);
 
