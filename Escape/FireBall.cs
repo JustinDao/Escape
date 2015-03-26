@@ -13,7 +13,7 @@ namespace Escape
         public int Height { get; set; }
         public Direction Dir { get; set; }
         public int Speed { get; set; }
-        public Rectangle HitBox;
+        public Rectangle HitBox { get; set; }
 
 		public FireBall (Vector2 position, Direction dir)
 		{
@@ -70,8 +70,7 @@ namespace Escape
 
         private void UpdateHitBox()
         {
-            HitBox.X = (int)Position.X;
-            HitBox.Y = (int)Position.Y;
+            HitBox = new Rectangle((int)Position.X, (int)Position.Y, Width, Height);
         }
 
 
