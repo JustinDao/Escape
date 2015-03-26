@@ -38,6 +38,7 @@
     <Compile Include="Bar.cs" />
     <Compile Include="Castle.cs" />
     <Compile Include="Controls.cs" />
+    <Compile Include="Direction.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="FireBall.cs" />
     <Compile Include="Floor.cs" />
@@ -76,6 +77,9 @@
       <Link>SDL.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\fireball.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\hole0.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -106,7 +110,6 @@
     <Content Include="Content\hole9.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\monster.png" />
     <Content Include="Content\soldier.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -121,7 +124,9 @@
     </Content>
     <Content Include="Icon.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

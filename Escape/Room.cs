@@ -10,6 +10,8 @@ namespace Escape
 {
     class Room
     {
+        ContentManager contentManager;
+
         public Vector2 Position { get; set; }
 
         public int Width { get; set; }
@@ -28,9 +30,9 @@ namespace Escape
             this.Height = 600;
 
             Floors = new List<Floor>();
-            for (int i = 1; i < this.Width / 25; i++)
+            for (int i = 0; i < this.Width / 25; i++)
             {
-                for (int j = 1; j < this.Height / 25; j++)
+                for (int j = 0; j < this.Height / 25; j++)
                 {
                     Floors.Add(new Floor(25 * i, 25 * j));
                 }
@@ -43,8 +45,16 @@ namespace Escape
                 {
                     for (int j = 0; j < this.Height / 25; j++)
                     {
+						if (j != this.Height / 2 / 25 && j != (this.Height / 2 / 25) - 1) 
+						{
                         Walls.Add(new Wall(25 * i, 25 * j));
                     }
+                        
+                    }
+                }
+				else if (i == this.Width / 2 / 25 || i == (this.Width / 2 / 25) - 1) 
+				{
+					
                 }
                 else
                 {
@@ -73,7 +83,31 @@ namespace Escape
 
         public void Update(GameTime gameTime)
         {
+            List<Obstacle> toRemove = new List<Obstacle>();
 
+            foreach (Obstacle o in Obstacles)
+            {
+                if (!(o is Hole))
+                {
+                    o.Update(gameTime);
+
+                    if (o is FireBall)
+                    {
+                        FireBall f = (FireBall)o;
+
+                        if (f.Position.X < 0 || f.Position.X > Width)
+                        {
+                            toRemove.Add(f);
+                        }
+                        else if (f.Position.Y < 0 || f.Position.Y > Height)
+                        {
+                            toRemove.Add(f);
+                        }
+                    }
+                }
+            }
+
+            Obstacles = Obstacles.Except(toRemove).ToList();
         }
 
         public void Draw(SpriteBatch sb)
@@ -88,14 +122,17 @@ namespace Escape
                 w.Draw(sb);
             }
 			
-			foreach (Hole h in Obstacles)
+			foreach (Obstacle o in Obstacles)
 			{
-				h.Draw(sb);
+				o.Draw(sb);
 			}
+
         }
 
         public void LoadContent(ContentManager cm)
         {
+            contentManager = cm;
+
             foreach (Floor f in Floors)
             {
                 f.LoadContent(cm);
@@ -106,10 +143,17 @@ namespace Escape
                 w.LoadContent(cm);
             }
 
-			foreach (Hole h in Obstacles)
+            foreach (Obstacle o in Obstacles)
 			{
-				h.LoadContent(cm);
+                o.LoadContent(cm);
+            }
 			}
+
+        public void AddFireBall(Vector2 position, Direction dir)
+        {
+            FireBall f = new FireBall(position, dir);
+            f.LoadContent(contentManager);
+            Obstacles.Add(f);
         }
     }
 }

@@ -16,9 +16,6 @@ namespace Escape
         public int PlayerWidth { get; set; }
         public int PlayerHeight { get; set; }
 
-        private bool movingLeft;
-        private bool movingRight;
-
         private bool grounded;
         private int speed;
         private int xAccel;
@@ -56,6 +53,8 @@ namespace Escape
         public int Submission;
         public bool PlayerControl = true;
 
+        public Direction Dir { get; set; }
+
         public Player(MainGame game, int x, int y)
         {
             this.Game = game;
@@ -76,9 +75,6 @@ namespace Escape
 
             grounded = false;
             pushing = false;
-
-            movingLeft = false;
-            movingRight = false;
 
             // Movement
             speed = 7;
@@ -106,7 +102,7 @@ namespace Escape
         {
             UpdateSubmission(gameTime);
             Move(controls, currentRoom);
-            Action(controls, gameTime);
+            Action(controls, gameTime, currentRoom);
             UpdateSprite(gameTime);
             UpdateHitBox();
         }
@@ -130,8 +126,6 @@ namespace Escape
                     Submission = 100;
                     PlayerControl = true;
                     xAccel = 0;
-                    movingLeft = false;
-                    movingRight = false;
                 }
 
                 // Randomly lose control of character based on submission
@@ -166,8 +160,10 @@ namespace Escape
         {
             if (spriteTime > spriteInterval)
             {
-                if (movingLeft)
+                if (IsMoving())
                 {
+                    if (Dir == Direction.W || Dir == Direction.SW || Dir == Direction.NW)
+                    {
                     spriteY = spriteLeftHeight;
                     if (spriteX > spriteLeftStart - spriteSpace * 7)
                     {
@@ -178,7 +174,7 @@ namespace Escape
                         spriteX = spriteLeftStart;
                     }
                 }
-                else if (movingRight)
+                    else if (Dir == Direction.E || Dir == Direction.SE || Dir == Direction.NE)
                 {
                     spriteY = spriteRightHeight;
                     if (spriteX < spriteRightStart + spriteSpace * 8)
@@ -190,6 +186,8 @@ namespace Escape
                         spriteX = spriteRightStart;
                     }
                 }
+                }
+                
                 spriteTime = 0;
             }
             else
@@ -206,23 +204,19 @@ namespace Escape
                 if (controls.onPress(Keys.Right, Buttons.DPadRight))
                 {
                     xAccel += speed;
-                    movingRight = true;
                 }
                 else if (controls.onRelease(Keys.Right, Buttons.DPadRight))
                 {
                     xAccel -= speed;
-                    movingRight = false;
                 }
 
                 if (controls.onPress(Keys.Left, Buttons.DPadLeft))
                 {
                     xAccel -= speed;
-                    movingLeft = true;
                 }
                 else if (controls.onRelease(Keys.Left, Buttons.DPadLeft))
                 {
                     xAccel += speed;
-                    movingLeft = false;
                 }
 
                 // Y movement
@@ -259,9 +253,15 @@ namespace Escape
 
             if (!CheckCollision(currentRoom))
             {
+                UpdateDirection();
                 Position += new Vector2(MovedX, 0);
                 Position += new Vector2(0, MovedY);
             }
+
+			if (CheckGround(currentRoom)) 
+			{
+				Position = new Vector2(200,200);
+			}
 
             CheckBoundaries();
             UpdateHitBox();
@@ -288,15 +288,11 @@ namespace Escape
             if (XDirection)
             {
                 xAccel = -speed * 2;
-                movingLeft = true;
-                movingRight = false;
             }
             else
             {
                 xAccel = speed * 2;
                 yAccel = speed * 2;
-                movingLeft = false;
-                movingRight = true;
             }
 
             if (YDirection)
@@ -344,8 +340,8 @@ namespace Escape
             Vector2 tempPos = new Vector2(this.Position.X, this.Position.Y);
             tempPos += new Vector2(MovedX, 0);
             tempPos += new Vector2(0, MovedY);
-
-            Rectangle tempBox = new Rectangle((int)tempPos.X, (int)tempPos.Y, this.PlayerWidth, this.PlayerHeight);
+//			(int) Position.X, (int) Position.Y + (this.PlayerHeight / 4), this.PlayerWidth, 3*(this.PlayerHeight / 4)
+			Rectangle tempBox = new Rectangle((int)tempPos.X, (int)tempPos.Y + (this.PlayerHeight / 2), this.PlayerWidth, this.PlayerHeight / 2);
 
             foreach (Wall w in currentRoom.Walls)
             {
@@ -358,17 +354,37 @@ namespace Escape
             return false;
         }
 
-        private void Action(Controls controls, GameTime gameTime)
+		private bool CheckGround(Room currentRoom)
+		{
+			int tempX = (int)this.Position.X + (this.PlayerWidth / 4);
+			int tempY = (int)this.Position.Y + 3*(this.PlayerHeight / 4);
+			int tempW = this.PlayerWidth / 2;
+			int tempH = this.PlayerHeight / 4;
+			Rectangle tempBox = new Rectangle(tempX, tempY, tempW, tempH);
+
+			foreach (Obstacle o in currentRoom.Obstacles) 
+			{
+                if (o is Hole)
+                {
+                    Hole h = (Hole)o;
+
+                    if (h.HitBox.Intersects(tempBox))
+                    {
+                        return true;
+                    }
+                }
+				
+			}
+
+			return false;
+		}
+
+        private void Action(Controls controls, GameTime gameTime, Room currentRoom)
         {
             // Jump on button press
             if (controls.onPress(Keys.Space, Buttons.A))
             {
-                if (grounded && PlayerControl)
-                {
-                    YVelocity = -JumpSpeed;
-                    jumpPoint = (int)(gameTime.TotalGameTime.TotalMilliseconds);
-                    grounded = false;
-                }
+                shootFireBall(currentRoom);
             }
 
             // Cut jump short on button release
@@ -389,6 +405,66 @@ namespace Escape
         {
             HitBox.X = (int) Position.X;
             HitBox.Y = (int) Position.Y;
+        }
+
+        private void UpdateDirection()
+        {
+            if (MovedX > 0)
+            {
+                if (MovedY > 0)
+                {
+                    Dir = Direction.SE;
+                }
+                else if (MovedY < 0)
+                {
+                    Dir = Direction.NE;
+                }
+                else
+                {
+                    Dir = Direction.E;
+                }
+            }
+            else if (MovedX < 0)
+            {
+                if (MovedY > 0)
+                {
+                    Dir = Direction.SW;
+                }
+                else if (MovedY < 0)
+                {
+                    Dir = Direction.NW;
+                }
+                else
+                {
+                    Dir = Direction.W;
+                }
+            }
+            else
+            {
+                if (MovedY < 0)
+                {
+                    Dir = Direction.N;
+                }
+                else if (MovedY > 0)
+                {
+                    Dir = Direction.S;
+                }
+            }
+        }
+
+        private bool IsMoving()
+        {
+            if (xAccel == 0 && yAccel == 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private void shootFireBall(Room currentRoom)
+        {
+            currentRoom.AddFireBall(Position, Dir);
         }
     }
 }
