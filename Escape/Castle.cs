@@ -49,8 +49,8 @@ namespace Escape
                 r.Draw(sb);
             }
 
-            Player.Draw(sb);
             Enemy.Draw(sb);
+            Player.Draw(sb);
         }
 
         public override void LoadContent(ContentManager cm)

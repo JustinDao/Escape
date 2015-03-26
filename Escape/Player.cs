@@ -12,21 +12,25 @@ namespace Escape
 
     class Player : SpriteSheet
     {
+        // Position of the Player
         public Vector2 Position { get; set; }
+        // The Width and Height of the Player
         public int PlayerWidth { get; set; }
         public int PlayerHeight { get; set; }
 
-        private bool grounded;
+        // The Speed the player moves at
         private int speed;
+        // X and Y acceleration of the Player
         private int xAccel;
         private int yAccel;
+        // Friction determines how fast the player moves/stops moving
         private double friction;
-        private int jumpPoint = 0;
-        private bool pushing;
 
+        // Variables to hold Submission Time and Interval
         private int SubmissionInterval = 1000; // Time in milliseconds
         private int SubmissionTime = 0;
 
+        // Variable for Sprite Rendering
         private int spriteTime = 0;
         private int spriteInterval = 50;
         private int spriteRightStart = 19;
@@ -35,30 +39,37 @@ namespace Escape
         private int spriteLeftHeight = 78;
         private int spriteSpace = 64;
 
+        // Variables for AI Movement
         // false = right
         // true = left
         private bool XDirection = false;
         private bool YDirection = false;
 
+        // Variables to Hold Speed and final movement amount
         public double XVelocity;
         public double YVelocity;
         public int MovedX;
         public int MovedY;
-
-        public int JumpSpeed = 12;
-        public double Gravity = .5;
-        public int MaxFallSpeed = 10;
+        
+        // HitBox for the Player
         public Rectangle HitBox;
+
+        // Reference to the MainGame
         public MainGame Game;
+
+        // Value of the Player's current Submission
         public int Submission;
+
+        // Bool is hold if the player is in control
         public bool PlayerControl = true;
 
+        // The Direction the Player is currently moving in or looking towards
         public Direction Dir { get; set; }
 
         public Player(MainGame game, int x, int y)
         {
             this.Game = game;
-            this.Submission = 10;
+            this.Submission = 100;
 
             this.Position = new Vector2(50, 50);
 
@@ -72,9 +83,6 @@ namespace Escape
             this.spriteY = spriteRightHeight;
 
             HitBox = new Rectangle((int) Position.X, (int) Position.Y, PlayerWidth, PlayerHeight);
-
-            grounded = false;
-            pushing = false;
 
             // Movement
             speed = 7;
@@ -243,12 +251,10 @@ namespace Escape
                 AIMove();
             }
 
-            double playerFriction = pushing ? (friction * 3) : friction;
-
-            XVelocity = XVelocity * (1 - playerFriction) + xAccel * .10;
+            XVelocity = XVelocity * (1 - friction) + xAccel * .10;
             MovedX = Convert.ToInt32(XVelocity);
 
-            YVelocity = YVelocity * (1 - playerFriction) + yAccel * .10;
+            YVelocity = YVelocity * (1 - friction) + yAccel * .10;
             MovedY = Convert.ToInt32(YVelocity);
 
             if (!CheckCollision(currentRoom))

@@ -22,7 +22,6 @@ namespace Escape
         Screen currentScreen;
         Castle castle;
         Controls controls;
-        List<Wall> walls;
         SubmissionBar submissionBar;
 
         public int GAME_WIDTH = 1000;

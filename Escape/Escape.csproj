@@ -39,6 +39,7 @@
     <Compile Include="Castle.cs" />
     <Compile Include="Controls.cs" />
     <Compile Include="Direction.cs" />
+    <Compile Include="Door.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="FireBall.cs" />
     <Compile Include="Floor.cs" />
@@ -110,7 +111,9 @@
     <Content Include="Content\hole9.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\monster.png" />
+    <Content Include="Content\monster.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\soldier.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -124,6 +127,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Icon.ico" />
+    <Content Include="Content\null.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
