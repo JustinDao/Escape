@@ -72,7 +72,12 @@ namespace Escape
             this.spriteX = spriteRightStart;
             this.spriteY = spriteRightHeight;
 
-            HitBox = new Rectangle((int) Position.X, (int) Position.Y, PlayerWidth, PlayerHeight);
+            HitBox = new Rectangle((int) Position.X, (int) Position.Y, this.PlayerWidth, this.PlayerHeight);
+//			int feetX = (int)this.Position.X + (this.PlayerWidth / 4);
+//			int feetY = (int)this.Position.Y + 3*(this.PlayerHeight / 4);
+//			int feetW = this.PlayerWidth / 2;
+//			int feetH = this.PlayerHeight / 4;
+//			HitBoxFeet = new Rectangle(feetX, feetY, feetW, feetH);
 
             grounded = false;
             pushing = false;
@@ -263,6 +268,11 @@ namespace Escape
                 Position += new Vector2(0, MovedY);
             }
 
+			if (CheckGround(currentRoom)) 
+			{
+				Position = new Vector2(200,200);
+			}
+
             CheckBoundaries();
             UpdateHitBox();
         }
@@ -357,6 +367,25 @@ namespace Escape
 
             return false;
         }
+
+		private bool CheckGround(Room currentRoom)
+		{
+			int tempX = (int)this.Position.X + (this.PlayerWidth / 4);
+			int tempY = (int)this.Position.Y + 3*(this.PlayerHeight / 4);
+			int tempW = this.PlayerWidth / 2;
+			int tempH = this.PlayerHeight / 4;
+			Rectangle tempBox = new Rectangle(tempX, tempY, tempW, tempH);
+
+			foreach (Hole h in currentRoom.Obstacles) 
+			{
+				if (h.HitBox.Intersects(tempBox)) 
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
 
         private void Action(Controls controls, GameTime gameTime)
         {
