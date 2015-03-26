@@ -354,8 +354,8 @@ namespace Escape
             Vector2 tempPos = new Vector2(this.Position.X, this.Position.Y);
             tempPos += new Vector2(MovedX, 0);
             tempPos += new Vector2(0, MovedY);
-
-            Rectangle tempBox = new Rectangle((int)tempPos.X, (int)tempPos.Y, this.PlayerWidth, this.PlayerHeight);
+//			(int) Position.X, (int) Position.Y + (this.PlayerHeight / 4), this.PlayerWidth, 3*(this.PlayerHeight / 4)
+			Rectangle tempBox = new Rectangle((int)tempPos.X, (int)tempPos.Y + (this.PlayerHeight / 2), this.PlayerWidth, this.PlayerHeight / 2);
 
             foreach (Wall w in currentRoom.Walls)
             {
