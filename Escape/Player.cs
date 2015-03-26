@@ -362,24 +362,30 @@ namespace Escape
 			int tempH = this.PlayerHeight / 4;
 			Rectangle tempBox = new Rectangle(tempX, tempY, tempW, tempH);
 
-			foreach (Hole h in currentRoom.Obstacles) 
+			foreach (Obstacle o in currentRoom.Obstacles) 
 			{
-				if (h.HitBox.Intersects(tempBox)) 
-				{
-					return true;
-				}
+                if (o is Hole)
+                {
+                    Hole h = (Hole)o;
+
+                    if (h.HitBox.Intersects(tempBox))
+                    {
+                        return true;
+                    }
+                }
+				
 			}
 
 			return false;
 		}
 
-        private void Action(Controls controls, GameTime gameTime)
+        private void Action(Controls controls, GameTime gameTime, Room currentRoom)
         {
             // Jump on button press
             if (controls.onPress(Keys.Space, Buttons.A))
             {
                 shootFireBall(currentRoom);
-                }
+            }
 
             // Cut jump short on button release
             else if (controls.onRelease(Keys.Space, Buttons.A) && YVelocity < 0)
