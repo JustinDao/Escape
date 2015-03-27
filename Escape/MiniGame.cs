@@ -22,13 +22,15 @@ namespace Escape
         private Rectangle BackgroundBox { get; set; }
         private SpriteFont Font { get; set; }
 
+        private int TOTAL_TIME = 60;
+
         public MiniGame(MainGame mg, GraphicsDevice gd)
         {
             this.mg = mg;
             this.gd = gd;
             this.BackgroundBox = new Rectangle(0, 0, mg.GAME_WIDTH, mg.GAME_HEIGHT);
             this.currentQuestion = new Question();
-            this.timeRemaining = 60;
+            this.timeRemaining = TOTAL_TIME;
             this.timeInterval = 0;
             this.Active = false;
         }
@@ -36,7 +38,7 @@ namespace Escape
         public void Reinitialize()
         {
             this.timeInterval = 0;
-            this.timeRemaining = 60;
+            this.timeRemaining = TOTAL_TIME;
         }
 
         public override void Draw(SpriteBatch sb)
@@ -70,6 +72,12 @@ namespace Escape
             {
                 this.timeRemaining -= 1;
                 this.timeInterval = 0;
+
+                if (timeRemaining == 0)
+                {
+                    this.Active = false;
+                    player.RegainControl();
+                }
             }
 
             if (controls.onPress(currentQuestion.CorrectKey, currentQuestion.CorrectButton)) 

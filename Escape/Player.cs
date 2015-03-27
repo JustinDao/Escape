@@ -19,15 +19,15 @@ namespace Escape
         public int PlayerHeight { get; set; }
 
         // The Speed the player moves at
-        private int speed;
+        private float speed;
         // X and Y acceleration of the Player
-        private int xAccel;
-        private int yAccel;
+        private float xAccel;
+        private float yAccel;
         // Friction determines how fast the player moves/stops moving
         private double friction;
 
         // Variables to hold Submission Time and Interval
-        private int SubmissionInterval = 10; // Time in milliseconds
+        private int SubmissionInterval = 1000; // Time in milliseconds
         private int SubmissionTime = 0;
 
         // Variable for Sprite Rendering
@@ -89,7 +89,7 @@ namespace Escape
             HitBox = new Rectangle((int) Position.X, (int) Position.Y, PlayerWidth, PlayerHeight);
 
             // Movement
-            speed = 7;
+            speed = 10;
             friction = .15;
             xAccel = 0;
             XVelocity = 0;
@@ -206,42 +206,45 @@ namespace Escape
             if (PlayerControl)
             {
                 // Sideways Acceleration
-                if (controls.onPress(Keys.Right, Buttons.DPadRight))
-                {
-                    xAccel += speed;
-                }
-                else if (controls.onRelease(Keys.Right, Buttons.DPadRight))
-                {
-                    xAccel -= speed;
-                }
+                //if (controls.onPress(Keys.Right, Buttons.DPadRight))
+                //{
+                //    xAccel += speed;
+                //}
+                //else if (controls.onRelease(Keys.Right, Buttons.DPadRight))
+                //{
+                //    xAccel -= speed;
+                //}
 
-                if (controls.onPress(Keys.Left, Buttons.DPadLeft))
-                {
-                    xAccel -= speed;
-                }
-                else if (controls.onRelease(Keys.Left, Buttons.DPadLeft))
-                {
-                    xAccel += speed;
-                }
+                //if (controls.onPress(Keys.Left, Buttons.DPadLeft))
+                //{
+                //    xAccel -= speed;
+                //}
+                //else if (controls.onRelease(Keys.Left, Buttons.DPadLeft))
+                //{
+                //    xAccel += speed;
+                //}
 
-                // Y movement
-                if (controls.onPress(Keys.Down, Buttons.DPadDown))
-                {
-                    yAccel += speed;
-                }
-                else if (controls.onRelease(Keys.Down, Buttons.DPadDown))
-                {
-                    yAccel -= speed;
-                }
+                //// Y movement
+                //if (controls.onPress(Keys.Down, Buttons.DPadDown))
+                //{
+                //    yAccel += speed;
+                //}
+                //else if (controls.onRelease(Keys.Down, Buttons.DPadDown))
+                //{
+                //    yAccel -= speed;
+                //}
 
-                if (controls.onPress(Keys.Up, Buttons.DPadUp))
-                {
-                    yAccel -= speed;
-                }
-                else if (controls.onRelease(Keys.Up, Buttons.DPadUp))
-                {
-                    yAccel += speed;
-                }
+                //if (controls.onPress(Keys.Up, Buttons.DPadUp))
+                //{
+                //    yAccel -= speed;
+                //}
+                //else if (controls.onRelease(Keys.Up, Buttons.DPadUp))
+                //{
+                //    yAccel += speed;
+                //}
+
+                xAccel = speed * controls.gp.ThumbSticks.Left.X;
+                yAccel = -speed * controls.gp.ThumbSticks.Left.Y;
             }
             else
             {
