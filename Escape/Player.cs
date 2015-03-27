@@ -68,6 +68,9 @@ namespace Escape
         // The Direction the Player is currently moving in or looking towards
         public Direction Dir { get; set; }
 
+		// Bool to hold if player is standing on an obstacle?
+		public bool StandingOnDoor = false;
+
         public Player(MainGame game, int x, int y)
         {
             this.Game = game;
@@ -259,9 +262,23 @@ namespace Escape
                 Position += new Vector2(0, MovedY);
             }
 
-			if (CheckGround(currentRoom)) 
+			int chkG = CheckGround(currentRoom);
+			if (chkG == 1) 
 			{
 				Position = new Vector2(200,200);
+			}
+
+			if (chkG != 2) 
+			{
+				StandingOnDoor = false;
+			}
+			if (chkG == 2) 
+			{
+				if (!StandingOnDoor) 
+				{
+					Position = FlipPosition(currentRoom);
+				}
+				StandingOnDoor = true;
 			}
 
             CheckBoundaries();
@@ -363,7 +380,7 @@ namespace Escape
             return false;
         }
 
-		private bool CheckGround(Room currentRoom)
+		private int CheckGround(Room currentRoom)
 		{
 			int tempX = (int)this.Position.X + (this.PlayerWidth / 4);
 			int tempY = (int)this.Position.Y + 3*(this.PlayerHeight / 4);
@@ -379,25 +396,69 @@ namespace Escape
 
                     if (h.HitBox.Intersects(tempBox))
                     {
-                        return true;
+						return 1;
+					}
+				}
+
+				if (o is Door) 
+				{
+					Door d = (Door)o;
+
+					if (d.HitBox.Intersects(tempBox)) 
+					{
+						return 2;
+					}
+				}
+
                     }
+
+			return 0;
                 }
 				
+		private Vector2 FlipPosition(Room currentRoom) 
+		{
+			int x = (int)this.Position.X;
+			int y = (int)this.Position.Y;
+
+			int wid = currentRoom.Width;
+			int hei = currentRoom.Height;
+
+			if (x > (wid / 2) - 50 && x < (wid / 2) + 50) 
+			{
+				if (y < hei / 2) 
+				{
+					y = hei;
+				} 
+				else 
+				{
+					y = 0;
+				}
+			}
+			if (y > (hei / 2) - 50 && y < (hei / 2) + 50) 
+			{
+				if (x < wid / 2) 
+				{
+					x = wid;
+				} 
+				else 
+				{
+					x = 0;
+				}
 			}
 
-			return false;
+			return new Vector2(x, y);
 		}
 
         private void Action(Controls controls, GameTime gameTime, Room currentRoom)
         {
             if (PlayerControl)
             {
-                if (controls.onPress(Keys.Space, Buttons.A))
-                {
-                    shootFireBall(currentRoom);
+            if (controls.onPress(Keys.Space, Buttons.A))
+            {
+                shootFireBall(currentRoom);
+            }
                 }
-            }         
-        }
+            }
 
         private void UpdateHitBox()
         {
