@@ -13,7 +13,10 @@ namespace Escape
         public int Height { get; set; }
         public Direction Dir { get; set; }
         public int Speed { get; set; }
-        public Rectangle HitBox { get; set; }
+        public Rectangle HitBox
+        {
+            get { return new Rectangle((int)Position.X, (int)Position.Y, Width, Height); }
+        }
 
 		public FireBall (Vector2 position, Direction dir)
 		{
@@ -22,7 +25,6 @@ namespace Escape
             Speed = 10;
             Width = 23;
             Height = 32;
-            HitBox = new Rectangle((int)Position.X, (int)Position.Y, Width, Height);
 		}
 
         override public void Update(GameTime gt)
@@ -55,7 +57,6 @@ namespace Escape
                     break;
             }
 
-            UpdateHitBox();
         }
 
         override public void Draw(SpriteBatch sb)
@@ -66,11 +67,6 @@ namespace Escape
         override public void LoadContent(ContentManager cm)
         {
             Texture = cm.Load<Texture2D>("fireball.png");
-        }
-
-        private void UpdateHitBox()
-        {
-            HitBox = new Rectangle((int)Position.X, (int)Position.Y, Width, Height);
         }
 
 

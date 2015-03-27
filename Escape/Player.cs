@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -12,6 +13,10 @@ namespace Escape
 
     class Player : SpriteSheet
     {
+        // Powerup information
+        public bool HasFire = false;
+        public bool HasIce = false;
+
         // Position of the Player
         public Vector2 Position { get; set; }
         // The Width and Height of the Player
@@ -27,7 +32,7 @@ namespace Escape
         private double friction;
 
         // Variables to hold Submission Time and Interval
-        private int SubmissionInterval = 1000; // Time in milliseconds
+        private int SubmissionInterval = 100; // Time in milliseconds
         private int SubmissionTime = 0;
 
         // Variable for Sprite Rendering
@@ -35,7 +40,7 @@ namespace Escape
         private int spriteInterval = 50;
         private int spriteRightStart = 19;
         private int spriteRightHeight = 207;
-        private int spriteLeftStart = 533;
+        private int spriteLeftStart = 21;
         private int spriteLeftHeight = 78;
         private int spriteSpace = 64;
 
@@ -51,7 +56,13 @@ namespace Escape
         public int MovedY;
         
         // HitBox for the Player
-        public Rectangle HitBox;
+        public Rectangle HitBox
+        {
+            get
+            {
+                return new Rectangle((int)Position.X, (int)Position.Y, PlayerWidth, PlayerHeight);
+            }
+        }
 
         // Reference to the MainGame
         public MainGame Game;
@@ -86,8 +97,6 @@ namespace Escape
             this.spriteX = spriteRightStart;
             this.spriteY = spriteRightHeight;
 
-            HitBox = new Rectangle((int) Position.X, (int) Position.Y, PlayerWidth, PlayerHeight);
-
             // Movement
             speed = 10;
             friction = .15;
@@ -116,7 +125,6 @@ namespace Escape
             Move(controls, currentRoom);
             Action(controls, gameTime, currentRoom);
             UpdateSprite(gameTime);
-            UpdateHitBox();
         }
 
         public void UpdateSubmission(GameTime gameTime)
@@ -170,9 +178,9 @@ namespace Escape
                     if (Dir == Direction.W || Dir == Direction.SW || Dir == Direction.NW)
                     {
                     spriteY = spriteLeftHeight;
-                    if (spriteX > spriteLeftStart - spriteSpace * 7)
+                    if (spriteX < spriteLeftStart + spriteSpace * 7)
                     {
-                        spriteX -= spriteSpace;
+                        spriteX += spriteSpace;
                     }
                     else
                     {
@@ -285,7 +293,7 @@ namespace Escape
 			}
 
             CheckBoundaries();
-            UpdateHitBox();
+            CheckPowerUps(currentRoom);
         }
 
         public void RegainControl()
@@ -461,19 +469,23 @@ namespace Escape
 
         private void Action(Controls controls, GameTime gameTime, Room currentRoom)
         {
-            if (PlayerControl)
-            {
-            if (controls.onPress(Keys.Space, Buttons.A))
+            if (!PlayerControl) return;
+
+            if (controls.onPress(Keys.Space, Buttons.A) && HasFire)
             {
                 shootFireBall(currentRoom);
             }
-                }
+
+            if (controls.onPress(Keys.None, Buttons.X) && HasIce)
+            {
+                letItGo(currentRoom);
             }
 
-        private void UpdateHitBox()
+        }
+
+        private void letItGo(Room room)
         {
-            HitBox.X = (int) Position.X;
-            HitBox.Y = (int) Position.Y;
+            room.Elsa(Position);
         }
 
         private void UpdateDirection()
@@ -570,6 +582,35 @@ namespace Escape
             {
                 AIDirection = GetRandomDirection();
             }
+        }
+
+        private void CheckPowerUps(Room currentRoom)
+        {
+            List<Obstacle> toRemove = new List<Obstacle>();
+
+            foreach(Obstacle o in currentRoom.Obstacles)
+            {
+                if (o is PowerUp)
+                {
+                    PowerUp p = o as PowerUp;
+                    if (p.HitBox.Intersects(this.HitBox))
+                    {
+                        if (p.IsFire)
+                        {
+                            this.HasFire = true;
+                            toRemove.Add(o);
+                        }
+                        
+                        if (p.IsIce)
+                        {
+                            this.HasIce = true;
+                            toRemove.Add(o);
+                        }
+                    }
+                }
+            }
+
+            currentRoom.Obstacles = currentRoom.Obstacles.Except(toRemove).ToList();
         }
 
     }

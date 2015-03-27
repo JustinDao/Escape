@@ -88,6 +88,9 @@ namespace Escape
 			Obstacles.Add(new Hole(400, 425, 8));
 			Obstacles.Add(new Hole(425, 425, 9));
 			Obstacles.Add(new Hole(450, 425, 9));
+
+            Obstacles.Add(new PowerUp(new Vector2(175, 75), "din.png", true, false));
+            Obstacles.Add(new PowerUp(new Vector2(500, 500), "naryu.png", false, true));
 		}
 
 		public void Update(GameTime gameTime)
@@ -110,7 +113,17 @@ namespace Escape
 					{
 						toRemove.Add(f);
 					}
-				}
+                } // fuck visual studio >:(
+                else if (o is Snowflake)
+                {
+                    Snowflake s = o as Snowflake;
+                    s.Update(gameTime);
+                    Rectangle bounds = new Rectangle(0, 0, Width, Height);
+                    if (!bounds.Contains(s.Position) || (s.Position - s.StartPosition).Length() > s.Range)
+                    {
+                        toRemove.Add(s);
+                    }
+                }
 			}
 
 			Obstacles = Obstacles.Except(toRemove).ToList();
@@ -121,6 +134,7 @@ namespace Escape
 			}
 
 			checkFireBallEnemyCollisions();
+            checkSnowflakeEnemyCollisions();
 		}
 
 		public void Draw(SpriteBatch sb)
@@ -172,12 +186,42 @@ namespace Escape
 			}
 		}
 
+        public void Elsa(Vector2 position)
+        {
+            int numFlakes = 16;
+            for (int i = 0; i < numFlakes; i++)
+            {
+                float angle = (float)(2 * Math.PI * ((float)i / (float)numFlakes));
+                float speed = 400;
+                Vector2 vel = new Vector2((float)Math.Cos(angle),(float)Math.Sin(angle)) * speed;
+                Snowflake anna = new Snowflake(position, vel, 100); // love = open door
+                anna.LoadContent(contentManager);
+                Obstacles.Add(anna);
+            }
+        }
+
 		public void AddFireBall(Vector2 position, Direction dir)
 		{
 			FireBall f = new FireBall(position, dir);
 			f.LoadContent(contentManager);
 			Obstacles.Add(f);
 		}
+
+        private void checkSnowflakeEnemyCollisions()
+        {
+            foreach(Obstacle o in Obstacles)
+            {
+                var s = o as Snowflake;
+                if (s == null) continue;
+                foreach(Enemy e in Enemies)
+                {
+                    if (e.HitBox.Intersects(s.HitBox))
+                    {
+                        e.Frozen = true;
+                    }
+                }
+            }
+        }
 
 		private void checkFireBallEnemyCollisions()
 		{
@@ -194,8 +238,15 @@ namespace Escape
 					{
 						if (e.HitBox.Intersects(f.HitBox))
 						{
-							fireBallsToRemove.Add(f);
-							enemiesToRemove.Add(e);
+                            if (e.Frozen)
+                            {
+                                e.Frozen = false;
+                            }
+                            else
+                            {
+                                enemiesToRemove.Add(e);
+                            }
+                            fireBallsToRemove.Add(f);
 							break;
 						}
 					}

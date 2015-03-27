@@ -12,6 +12,9 @@ namespace Escape
 
     class Enemy : SpriteSheet
     {
+
+        public bool Frozen = false;
+
         // Position of the Enemy
         public Vector2 Position { get; set; }
         // The Width and Height of the Enemy
@@ -93,10 +96,11 @@ namespace Escape
 
         public void Draw(SpriteBatch sb)
         {
+            var color = Frozen ? Color.Cyan : Color.White;
             sb.Draw(spriteSheet,
                     new Rectangle((int)Position.X, (int)Position.Y, EnemyWidth, EnemyHeight),
                     new Rectangle(spriteX, spriteY, spriteWidth, spriteHeight),
-                    Color.White);
+                    color);
         }
 
         public void Update(GameTime gameTime, Room currentRoom)
@@ -108,6 +112,7 @@ namespace Escape
 
         public void UpdateSprite(GameTime gameTime)
         {
+            if (Frozen) return;
             if (spriteTime > spriteInterval)
             {
                 if (IsMoving())
@@ -148,6 +153,7 @@ namespace Escape
 
         public void Move(Room currentRoom, int distance)
         {
+            if (Frozen) return;
             if (XDirection && counter != distance)
             {
                 xAccel = -speed;
@@ -173,8 +179,12 @@ namespace Escape
             if (!CheckCollision(currentRoom))
             {
                 UpdateDirection();
-                Position += new Vector2(MovedX, 0);
-                Position += new Vector2(0, MovedY);
+                var movement = new Vector2(MovedX, MovedY);
+                //if (Frozen)
+                //{
+                //    movement *= 0.0f;
+                //}
+                Position += movement;
             }
 
             if (CheckGround(currentRoom))
