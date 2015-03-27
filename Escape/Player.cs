@@ -42,8 +42,7 @@ namespace Escape
         // Variables for AI Movement
         // false = right
         // true = left
-        private bool XDirection = false;
-        private bool YDirection = false;
+        private Direction AIDirection;
 
         // Variables to Hold Speed and final movement amount
         public double XVelocity;
@@ -266,6 +265,7 @@ namespace Escape
 			if (chkG == 1) 
 			{
 				Position = new Vector2(200,200);
+                ChangeAIDirection();
 			}
 
 			if (chkG != 2) 
@@ -295,68 +295,74 @@ namespace Escape
 
         private void AIMove()
         {
+            // TODO: Better RNG
             Random rand = new Random();
             int num = rand.Next(75);
             int num2 = rand.Next(75);
-            int num3 = rand.Next(75);
-            int num4 = rand.Next(75);
 
             if (num == num2)
             {
-                XDirection = !XDirection;
+                AIDirection = GetRandomDirection();
             }
 
-            if (num3 == num4)
+            switch (AIDirection)
             {
-                YDirection = !YDirection;
-            }
+                case Direction.N:
+                    xAccel = 0;
+                    yAccel = -speed * 2;
+                    break;
+                case Direction.NE:
+                    xAccel = speed * 2;
+                    yAccel = -speed * 2;
+                    break;
+                case Direction.E:
+                    xAccel = speed * 2;
+                    yAccel = 0;
+                    break;
+                case Direction.SE:
+                    xAccel = speed * 2;
+                    yAccel = speed * 2;
+                    break;
+                case Direction.S:
+                    xAccel = 0;
+                    yAccel = speed * 2;
+                    break;
+                case Direction.SW:
+                    xAccel = -speed * 2;
+                    yAccel = speed * 2;
+                    break;
+                case Direction.W:
+                    xAccel = -speed * 2;
+                    yAccel = 0;
+                    break;
+                case Direction.NW:
+                    xAccel = -speed * 2;
+                    yAccel = -speed * 2;
+                    break;
 
-            if (XDirection)
-            {
-                xAccel = -speed * 2;
             }
-            else
-            {
-                xAccel = speed * 2;
-                yAccel = speed * 2;
-            }
-
-            if (YDirection)
-            {
-                yAccel = -speed * 2;
-            }
-            else
-            {
-                yAccel = speed * 2;
-            }
-
-            num = rand.Next(75);
-            num2 = rand.Next(75);
+           
         }
 
         private void CheckBoundaries()
         {
             if (this.Position.X < 0)
             {
-                XDirection = false;
                 Position = new Vector2(0, Position.Y);
             }
 
             else if (this.Position.X > Game.GAME_WIDTH - this.PlayerWidth)
             {
-                XDirection = true;
                 Position = new Vector2(Game.GAME_WIDTH - this.PlayerWidth, Position.Y);
             }
 
             if (this.Position.Y < -25)
             {
-                XDirection = false;
                 Position = new Vector2(Position.X, 0);
             }
 
             else if (this.Position.Y > Game.GAME_HEIGHT - this.PlayerHeight)
             {
-                XDirection = true;
                 Position = new Vector2(Position.X, Game.GAME_HEIGHT - this.PlayerHeight);
             }
         }
@@ -373,6 +379,7 @@ namespace Escape
             {
                 if (w.HitBox.Intersects(tempBox))
                 {
+                    ChangeAIDirection();
                     return true;
                 }
             }
@@ -393,7 +400,7 @@ namespace Escape
                 if (o is Hole)
                 {
                     Hole h = (Hole)o;
-
+                    
                     if (h.HitBox.Intersects(tempBox))
                     {
 						return 1;
@@ -524,6 +531,42 @@ namespace Escape
         private void shootFireBall(Room currentRoom)
         {
             currentRoom.AddFireBall(Position, Dir);
+        }
+
+        private Direction GetRandomDirection()
+        {
+            int i = new Random().Next(8);
+
+            switch (i)
+            {
+                case 0:
+                    return Direction.N;
+                case 1:
+                    return Direction.NE;
+                case 2:
+                    return Direction.E;
+                case 3:
+                    return Direction.SE;
+                case 4:
+                    return Direction.S;
+                case 5:
+                    return Direction.SW;
+                case 6:
+                    return Direction.W;
+                case 7:
+                    return Direction.NW;
+            }
+
+            return Direction.N;
+        }
+
+        private void ChangeAIDirection()
+        {
+            // Flip Direction of AI if intersecting with wall
+            if (!PlayerControl)
+            {
+                AIDirection = GetRandomDirection();
+            }
         }
 
     }
