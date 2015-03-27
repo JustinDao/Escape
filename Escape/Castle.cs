@@ -10,6 +10,7 @@ namespace Escape
 {
     class Castle : Screen
     {
+        public MainGame mg { get; set; }
         public Vector2 CastlePosition { get; set; }
         public int CastleHeight { get; set; }
         public int CastleWidth { get; set; }
@@ -19,6 +20,8 @@ namespace Escape
 
         public Castle(MainGame mg)
         {
+            this.mg = mg;
+
             Player = new Player(mg, 50, 50);
 
             Rooms = new List<Room>();
@@ -56,11 +59,6 @@ namespace Escape
                 r.LoadContent(cm);
             }
 
-        }
-
-        public override void Update(GameTime gt)
-        {
-            throw new NotImplementedException();
         }
 
     }

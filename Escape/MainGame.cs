@@ -21,6 +21,7 @@ namespace Escape
         SpriteBatch spriteBatch;
         Screen currentScreen;
         Castle castle;
+        MiniGame miniGame;
         Controls controls;
         SubmissionBar submissionBar;
 
@@ -46,6 +47,7 @@ namespace Escape
         protected override void Initialize()
         {
             castle = new Castle(this);
+            miniGame = new MiniGame(this, GraphicsDevice);
             currentScreen = castle;
 
             submissionBar = new SubmissionBar(50, 50, graphics);
@@ -65,6 +67,7 @@ namespace Escape
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             castle.LoadContent(this.Content);
+            miniGame.LoadContent(this.Content);
         }
 
         /// <summary>
@@ -94,7 +97,18 @@ namespace Escape
 
             castle.Update(controls, gameTime);
 
+            if (!miniGame.Active && !castle.Player.PlayerControl)
+            {
+                miniGame.Reinitialize();
+                miniGame.Active = true;
+            }
+
             submissionBar.Update(castle.Player, graphics);
+
+            if (miniGame.Active)
+            {
+                miniGame.Update(controls, gameTime, castle.Player);
+            }            
 
             base.Update(gameTime);
         }
@@ -113,6 +127,11 @@ namespace Escape
             castle.Draw(spriteBatch);
 
             submissionBar.Draw(spriteBatch);
+
+            if (miniGame.Active)
+            {
+                miniGame.Draw(spriteBatch);
+            }            
 
             spriteBatch.End();
 

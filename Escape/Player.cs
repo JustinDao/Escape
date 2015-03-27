@@ -27,7 +27,7 @@ namespace Escape
         private double friction;
 
         // Variables to hold Submission Time and Interval
-        private int SubmissionInterval = 1000; // Time in milliseconds
+        private int SubmissionInterval = 10; // Time in milliseconds
         private int SubmissionTime = 0;
 
         // Variable for Sprite Rendering
@@ -59,6 +59,8 @@ namespace Escape
 
         // Value of the Player's current Submission
         public int Submission;
+        // The maximum submission value
+        private int MAX_SUBMISSION = 100;
 
         // Bool is hold if the player is in control
         public bool PlayerControl = true;
@@ -69,7 +71,7 @@ namespace Escape
         public Player(MainGame game, int x, int y)
         {
             this.Game = game;
-            this.Submission = 100;
+            this.Submission = MAX_SUBMISSION;
 
             this.Position = new Vector2(50, 50);
 
@@ -127,13 +129,6 @@ namespace Escape
                 else
                 {
                     SubmissionTime += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
-                }
-
-                if (!PlayerControl && Submission > 100)
-                {
-                    Submission = 100;
-                    PlayerControl = true;
-                    xAccel = 0;
                 }
 
                 // Randomly lose control of character based on submission
@@ -273,6 +268,14 @@ namespace Escape
             UpdateHitBox();
         }
 
+        public void RegainControl()
+        {
+            this.PlayerControl = true;
+            this.Submission = MAX_SUBMISSION;
+            this.xAccel = 0;
+            this.yAccel = 0;
+        }
+
         private void AIMove()
         {
             Random rand = new Random();
@@ -387,24 +390,13 @@ namespace Escape
 
         private void Action(Controls controls, GameTime gameTime, Room currentRoom)
         {
-            // Jump on button press
-            if (controls.onPress(Keys.Space, Buttons.A))
+            if (PlayerControl)
             {
-                shootFireBall(currentRoom);
-            }
-
-            // Cut jump short on button release
-            else if (controls.onRelease(Keys.Space, Buttons.A) && YVelocity < 0)
-            {
-                YVelocity /= 2;
-            }
-            else if (controls.onPress(Keys.X, Buttons.X))
-            {
-                if (!PlayerControl)
+                if (controls.onPress(Keys.Space, Buttons.A))
                 {
-                    Submission += 10;
+                    shootFireBall(currentRoom);
                 }
-            }
+            }         
         }
 
         private void UpdateHitBox()
@@ -472,5 +464,6 @@ namespace Escape
         {
             currentRoom.AddFireBall(Position, Dir);
         }
+
     }
 }

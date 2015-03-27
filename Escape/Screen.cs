@@ -16,7 +16,6 @@ namespace Escape
         public int Height { get; set; }
         public Song BackgroundMusic { get; set; }
 
-        abstract public void Update(GameTime gt);
         abstract public void Draw(SpriteBatch sb);
         abstract public void LoadContent(ContentManager cm);
     }
