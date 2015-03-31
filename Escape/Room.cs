@@ -200,7 +200,7 @@ namespace Escape
             }
         }
 
-		public void AddFireBall(Vector2 position, Direction dir)
+		public void AddFireBall(Vector2 position, Vector2 dir)
 		{
 			FireBall f = new FireBall(position, dir);
 			f.LoadContent(contentManager);

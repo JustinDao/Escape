@@ -45,9 +45,11 @@ namespace Escape
         private int spriteSpace = 64;
 
         // Variables for AI Movement
-        // false = right
-        // true = left
-        private Direction AIDirection;
+        private Vector2 AIDirection;
+        private int AITime;
+        private int AIInterval;
+        private int AI_SWITCH_TIME = 3000;
+        private Random rand = new Random();
 
         // Variables to Hold Speed and final movement amount
         public double XVelocity;
@@ -76,7 +78,14 @@ namespace Escape
         public bool PlayerControl = true;
 
         // The Direction the Player is currently moving in or looking towards
-        public Direction Dir { get; set; }
+        public Vector2 Dir 
+        {
+            get
+            {
+                float length = (float) Math.Sqrt(MovedX * MovedX + MovedY * MovedY);
+                return new Vector2(MovedX / length, MovedY / length);
+            }
+        }
 
 		// Bool to hold if player is standing on an obstacle?
 		public bool StandingOnDoor = false;
@@ -96,6 +105,9 @@ namespace Escape
 
             this.spriteX = spriteRightStart;
             this.spriteY = spriteRightHeight;
+
+            this.AITime = 0;
+            this.AIInterval = rand.Next(AI_SWITCH_TIME);
 
             // Movement
             speed = 10;
@@ -122,7 +134,7 @@ namespace Escape
         public void Update(Controls controls, GameTime gameTime, Room currentRoom)
         {
             UpdateSubmission(gameTime);
-            Move(controls, currentRoom);
+            Move(controls, currentRoom, gameTime);
             Action(controls, gameTime, currentRoom);
             UpdateSprite(gameTime);
         }
@@ -175,7 +187,7 @@ namespace Escape
             {
                 if (IsMoving())
                 {
-                    if (Dir == Direction.W || Dir == Direction.SW || Dir == Direction.NW)
+                    if (Dir.X < 0)
                     {
                     spriteY = spriteLeftHeight;
                     if (spriteX < spriteLeftStart + spriteSpace * 7)
@@ -187,7 +199,7 @@ namespace Escape
                         spriteX = spriteLeftStart;
                     }
                 }
-                    else if (Dir == Direction.E || Dir == Direction.SE || Dir == Direction.NE)
+                else if (Dir.X > 0)
                 {
                     spriteY = spriteRightHeight;
                     if (spriteX < spriteRightStart + spriteSpace * 8)
@@ -209,7 +221,7 @@ namespace Escape
             }
         }
 
-        public void Move(Controls controls, Room currentRoom)
+        public void Move(Controls controls, Room currentRoom, GameTime gt)
         {
             if (PlayerControl)
             {
@@ -256,7 +268,7 @@ namespace Escape
             }
             else
             {
-                AIMove();
+                AIMove(gt);
             }
 
             XVelocity = XVelocity * (1 - friction) + xAccel * .10;
@@ -267,7 +279,6 @@ namespace Escape
 
             if (!CheckCollision(currentRoom))
             {
-                UpdateDirection();
                 Position += new Vector2(MovedX, 0);
                 Position += new Vector2(0, MovedY);
             }
@@ -304,54 +315,19 @@ namespace Escape
             this.yAccel = 0;
         }
 
-        private void AIMove()
+        private void AIMove(GameTime gt)
         {
-            // TODO: Better RNG
-            Random rand = new Random();
-            int num = rand.Next(75);
-            int num2 = rand.Next(75);
+            this.AITime += (int) gt.ElapsedGameTime.TotalMilliseconds;
 
-            if (num == num2)
+            if (this.AITime > this.AIInterval)
             {
                 AIDirection = GetRandomDirection();
+                AITime = 0;
+                AIInterval = rand.Next(AI_SWITCH_TIME);
             }
 
-            switch (AIDirection)
-            {
-                case Direction.N:
-                    xAccel = 0;
-                    yAccel = -speed * 2;
-                    break;
-                case Direction.NE:
-                    xAccel = speed * 2;
-                    yAccel = -speed * 2;
-                    break;
-                case Direction.E:
-                    xAccel = speed * 2;
-                    yAccel = 0;
-                    break;
-                case Direction.SE:
-                    xAccel = speed * 2;
-                    yAccel = speed * 2;
-                    break;
-                case Direction.S:
-                    xAccel = 0;
-                    yAccel = speed * 2;
-                    break;
-                case Direction.SW:
-                    xAccel = -speed * 2;
-                    yAccel = speed * 2;
-                    break;
-                case Direction.W:
-                    xAccel = -speed * 2;
-                    yAccel = 0;
-                    break;
-                case Direction.NW:
-                    xAccel = -speed * 2;
-                    yAccel = -speed * 2;
-                    break;
-
-            }
+            xAccel = speed * 2 * AIDirection.X;
+            yAccel = speed * 2 * AIDirection.Y;
            
         }
 
@@ -488,51 +464,6 @@ namespace Escape
             room.Elsa(Position);
         }
 
-        private void UpdateDirection()
-        {
-            if (MovedX > 0)
-            {
-                if (MovedY > 0)
-                {
-                    Dir = Direction.SE;
-                }
-                else if (MovedY < 0)
-                {
-                    Dir = Direction.NE;
-                }
-                else
-                {
-                    Dir = Direction.E;
-                }
-            }
-            else if (MovedX < 0)
-            {
-                if (MovedY > 0)
-                {
-                    Dir = Direction.SW;
-                }
-                else if (MovedY < 0)
-                {
-                    Dir = Direction.NW;
-                }
-                else
-                {
-                    Dir = Direction.W;
-                }
-            }
-            else
-            {
-                if (MovedY < 0)
-                {
-                    Dir = Direction.N;
-                }
-                else if (MovedY > 0)
-                {
-                    Dir = Direction.S;
-                }
-            }
-        }
-
         private bool IsMoving()
         {
             if (xAccel == 0 && yAccel == 0)
@@ -548,31 +479,9 @@ namespace Escape
             currentRoom.AddFireBall(Position, Dir);
         }
 
-        private Direction GetRandomDirection()
+        private Vector2 GetRandomDirection()
         {
-            int i = new Random().Next(8);
-
-            switch (i)
-            {
-                case 0:
-                    return Direction.N;
-                case 1:
-                    return Direction.NE;
-                case 2:
-                    return Direction.E;
-                case 3:
-                    return Direction.SE;
-                case 4:
-                    return Direction.S;
-                case 5:
-                    return Direction.SW;
-                case 6:
-                    return Direction.W;
-                case 7:
-                    return Direction.NW;
-            }
-
-            return Direction.N;
+            return new Vector2((float)rand.NextDouble() * 2 - 1, (float)rand.NextDouble() * 2 - 1);
         }
 
         private void ChangeAIDirection()

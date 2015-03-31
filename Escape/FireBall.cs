@@ -11,14 +11,14 @@ namespace Escape
         public Texture2D Texture { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
-        public Direction Dir { get; set; }
+        public Vector2 Dir { get; set; }
         public int Speed { get; set; }
         public Rectangle HitBox
         {
             get { return new Rectangle((int)Position.X, (int)Position.Y, Width, Height); }
         }
 
-		public FireBall (Vector2 position, Direction dir)
+		public FireBall (Vector2 position, Vector2 dir)
 		{
             Position = new Vector2(position.X, position.Y);
             Dir = dir;
@@ -29,33 +29,7 @@ namespace Escape
 
         override public void Update(GameTime gt)
         {
-            switch (Dir) 
-            {
-                case Direction.N:
-                    Position += new Vector2(0, -Speed);
-                    break;
-                case Direction.NE:
-                    Position += new Vector2(Speed, -Speed);
-                    break;
-                case Direction.E:
-                    Position += new Vector2(Speed, 0);
-                    break;
-                case Direction.SE:
-                    Position += new Vector2(Speed, Speed);
-                    break;
-                case Direction.S:
-                    Position += new Vector2(0, Speed);
-                    break;
-                case Direction.SW:
-                    Position += new Vector2(-Speed, Speed);
-                    break;
-                case Direction.W:
-                    Position += new Vector2(-Speed, 0);
-                    break;
-                case Direction.NW:
-                    Position += new Vector2(-Speed, -Speed);
-                    break;
-            }
+            Position += new Vector2(Speed * Dir.X, Speed * Dir.Y);
 
         }
 
