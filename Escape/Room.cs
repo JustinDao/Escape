@@ -11,6 +11,8 @@ namespace Escape
 {
     class Room
     {
+        MainGame mg;
+
         ContentManager contentManager;
 
         public Vector2 Position { get; set; }
@@ -25,15 +27,69 @@ namespace Escape
         public List<Enemy> Enemies { get; set; }
         public List<Item> Items { get; set; }
 
-        public Room LeftRoom { get; set; }
-        public Room RightRoom { get; set; }
-        public Room UpRoom { get; set; }
-        public Room DownRoom { get; set; }
+        public Dictionary<Direction, Room> Neighbors { get; set; }
+
+        public Room LeftRoom
+        { 
+            get
+            {
+                return this.Neighbors[Direction.LEFT];
+            }
+            set
+            {
+                this.Neighbors.Add(Direction.LEFT, value);
+                this.Doors.Add(Direction.LEFT, new Door(0, 11 * 25, true));
+
+            }
+        }
+
+        public Room RightRoom
+        { 
+            get
+            {
+                return this.Neighbors[Direction.RIGHT];
+            }
+            set
+            {
+                this.Neighbors.Add(Direction.RIGHT, value);
+                this.Doors.Add(Direction.RIGHT, new Door(this.mg.GAME_WIDTH - 25, 11 * 25, true));
+
+            }
+        }
+
+        public Room UpRoom
+        {
+            get
+            {
+                return this.Neighbors[Direction.UP];
+            }
+            set
+            {
+                this.Neighbors.Add(Direction.UP, value);
+                this.Doors.Add(Direction.UP, new Door(19 * 25, 0, false));
+
+            }
+        }
+
+        public Room DownRoom
+        {
+            get
+            {
+                return this.Neighbors[Direction.DOWN];
+            }
+            set
+            {
+                this.Neighbors.Add(Direction.DOWN, value);
+                this.Doors.Add(Direction.DOWN, new Door(19 * 25, this.mg.GAME_HEIGHT - 25, false));
+
+            }
+        }
 
         public Dictionary<Direction, Door> Doors { get; set; }
 
         public Room(MainGame mg)
         {
+            this.mg = mg;
             this.Width = mg.GAME_WIDTH;
             this.Height = mg.GAME_HEIGHT;
 
@@ -77,11 +133,12 @@ namespace Escape
             }
 
             Doors = new Dictionary<Direction, Door>();
+            Neighbors = new Dictionary<Direction, Room>();
 
-            Doors.Add(Direction.LEFT, new Door(0, 11 * 25, true));
-            Doors.Add(Direction.RIGHT, new Door(mg.GAME_WIDTH - 25, 11 * 25, true));
-            Doors.Add(Direction.UP, new Door(19 * 25, 0, false));
-            Doors.Add(Direction.DOWN, new Door(19 * 25, mg.GAME_HEIGHT - 25, false));
+            //Doors.Add(Direction.LEFT, new Door(0, 11 * 25, true));
+            //Doors.Add(Direction.RIGHT, new Door(mg.GAME_WIDTH - 25, 11 * 25, true));
+            //Doors.Add(Direction.UP, new Door(19 * 25, 0, false));
+            //Doors.Add(Direction.DOWN, new Door(19 * 25, mg.GAME_HEIGHT - 25, false));
 
             Obstacles.Add(new Hole(300, 300, 0));
             Obstacles.Add(new Hole(400, 400, 1));
@@ -103,6 +160,7 @@ namespace Escape
 
         public Room(MainGame mg, String csvName)
         {
+            this.mg = mg;
             this.Width = mg.GAME_WIDTH;
             this.Height = mg.GAME_HEIGHT;
 
@@ -111,6 +169,7 @@ namespace Escape
             Obstacles = new List<Obstacle>();
             Enemies = new List<Enemy>();
             Doors = new Dictionary<Direction, Door>();
+            Neighbors = new Dictionary<Direction, Room>();
 
             //http://stackoverflow.com/questions/25331714
             var path = @"Content\Rooms\" + csvName;
@@ -276,22 +335,22 @@ namespace Escape
 
         public Door LeftDoor()
         {
-            return Doors[Direction.LEFT];
+            return Doors.ContainsKey(Direction.LEFT) ? Doors[Direction.LEFT] : null;
         }
 
         public Door RightDoor()
         {
-            return Doors[Direction.RIGHT];
+            return Doors.ContainsKey(Direction.RIGHT) ? Doors[Direction.RIGHT] : null;
         }
 
         public Door UpDoor()
         {
-            return Doors[Direction.UP];
+            return Doors.ContainsKey(Direction.UP) ? Doors[Direction.UP] : null;
         }
 
         public Door DownDoor()
         {
-            return Doors[Direction.DOWN];
+            return Doors.ContainsKey(Direction.DOWN) ? Doors[Direction.DOWN] : null;
         }
 
         private void checkSnowflakeEnemyCollisions()

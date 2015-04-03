@@ -260,40 +260,36 @@ namespace Escape
 
             if (door != null)
             {
-                if (door.Equals(currentRoom.LeftDoor()))
+                if(!StandingOnDoor)
                 {
-                    Castle.MoveLeft();
-                    this.FlipPosition(currentRoom);
+                    if (door.Equals(currentRoom.LeftDoor()))
+                    {
+                        Castle.MoveLeft();
+                        this.FlipPosition(currentRoom);
+                    }
+                    else if (door.Equals(currentRoom.RightDoor()))
+                    {
+                        Castle.MoveRight();
+                        this.FlipPosition(currentRoom);
+                    }
+                    else if (door.Equals(currentRoom.UpDoor()))
+                    {
+                        Castle.MoveUp();
+                        this.FlipPosition(currentRoom);
+                    }
+                    else if (door.Equals(currentRoom.DownDoor()))
+                    {
+                        Castle.MoveDown();
+                        this.FlipPosition(currentRoom);
+                    }
                 }
-                else if (door.Equals(currentRoom.RightDoor()))
-                {
-                    Castle.MoveRight();
-                    this.FlipPosition(currentRoom);
-                }
-                else if (door.Equals(currentRoom.UpDoor()))
-                {
-                    Castle.MoveUp();
-                    this.FlipPosition(currentRoom);
-                }
-                else if (door.Equals(currentRoom.DownDoor()))
-                {
-                    Castle.MoveDown();
-                    this.FlipPosition(currentRoom);
-                }
-            }
 
-            //if (!(chkG is Door))
-            //{
-            //    StandingOnDoor = false;
-            //}
-            //else
-            //{
-            //    if (!StandingOnDoor)
-            //    {
-            //        Position = FlipPosition(currentRoom);
-            //    }
-            //    StandingOnDoor = true;
-            //}
+                StandingOnDoor = true;                
+            }
+            else
+            {
+                StandingOnDoor = false;
+            }
 
             CheckBoundaries();
             CheckPowerUps(currentRoom);
