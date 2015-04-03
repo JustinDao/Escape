@@ -21,6 +21,8 @@ namespace Escape
         SpriteBatch spriteBatch;
         Screen currentScreen;
         Castle castle;
+        Start start;
+        Pause pause;
         MiniGame miniGame;
         Controls controls;
         SubmissionBar submissionBar;
@@ -46,9 +48,11 @@ namespace Escape
         /// </summary>
         protected override void Initialize()
         {
+            start = new Start(this, GraphicsDevice);
             castle = new Castle(this);
+            pause = new Pause(this, GraphicsDevice);
             miniGame = new MiniGame(this, GraphicsDevice);
-            currentScreen = castle;
+            currentScreen = start;
 
             submissionBar = new SubmissionBar(50, 50, graphics);
             base.Initialize();
@@ -66,7 +70,9 @@ namespace Escape
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            start.LoadContent(this.Content);
             castle.LoadContent(this.Content);
+            pause.LoadContent(this.Content);
             miniGame.LoadContent(this.Content);
         }
 
@@ -95,6 +101,17 @@ namespace Escape
             // TODO: Add your update logic here
             //Up, down, left, right affect the coordinates of the sprite
 
+            if (currentScreen == start)
+            {
+                start.Update(controls);
+            }
+            else if(currentScreen == pause)
+            {
+                pause.Update(controls);
+            }
+            else if (currentScreen == castle)
+            {
+                
             castle.Update(controls, gameTime);
 
             if (!miniGame.Active && !castle.Player.PlayerControl)
@@ -109,6 +126,7 @@ namespace Escape
             {
                 miniGame.Update(controls, gameTime, castle.Player);
             }            
+            }      
 
             base.Update(gameTime);
         }
@@ -124,9 +142,16 @@ namespace Escape
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
+            if (currentScreen == pause)
+            {
+                castle.Draw(spriteBatch);
+            }
             currentScreen.Draw(spriteBatch);
 
+            if (currentScreen == castle) 
+            {
             submissionBar.Draw(spriteBatch);
+            }
 
             if (miniGame.Active)
             {
@@ -136,6 +161,15 @@ namespace Escape
             spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        public void SwitchToCastle()
+        {
+            currentScreen = castle;
+        }
+        public void SwitchToPause()
+        {
+            currentScreen = pause;
         }
     }
 }
