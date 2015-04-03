@@ -17,10 +17,20 @@ namespace Escape
 		public int Height;
 		public Rectangle HitBox;
 
-		public Door(int x, int y)
+		public Door(int x, int y, bool side)
 		{
-			this.Width = 25;
-			this.Height = 25;
+            if (side)
+            {
+                this.Width = 25;
+                this.Height = 50;
+            }
+            else
+            {
+                this.Width = 50;
+                this.Height = 25;
+            }
+
+			
 			this.XPosition = x;
 			this.YPosition = y;
 			HitBox = new Rectangle(XPosition, YPosition, Width, Height);

@@ -13,6 +13,9 @@ namespace Escape
 
     class Player : SpriteSheet
     {
+        // Reference to Castle
+        public Castle Castle { get; set; }
+
         // Powerup information
         public bool HasFire = false;
         public bool HasIce = false;
@@ -56,7 +59,7 @@ namespace Escape
         public double YVelocity;
         public int MovedX;
         public int MovedY;
-        
+
         // HitBox for the Player
         public Rectangle HitBox
         {
@@ -78,21 +81,22 @@ namespace Escape
         public bool PlayerControl = true;
 
         // The Direction the Player is currently moving in or looking towards
-        public Vector2 Dir 
+        public Vector2 Dir
         {
             get
             {
-                float length = (float) Math.Sqrt(MovedX * MovedX + MovedY * MovedY);
+                float length = (float)Math.Sqrt(MovedX * MovedX + MovedY * MovedY);
                 return new Vector2(MovedX / length, MovedY / length);
             }
         }
 
-		// Bool to hold if player is standing on an obstacle?
-		public bool StandingOnDoor = false;
+        // Bool to hold if player is standing on an obstacle?
+        public bool StandingOnDoor = false;
 
-        public Player(MainGame game, int x, int y)
+        public Player(MainGame game, Castle castle, int x, int y)
         {
             this.Game = game;
+            this.Castle = castle;
             this.Submission = MAX_SUBMISSION;
 
             this.Position = new Vector2(50, 50);
@@ -126,7 +130,7 @@ namespace Escape
         public void Draw(SpriteBatch sb)
         {
             sb.Draw(spriteSheet,
-                    new Rectangle((int) Position.X, (int) Position.Y, PlayerWidth, PlayerHeight),
+                    new Rectangle((int)Position.X, (int)Position.Y, PlayerWidth, PlayerHeight),
                     new Rectangle(spriteX, spriteY, spriteWidth, spriteHeight),
                     Color.White);
         }
@@ -189,30 +193,30 @@ namespace Escape
                 {
                     if (Dir.X < 0)
                     {
-                    spriteY = spriteLeftHeight;
-                    if (spriteX < spriteLeftStart + spriteSpace * 7)
-                    {
-                        spriteX += spriteSpace;
+                        spriteY = spriteLeftHeight;
+                        if (spriteX < spriteLeftStart + spriteSpace * 7)
+                        {
+                            spriteX += spriteSpace;
+                        }
+                        else
+                        {
+                            spriteX = spriteLeftStart;
+                        }
                     }
-                    else
+                    else if (Dir.X > 0)
                     {
-                        spriteX = spriteLeftStart;
+                        spriteY = spriteRightHeight;
+                        if (spriteX < spriteRightStart + spriteSpace * 8)
+                        {
+                            spriteX += spriteSpace;
+                        }
+                        else
+                        {
+                            spriteX = spriteRightStart;
+                        }
                     }
                 }
-                else if (Dir.X > 0)
-                {
-                    spriteY = spriteRightHeight;
-                    if (spriteX < spriteRightStart + spriteSpace * 8)
-                    {
-                        spriteX += spriteSpace;
-                    }
-                    else
-                    {
-                        spriteX = spriteRightStart;
-                    }
-                }
-                }
-                
+
                 spriteTime = 0;
             }
             else
@@ -225,44 +229,6 @@ namespace Escape
         {
             if (PlayerControl)
             {
-                // Sideways Acceleration
-                //if (controls.onPress(Keys.Right, Buttons.DPadRight))
-                //{
-                //    xAccel += speed;
-                //}
-                //else if (controls.onRelease(Keys.Right, Buttons.DPadRight))
-                //{
-                //    xAccel -= speed;
-                //}
-
-                //if (controls.onPress(Keys.Left, Buttons.DPadLeft))
-                //{
-                //    xAccel -= speed;
-                //}
-                //else if (controls.onRelease(Keys.Left, Buttons.DPadLeft))
-                //{
-                //    xAccel += speed;
-                //}
-
-                //// Y movement
-                //if (controls.onPress(Keys.Down, Buttons.DPadDown))
-                //{
-                //    yAccel += speed;
-                //}
-                //else if (controls.onRelease(Keys.Down, Buttons.DPadDown))
-                //{
-                //    yAccel -= speed;
-                //}
-
-                //if (controls.onPress(Keys.Up, Buttons.DPadUp))
-                //{
-                //    yAccel -= speed;
-                //}
-                //else if (controls.onRelease(Keys.Up, Buttons.DPadUp))
-                //{
-                //    yAccel += speed;
-                //}
-
                 xAccel = speed * controls.gp.ThumbSticks.Left.X;
                 yAccel = -speed * controls.gp.ThumbSticks.Left.Y;
             }
@@ -283,25 +249,51 @@ namespace Escape
                 Position += new Vector2(0, MovedY);
             }
 
-			int chkG = CheckGround(currentRoom);
-			if (chkG == 1) 
-			{
-				Position = new Vector2(200,200);
+            Obstacle chkG = CheckGround(currentRoom);
+            if (chkG is Hole)
+            {
+                Position = new Vector2(200, 200);
                 ChangeAIDirection();
-			}
+            }
 
-			if (chkG != 2) 
-			{
-				StandingOnDoor = false;
-			}
-			if (chkG == 2) 
-			{
-				if (!StandingOnDoor) 
-				{
-					Position = FlipPosition(currentRoom);
-				}
-				StandingOnDoor = true;
-			}
+            Door door = CheckDoors(currentRoom);
+
+            if (door != null)
+            {
+                if (door.Equals(currentRoom.LeftDoor))
+                {
+                    Castle.MoveLeft();
+                    this.FlipPosition(currentRoom);
+                }
+                else if (door.Equals(currentRoom.RightDoor))
+                {
+                    Castle.MoveRight();
+                    this.FlipPosition(currentRoom);
+                }
+                else if (door.Equals(currentRoom.UpDoor))
+                {
+                    Castle.MoveUp();
+                    this.FlipPosition(currentRoom);
+                }
+                else if (door.Equals(currentRoom.DownDoor))
+                {
+                    Castle.MoveDown();
+                    this.FlipPosition(currentRoom);
+                }
+            }
+
+            //if (!(chkG is Door))
+            //{
+            //    StandingOnDoor = false;
+            //}
+            //else
+            //{
+            //    if (!StandingOnDoor)
+            //    {
+            //        Position = FlipPosition(currentRoom);
+            //    }
+            //    StandingOnDoor = true;
+            //}
 
             CheckBoundaries();
             CheckPowerUps(currentRoom);
@@ -317,7 +309,7 @@ namespace Escape
 
         private void AIMove(GameTime gt)
         {
-            this.AITime += (int) gt.ElapsedGameTime.TotalMilliseconds;
+            this.AITime += (int)gt.ElapsedGameTime.TotalMilliseconds;
 
             if (this.AITime > this.AIInterval)
             {
@@ -328,7 +320,7 @@ namespace Escape
 
             xAccel = speed * 2 * AIDirection.X;
             yAccel = speed * 2 * AIDirection.Y;
-           
+
         }
 
         private void CheckBoundaries()
@@ -359,8 +351,7 @@ namespace Escape
             Vector2 tempPos = new Vector2(this.Position.X, this.Position.Y);
             tempPos += new Vector2(MovedX, 0);
             tempPos += new Vector2(0, MovedY);
-//			(int) Position.X, (int) Position.Y + (this.PlayerHeight / 4), this.PlayerWidth, 3*(this.PlayerHeight / 4)
-			Rectangle tempBox = new Rectangle((int)tempPos.X, (int)tempPos.Y + (this.PlayerHeight / 2), this.PlayerWidth, this.PlayerHeight / 2);
+            Rectangle tempBox = new Rectangle((int)tempPos.X, (int)tempPos.Y + (this.PlayerHeight / 2), this.PlayerWidth, this.PlayerHeight / 2);
 
             foreach (Wall w in currentRoom.Walls)
             {
@@ -374,74 +365,93 @@ namespace Escape
             return false;
         }
 
-		private int CheckGround(Room currentRoom)
-		{
-			int tempX = (int)this.Position.X + (this.PlayerWidth / 4);
-			int tempY = (int)this.Position.Y + 3*(this.PlayerHeight / 4);
-			int tempW = this.PlayerWidth / 2;
-			int tempH = this.PlayerHeight / 4;
-			Rectangle tempBox = new Rectangle(tempX, tempY, tempW, tempH);
+        private Obstacle CheckGround(Room currentRoom)
+        {
+            int tempX = (int)this.Position.X + (this.PlayerWidth / 4);
+            int tempY = (int)this.Position.Y + 3 * (this.PlayerHeight / 4);
+            int tempW = this.PlayerWidth / 2;
+            int tempH = this.PlayerHeight / 4;
+            Rectangle tempBox = new Rectangle(tempX, tempY, tempW, tempH);
 
-			foreach (Obstacle o in currentRoom.Obstacles) 
-			{
+            foreach (Obstacle o in currentRoom.Obstacles)
+            {
                 if (o is Hole)
                 {
                     Hole h = (Hole)o;
-                    
+
                     if (h.HitBox.Intersects(tempBox))
                     {
-						return 1;
-					}
-				}
-
-				if (o is Door) 
-				{
-					Door d = (Door)o;
-
-					if (d.HitBox.Intersects(tempBox)) 
-					{
-						return 2;
-					}
-				}
-
+                        return h;
                     }
-
-			return 0;
                 }
-				
-		private Vector2 FlipPosition(Room currentRoom) 
-		{
-			int x = (int)this.Position.X;
-			int y = (int)this.Position.Y;
+            }
 
-			int wid = currentRoom.Width;
-			int hei = currentRoom.Height;
+            return null;
+        }
 
-			if (x > (wid / 2) - 50 && x < (wid / 2) + 50) 
-			{
-				if (y < hei / 2) 
-				{
-					y = hei;
-				} 
-				else 
-				{
-					y = 0;
-				}
-			}
-			if (y > (hei / 2) - 50 && y < (hei / 2) + 50) 
-			{
-				if (x < wid / 2) 
-				{
-					x = wid;
-				} 
-				else 
-				{
-					x = 0;
-				}
-			}
+        private Door CheckDoors(Room currentRoom)
+        {
+            int tempX = (int)this.Position.X + (this.PlayerWidth / 4);
+            int tempY = (int)this.Position.Y + 3 * (this.PlayerHeight / 4);
+            int tempW = this.PlayerWidth / 2;
+            int tempH = this.PlayerHeight / 4;
+            Rectangle tempBox = new Rectangle(tempX, tempY, tempW, tempH);
 
-			return new Vector2(x, y);
-		}
+            List<Door> doors = new List<Door>();
+            doors.Add(currentRoom.LeftDoor);
+            doors.Add(currentRoom.RightDoor);
+            doors.Add(currentRoom.UpDoor);
+            doors.Add(currentRoom.DownDoor);
+
+            foreach(Door d in doors)
+            {
+                if (d == null)
+                {
+                    return null;
+                }
+
+                if (d.HitBox.Intersects(tempBox))
+                {
+                    return d;
+                }  
+            }             
+
+            return null;
+        }
+
+        private void FlipPosition(Room currentRoom)
+        {
+            int x = (int)this.Position.X;
+            int y = (int)this.Position.Y;
+
+            int wid = currentRoom.Width;
+            int hei = currentRoom.Height;
+
+            if (x > (wid / 2) - 50 && x < (wid / 2) + 50)
+            {
+                if (y < hei / 2)
+                {
+                    y = hei;
+                }
+                else
+                {
+                    y = 0;
+                }
+            }
+            if (y > (hei / 2) - 50 && y < (hei / 2) + 50)
+            {
+                if (x < wid / 2)
+                {
+                    x = wid;
+                }
+                else
+                {
+                    x = 0;
+                }
+            }
+
+            this.Position = new Vector2(x, y);
+        }
 
         private void Action(Controls controls, GameTime gameTime, Room currentRoom)
         {
@@ -461,7 +471,7 @@ namespace Escape
 
         private void letItGo(Room room)
         {
-            room.Elsa(Position);
+            room.AddSnowflakes(Position);
         }
 
         private bool IsMoving()
@@ -497,7 +507,7 @@ namespace Escape
         {
             List<Obstacle> toRemove = new List<Obstacle>();
 
-            foreach(Obstacle o in currentRoom.Obstacles)
+            foreach (Obstacle o in currentRoom.Obstacles)
             {
                 if (o is PowerUp)
                 {
@@ -509,7 +519,7 @@ namespace Escape
                             this.HasFire = true;
                             toRemove.Add(o);
                         }
-                        
+
                         if (p.IsIce)
                         {
                             this.HasIce = true;

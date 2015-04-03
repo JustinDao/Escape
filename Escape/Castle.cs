@@ -22,12 +22,20 @@ namespace Escape
         {
             this.mg = mg;
 
-            Player = new Player(mg, 50, 50);
+            Player = new Player(mg, this, 50, 50);
 
+            InitializeRooms();
+        }
+
+        public void InitializeRooms()
+        {
             Rooms = new List<Room>();
+            Rooms.Add(new Room(this.mg));
 
-            Rooms.Add(new Room(mg));
             CurrentRoom = Rooms.First<Room>();
+            CurrentRoom.LeftRoom = new Room(mg, "RoomTemplate.csv");
+            CurrentRoom.LeftRoom.RightRoom = CurrentRoom;
+            Rooms.Add(CurrentRoom.LeftRoom);
         }
 
         public void Update(Controls controls, GameTime gameTime)
@@ -40,13 +48,29 @@ namespace Escape
             }
         }
 
-        override public void Draw(SpriteBatch sb)
+        public void MoveLeft()
         {
-            foreach (Room r in Rooms)
-            {
-                r.Draw(sb);
-            }
+            this.CurrentRoom = this.CurrentRoom.LeftRoom;
+        }
 
+        public void MoveRight()
+        {
+            this.CurrentRoom = this.CurrentRoom.RightRoom;
+        }
+
+        public void MoveUp()
+        {
+            this.CurrentRoom = this.CurrentRoom.UpRoom;
+        }
+
+        public void MoveDown()
+        {
+            this.CurrentRoom = this.CurrentRoom.DownRoom;
+        }
+
+        public override void Draw(SpriteBatch sb)
+        {
+            CurrentRoom.Draw(sb);
             Player.Draw(sb);
         }
 
