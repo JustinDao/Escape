@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +41,10 @@ namespace Escape
 
         public void Update(Controls controls, GameTime gameTime)
         {
+            if (controls.onPress(Keys.Space, Buttons.Start))
+            {
+                mg.SwitchToPause();
+            }
             Player.Update(controls, gameTime, CurrentRoom);
 
             foreach (Room r in Rooms)

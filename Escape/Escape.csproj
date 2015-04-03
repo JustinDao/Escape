@@ -48,6 +48,7 @@
     <Compile Include="MainGame.cs" />
     <Compile Include="MiniGame.cs" />
     <Compile Include="Obstacle.cs" />
+    <Compile Include="Pause.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="PowerUp.cs" />
     <Compile Include="Program.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="Snowflake.cs" />
     <Compile Include="Song.cs" />
     <Compile Include="SpriteSheet.cs" />
+    <Compile Include="Start.cs" />
     <Compile Include="SubmissionBar.cs" />
     <Compile Include="Wall.cs" />
   </ItemGroup>
