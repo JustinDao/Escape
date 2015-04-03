@@ -35,6 +35,7 @@ namespace Escape
             CurrentRoom = Rooms.First<Room>();
             CurrentRoom.LeftRoom = new Room(mg, "RoomTemplate.csv");
             CurrentRoom.LeftRoom.RightRoom = CurrentRoom;
+
             Rooms.Add(CurrentRoom.LeftRoom);
         }
 
@@ -44,7 +45,7 @@ namespace Escape
 
             foreach (Room r in Rooms)
             {
-                r.Update(gameTime);
+                r.Update(gameTime, this);
             }
         }
 
@@ -77,11 +78,6 @@ namespace Escape
         public override void LoadContent(ContentManager cm)
         {
             Player.LoadContent(cm);
-
-            foreach (Room r in Rooms)
-            {
-                r.LoadContent(cm);
-            }
 
         }
 

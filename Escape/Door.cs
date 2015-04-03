@@ -8,17 +8,24 @@ using Microsoft.Xna.Framework.Storage;
 
 namespace Escape
 {
-	class Door : Obstacle
+	class Door : Entity
 	{
 		public Texture2D sprite;
 		public int XPosition;
 		public int YPosition;
 		public int Width;
 		public int Height;
-		public Rectangle HitBox;
+		public override Rectangle HitBox
+        {
+            get
+            {
+                return new Rectangle(XPosition, YPosition, Width, Height);
+            }
+        }
 
-		public Door(int x, int y, bool side)
+		public Door(ContentManager cm, int x, int y, bool side)
 		{
+            sprite = cm.Load<Texture2D>("null.png");
             if (side)
             {
                 this.Width = 25;
@@ -33,12 +40,6 @@ namespace Escape
 			
 			this.XPosition = x;
 			this.YPosition = y;
-			HitBox = new Rectangle(XPosition, YPosition, Width, Height);
-		}
-
-		override public void LoadContent(ContentManager content)
-		{
-			sprite = content.Load<Texture2D>("null.png");
 		}
 
 		override public void Draw(SpriteBatch sb)
@@ -48,7 +49,7 @@ namespace Escape
 				Color.White);
 		}
 
-		public override void Update(GameTime gt)
+		public override void Update(GameTime gt, Screen s)
 		{
 			throw new NotImplementedException();
 		}

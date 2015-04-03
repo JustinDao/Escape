@@ -8,39 +8,16 @@ using Microsoft.Xna.Framework.Storage;
 
 namespace Escape
 {
-    class Wall : Obstacle
+    class Wall : SpriteEntity
     {
-        public Texture2D sprite;
-        public int XPosition;
-        public int YPosition;
-        public int Width;
-        public int Height;
-        public Rectangle HitBox;
-
-        public Wall(int x, int y)
+        public Wall(ContentManager cm, int x, int y) : base(cm, "wall_50_50.png")
         {
-            this.Width = 25;
-            this.Height = 25;
-            this.XPosition = x;
-            this.YPosition = y;
-            HitBox = new Rectangle(XPosition, YPosition, Width, Height);
+            Scale = 0.5f;
+            Position = new Vector2(x, y);
         }
-
-        override public void LoadContent(ContentManager content)
+        public override void Update(GameTime gt, Screen s)
         {
-            sprite = content.Load<Texture2D>("wall.png");
-        }
-
-        override public void Draw(SpriteBatch sb)
-        {
-            sb.Draw(sprite,
-                    new Rectangle(XPosition, YPosition, Width, Height),
-                    Color.White);
-        }
-
-        public override void Update(GameTime gt)
-        {
-            throw new NotImplementedException();
+            throw new NotImplementedException("No Update() for Wall");
         }
     }
 }

@@ -65,6 +65,7 @@ namespace Escape
 
         public Enemy(MainGame game, int x, int y)
         {
+            LoadContent(game.Content); // TODO eeuadhsahdfkjsahgdf :(
             this.Game = game;
 
             this.Position = new Vector2(200, 200);
@@ -250,7 +251,7 @@ namespace Escape
             int tempH = this.EnemyHeight / 4;
             Rectangle tempBox = new Rectangle(tempX, tempY, tempW, tempH);
 
-            foreach (Obstacle o in currentRoom.Obstacles)
+            foreach (Entity o in currentRoom.Obstacles)
             {
                 if (o is Hole)
                 {

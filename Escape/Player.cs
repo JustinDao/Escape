@@ -95,6 +95,7 @@ namespace Escape
 
         public Player(MainGame game, Castle castle, int x, int y)
         {
+            LoadContent(game.Content);
             this.Game = game;
             this.Castle = castle;
             this.Submission = MAX_SUBMISSION;
@@ -249,7 +250,7 @@ namespace Escape
                 Position += new Vector2(0, MovedY);
             }
 
-            Obstacle chkG = CheckGround(currentRoom);
+            Entity chkG = CheckGround(currentRoom);
             if (chkG is Hole)
             {
                 Position = new Vector2(200, 200);
@@ -361,7 +362,7 @@ namespace Escape
             return false;
         }
 
-        private Obstacle CheckGround(Room currentRoom)
+        private Entity CheckGround(Room currentRoom)
         {
             int tempX = (int)this.Position.X + (this.PlayerWidth / 4);
             int tempY = (int)this.Position.Y + 3 * (this.PlayerHeight / 4);
@@ -369,7 +370,7 @@ namespace Escape
             int tempH = this.PlayerHeight / 4;
             Rectangle tempBox = new Rectangle(tempX, tempY, tempW, tempH);
 
-            foreach (Obstacle o in currentRoom.Obstacles)
+            foreach (Entity o in currentRoom.Obstacles)
             {
                 if (o is Hole)
                 {
@@ -495,9 +496,9 @@ namespace Escape
 
         private void CheckPowerUps(Room currentRoom)
         {
-            List<Obstacle> toRemove = new List<Obstacle>();
+            List<Entity> toRemove = new List<Entity>();
 
-            foreach (Obstacle o in currentRoom.Obstacles)
+            foreach (Entity o in currentRoom.Obstacles)
             {
                 if (o is PowerUp)
                 {

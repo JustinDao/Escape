@@ -8,34 +8,16 @@ using System.Text;
 
 namespace Escape
 {
-    class Floor : Obstacle
+    class Floor : SpriteEntity
     {
-        public Vector2 Position { get; set; }
-        public Texture2D FloorTexture { get; set; }
-        public int Width { get; set; }
-        public int Height { get; set; }
-
-        public Floor(int x, int y)
+        public Floor(ContentManager cm, int x, int y) : base(cm, "tile_50_50.png")
         {
-            Width = 25;
-            Height = 25;
+            Scale = 0.5f;
             Position = new Vector2(x, y);
         }
-
-        override public void Draw(SpriteBatch sb)
+        public override void Update(GameTime gt, Screen s)
         {
-            sb.Draw(FloorTexture, new Rectangle((int)Position.X, (int)Position.Y, Width, Height), Color.White);
+            throw new NotImplementedException("No Update() for Floor");
         }
-
-        override public void LoadContent(ContentManager cm)
-        {
-            FloorTexture = cm.Load<Texture2D>("tile_50_50.png");
-        }
-
-        override public void Update(GameTime gt)
-        {
-            throw new NotImplementedException();
-        }
-
     }
 }

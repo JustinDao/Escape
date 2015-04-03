@@ -124,7 +124,7 @@ namespace Escape
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
-            castle.Draw(spriteBatch);
+            currentScreen.Draw(spriteBatch);
 
             submissionBar.Draw(spriteBatch);
 

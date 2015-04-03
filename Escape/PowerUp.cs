@@ -8,52 +8,20 @@ using System.Text;
 
 namespace Escape
 {
-    class PowerUp : Obstacle
+    class PowerUp : SpriteEntity
     {
-        public string SpriteName;
-        public float Scale = 0.5f;
-        public Vector2 Position;
-        public Texture2D Texture;
         public bool IsFire;
         public bool IsIce;
-
-        public Rectangle HitBox
+        public PowerUp(ContentManager cm, Vector2 pos, string spriteName, bool isFire, bool isIce)
+            : base(cm, spriteName)
         {
-            get
-            {
-                return new Rectangle(
-                    (int)Position.X,
-                    (int)Position.Y,
-                    (int)(Texture.Width * Scale),
-                    (int)(Texture.Height * Scale)
-                );
-            }
+            Position = pos;
+            IsFire = isFire;
+            IsIce = isIce;
         }
-
-        public PowerUp(Vector2 position, string spriteName, bool isFire, bool isIce)
+        public override void Update(GameTime gt, Screen s)
         {
-            Position = position;
-            SpriteName = spriteName;
-            this.IsFire = isFire;
-            this.IsIce = isIce;
-        }
-
-        public override void Draw(SpriteBatch sb)
-        {
-            Rectangle r = new Rectangle(
-                (int)Position.X,
-                (int)Position.Y,
-                (int)(Texture.Width * Scale),
-                (int)(Texture.Height * Scale)
-            );
-            sb.Draw(Texture, r, Color.White);
-        }
-        public override void Update(GameTime gt)
-        {
-        }
-        public override void LoadContent(ContentManager cm)
-        {
-            Texture = cm.Load<Texture2D>(SpriteName);
+            throw new NotImplementedException("No Update() for PowerUp");
         }
     }
 }

@@ -8,42 +8,16 @@ using Microsoft.Xna.Framework.Storage;
 
 namespace Escape
 {
-	class Hole : Obstacle
-	{
-		public Texture2D sprite;
-		public int XPosition;
-		public int YPosition;
-		public int Width;
-		public int Height;
-		public int Type;
-		public Rectangle HitBox;
-
-		public Hole(int x, int y, int t)
-		{
-			this.Width = 25;
-			this.Height = 25;
-			this.XPosition = x;
-			this.YPosition = y;
-			this.Type = t;
-			HitBox = new Rectangle(XPosition, YPosition, Width, Height);
-		}
-
-		override public void LoadContent(ContentManager content)
-		{
-			string file = string.Concat (string.Concat ("hole", this.Type.ToString()), ".png");
-			sprite = content.Load<Texture2D>(file);
-		}
-
-		override public void Draw(SpriteBatch sb)
-		{
-			sb.Draw(sprite,
-				new Rectangle(XPosition, YPosition, Width, Height),
-				Color.White);
-		}
-
-        public override void Update(GameTime gt)
+    class Hole : SpriteEntity
+    {
+        public Hole(ContentManager cm, int x, int y, int t) : base(cm, "hole" + t.ToString() + ".png")
         {
-            throw new NotImplementedException();
+            Scale = 0.5f;
+            Position = new Vector2(x, y);
         }
-	}
+        public override void Update(GameTime gt, Screen s)
+        {
+            throw new NotImplementedException("No Update() for Hole");
+        }
+    }
 }

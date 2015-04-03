@@ -12,7 +12,6 @@ namespace Escape
     class Room
     {
         MainGame mg;
-
         ContentManager contentManager;
 
         public Vector2 Position { get; set; }
@@ -22,7 +21,7 @@ namespace Escape
 
         public List<Floor> Floors { get; set; }
         public List<Wall> Walls { get; set; }
-        public List<Obstacle> Obstacles { get; set; }
+        public List<Entity> Obstacles { get; set; }
 
         public List<Enemy> Enemies { get; set; }
         public List<Item> Items { get; set; }
@@ -38,7 +37,7 @@ namespace Escape
             set
             {
                 this.Neighbors.Add(Direction.LEFT, value);
-                this.Doors.Add(Direction.LEFT, new Door(0, 11 * 25, true));
+                this.Doors.Add(Direction.LEFT, new Door(contentManager, 0, 11 * 25, true));
 
             }
         }
@@ -52,7 +51,7 @@ namespace Escape
             set
             {
                 this.Neighbors.Add(Direction.RIGHT, value);
-                this.Doors.Add(Direction.RIGHT, new Door(this.mg.GAME_WIDTH - 25, 11 * 25, true));
+                this.Doors.Add(Direction.RIGHT, new Door(contentManager, this.mg.GAME_WIDTH - 25, 11 * 25, true));
 
             }
         }
@@ -66,7 +65,7 @@ namespace Escape
             set
             {
                 this.Neighbors.Add(Direction.UP, value);
-                this.Doors.Add(Direction.UP, new Door(19 * 25, 0, false));
+                this.Doors.Add(Direction.UP, new Door(contentManager, 19 * 25, 0, false));
 
             }
         }
@@ -80,15 +79,18 @@ namespace Escape
             set
             {
                 this.Neighbors.Add(Direction.DOWN, value);
-                this.Doors.Add(Direction.DOWN, new Door(19 * 25, this.mg.GAME_HEIGHT - 25, false));
+                this.Doors.Add(Direction.DOWN, new Door(contentManager, 19 * 25, this.mg.GAME_HEIGHT - 25, false));
 
             }
         }
 
         public Dictionary<Direction, Door> Doors { get; set; }
 
+        // Methods
+
         public Room(MainGame mg)
         {
+            contentManager = mg.Content;
             this.mg = mg;
             this.Width = mg.GAME_WIDTH;
             this.Height = mg.GAME_HEIGHT;
@@ -101,12 +103,12 @@ namespace Escape
             {
                 for (int j = 0; j < this.Height / 25; j++)
                 {
-                    Floors.Add(new Floor(25 * i, 25 * j));
+                    Floors.Add(new Floor(contentManager, 25 * i, 25 * j));
                 }
             }
 
             Walls = new List<Wall>();
-            Obstacles = new List<Obstacle>();
+            Obstacles = new List<Entity>();
 
             for (int i = 0; i < this.Width / 25; i++)
             {
@@ -116,7 +118,7 @@ namespace Escape
                     {
                         if (j != this.Height / 2 / 25 && j != (this.Height / 2 / 25) - 1)
                         {
-                            Walls.Add(new Wall(25 * i, 25 * j));
+                            Walls.Add(new Wall(contentManager, 25 * i, 25 * j));
                         }
                     }
                 }
@@ -126,8 +128,8 @@ namespace Escape
                 }
                 else
                 {
-                    Walls.Add(new Wall(25 * i, 0));
-                    Walls.Add(new Wall(25 * i, 25 * (this.Height / 25 - 1)));
+                    Walls.Add(new Wall(contentManager, 25 * i, 0));
+                    Walls.Add(new Wall(contentManager, 25 * i, 25 * (this.Height / 25 - 1)));
                 }
 
             }
@@ -140,33 +142,34 @@ namespace Escape
             //Doors.Add(Direction.UP, new Door(19 * 25, 0, false));
             //Doors.Add(Direction.DOWN, new Door(19 * 25, mg.GAME_HEIGHT - 25, false));
 
-            Obstacles.Add(new Hole(300, 300, 0));
-            Obstacles.Add(new Hole(400, 400, 1));
-            Obstacles.Add(new Hole(425, 400, 2));
-            Obstacles.Add(new Hole(450, 400, 2));
-            Obstacles.Add(new Hole(475, 400, 3));
-            Obstacles.Add(new Hole(475, 425, 4));
-            Obstacles.Add(new Hole(475, 450, 5));
-            Obstacles.Add(new Hole(450, 450, 6));
-            Obstacles.Add(new Hole(425, 450, 6));
-            Obstacles.Add(new Hole(400, 450, 7));
-            Obstacles.Add(new Hole(400, 425, 8));
-            Obstacles.Add(new Hole(425, 425, 9));
-            Obstacles.Add(new Hole(450, 425, 9));
+            Obstacles.Add(new Hole(contentManager, 300, 300, 0));
+            Obstacles.Add(new Hole(contentManager, 400, 400, 1));
+            Obstacles.Add(new Hole(contentManager, 425, 400, 2));
+            Obstacles.Add(new Hole(contentManager, 450, 400, 2));
+            Obstacles.Add(new Hole(contentManager, 475, 400, 3));
+            Obstacles.Add(new Hole(contentManager, 475, 425, 4));
+            Obstacles.Add(new Hole(contentManager, 475, 450, 5));
+            Obstacles.Add(new Hole(contentManager, 450, 450, 6));
+            Obstacles.Add(new Hole(contentManager, 425, 450, 6));
+            Obstacles.Add(new Hole(contentManager, 400, 450, 7));
+            Obstacles.Add(new Hole(contentManager, 400, 425, 8));
+            Obstacles.Add(new Hole(contentManager, 425, 425, 9));
+            Obstacles.Add(new Hole(contentManager, 450, 425, 9));
 
-            Obstacles.Add(new PowerUp(new Vector2(175, 75), "din.png", true, false));
-            Obstacles.Add(new PowerUp(new Vector2(500, 500), "naryu.png", false, true));
+            Obstacles.Add(new PowerUp(contentManager, new Vector2(175, 75), "din.png", true, false));
+            Obstacles.Add(new PowerUp(contentManager, new Vector2(500, 500), "naryu.png", false, true));
         }
 
         public Room(MainGame mg, String csvName)
         {
+            contentManager = mg.Content;
             this.mg = mg;
             this.Width = mg.GAME_WIDTH;
             this.Height = mg.GAME_HEIGHT;
 
             Floors = new List<Floor>();
             Walls = new List<Wall>();
-            Obstacles = new List<Obstacle>();
+            Obstacles = new List<Entity>();
             Enemies = new List<Enemy>();
             Doors = new Dictionary<Direction, Door>();
             Neighbors = new Dictionary<Direction, Room>();
@@ -190,10 +193,10 @@ namespace Escape
                         switch (int.Parse(cells[x_count]))
                         {
                             case 0: // floor
-                                Floors.Add(new Floor(25 * x_count, 25 * y_count));
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count));
                                 break;
                             case 1: // wall
-                                Walls.Add(new Wall(25 * x_count, 25 * y_count));
+                                Walls.Add(new Wall(contentManager, 25 * x_count, 25 * y_count));
                                 break;
                         }
                     }
@@ -203,35 +206,22 @@ namespace Escape
             }
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, Screen s)
         {
-            List<Obstacle> toRemove = new List<Obstacle>();
+            List<Entity> toRemove = new List<Entity>();
 
-            foreach (Obstacle o in Obstacles)
+            foreach (Entity o in Obstacles)
             {
-                if (o is FireBall)
+                if (o is Projectile)
                 {
-                    o.Update(gameTime);
-
-                    FireBall f = (FireBall)o;
-
-                    if (f.Position.X < 0 || f.Position.X > Width)
-                    {
-                        toRemove.Add(f);
-                    }
-                    else if (f.Position.Y < 0 || f.Position.Y > Height)
-                    {
-                        toRemove.Add(f);
-                    }
-                }
-                else if (o is Snowflake)
-                {
-                    Snowflake s = o as Snowflake;
-                    s.Update(gameTime);
+                    var p = o as Projectile;
+                    p.Update(gameTime, s);
                     Rectangle bounds = new Rectangle(0, 0, Width, Height);
-                    if (!bounds.Contains(s.Position) || (s.Position - s.StartPosition).Length() > s.Range)
+                    bool outOfBounds = !bounds.Intersects(p.HitBox);
+                    bool outOfRange = p.Range > 0 && ((p.Position - p.StartPosition).Length() > p.Range);
+                    if (outOfBounds || outOfRange)
                     {
-                        toRemove.Add(s);
+                        toRemove.Add(p);
                     }
                 }
             }
@@ -272,44 +262,11 @@ namespace Escape
                 e.Draw(sb);
             }
 
-            foreach (Obstacle o in Obstacles)
+            foreach (Entity o in Obstacles)
             {
                 o.Draw(sb);
             }
 
-        }
-
-        public void LoadContent(ContentManager cm)
-        {
-            contentManager = cm;
-
-            foreach (Floor f in Floors)
-            {
-                f.LoadContent(cm);
-            }
-
-            foreach (Wall w in Walls)
-            {
-                w.LoadContent(cm);
-            }
-
-            foreach (Door d in Doors.Values)
-            {
-                if (d != null)
-                {
-                    d.LoadContent(cm);
-                }
-            }
-
-            foreach (Enemy e in Enemies)
-            {
-                e.LoadContent(cm);
-            }
-
-            foreach (Obstacle o in Obstacles)
-            {
-                o.LoadContent(cm);
-            }
         }
 
         public void AddSnowflakes(Vector2 position)
@@ -320,17 +277,14 @@ namespace Escape
                 float angle = (float)(2 * Math.PI * ((float)i / (float)numFlakes));
                 float speed = 400;
                 Vector2 vel = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)) * speed;
-                Snowflake anna = new Snowflake(position, vel, 100);
-                anna.LoadContent(contentManager);
+                Projectile anna = Projectile.CreateSnowflake(contentManager, position, vel, 100);
                 Obstacles.Add(anna);
             }
         }
 
         public void AddFireBall(Vector2 position, Vector2 dir)
         {
-            FireBall f = new FireBall(position, dir);
-            f.LoadContent(contentManager);
-            Obstacles.Add(f);
+            Obstacles.Add(Projectile.CreateFireball(contentManager, position, dir * 500));
         }
 
         public Door LeftDoor()
@@ -355,10 +309,10 @@ namespace Escape
 
         private void checkSnowflakeEnemyCollisions()
         {
-            foreach (Obstacle o in Obstacles)
+            foreach (Entity o in Obstacles)
             {
-                var s = o as Snowflake;
-                if (s == null) continue;
+                var s = o as Projectile;
+                if (s == null || s.Type != ProjectileType.SNOWFLAKE) continue;
                 foreach (Enemy e in Enemies)
                 {
                     if (e.HitBox.Intersects(s.HitBox))
@@ -372,13 +326,13 @@ namespace Escape
         private void checkFireBallEnemyCollisions()
         {
             List<Enemy> enemiesToRemove = new List<Enemy>();
-            List<Obstacle> fireBallsToRemove = new List<Obstacle>();
+            List<Entity> fireBallsToRemove = new List<Entity>();
 
-            foreach (Obstacle o in Obstacles)
+            foreach (Entity o in Obstacles)
             {
-                if (o is FireBall)
+                if (o is Projectile && (o as Projectile).Type == ProjectileType.FIREBALL)
                 {
-                    FireBall f = (FireBall)o;
+                    Projectile f = (Projectile)o;
 
                     foreach (Enemy e in Enemies)
                     {

@@ -8,11 +8,14 @@ using System.Text;
 
 namespace Escape
 {
-    abstract class Obstacle
+    abstract class Entity
     {
+        abstract public Rectangle HitBox
+        {
+            get;
+        }
         abstract public void Draw(SpriteBatch sb);
-        abstract public void Update(GameTime gt);
-        abstract public void LoadContent(ContentManager cm);
+        abstract public void Update(GameTime gt, Screen s);
     }
 }
 
