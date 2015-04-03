@@ -48,7 +48,7 @@
     <Compile Include="MainGame.cs" />
     <Compile Include="MiniGame.cs" />
     <Compile Include="Entity.cs" />
-    <Compile Include="Pause.cs" />
+    <Compile Include="PauseMenu.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="PowerUp.cs" />
     <Compile Include="Program.cs" />
@@ -57,10 +57,9 @@
     <Compile Include="Question.cs" />
     <Compile Include="Room.cs" />
     <Compile Include="Screen.cs" />
-    <Compile Include="Song.cs" />
     <Compile Include="SpriteEntity.cs" />
     <Compile Include="SpriteSheet.cs" />
-    <Compile Include="Start.cs" />
+    <Compile Include="StartMenu.cs" />
     <Compile Include="SubmissionBar.cs" />
     <Compile Include="Wall.cs" />
   </ItemGroup>
@@ -130,10 +129,16 @@
     <Content Include="Content\naryu.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\rtr.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\snowflake.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\soldier.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Songs\rtr.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\tile_1_single.png">

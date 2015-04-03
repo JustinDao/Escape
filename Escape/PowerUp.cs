@@ -15,6 +15,7 @@ namespace Escape
         public PowerUp(ContentManager cm, Vector2 pos, string spriteName, bool isFire, bool isIce)
             : base(cm, spriteName)
         {
+            Scale = 0.5f;
             Position = pos;
             IsFire = isFire;
             IsIce = isIce;

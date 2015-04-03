@@ -244,9 +244,13 @@ namespace Escape
             YVelocity = YVelocity * (1 - friction) + yAccel * .10;
             MovedY = Convert.ToInt32(YVelocity);
 
-            if (!CheckCollision(currentRoom))
+            if (!CheckXCollision(currentRoom))
             {
                 Position += new Vector2(MovedX, 0);
+            }
+
+            if (!CheckYCollision(currentRoom))
+            {
                 Position += new Vector2(0, MovedY);
             }
 
@@ -343,10 +347,27 @@ namespace Escape
             }
         }
 
-        private bool CheckCollision(Room currentRoom)
+        private bool CheckXCollision(Room currentRoom)
         {
             Vector2 tempPos = new Vector2(this.Position.X, this.Position.Y);
             tempPos += new Vector2(MovedX, 0);
+            Rectangle tempBox = new Rectangle((int)tempPos.X, (int)tempPos.Y + (this.PlayerHeight / 2), this.PlayerWidth, this.PlayerHeight / 2);
+
+            foreach (Wall w in currentRoom.Walls)
+            {
+                if (w.HitBox.Intersects(tempBox))
+                {
+                    ChangeAIDirection();
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private bool CheckYCollision(Room currentRoom)
+        {
+            Vector2 tempPos = new Vector2(this.Position.X, this.Position.Y);
             tempPos += new Vector2(0, MovedY);
             Rectangle tempBox = new Rectangle((int)tempPos.X, (int)tempPos.Y + (this.PlayerHeight / 2), this.PlayerWidth, this.PlayerHeight / 2);
 

@@ -38,6 +38,9 @@ namespace Escape
             CurrentRoom.UpRoom.DownRoom = CurrentRoom;
             CurrentRoom.DownRoom = new Room(mg, "R5.csv");
             CurrentRoom.DownRoom.UpRoom = CurrentRoom;
+
+            // Infinite Room Loop!
+            CurrentRoom.LeftRoom.LeftRoom = CurrentRoom;
         }
 
         public void Update(Controls controls, GameTime gameTime)

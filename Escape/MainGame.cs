@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
 using Tao.Sdl;
+using Microsoft.Xna.Framework.Media;
 #endregion
 
 namespace Escape
@@ -21,8 +22,8 @@ namespace Escape
         SpriteBatch spriteBatch;
         Screen currentScreen;
         Castle castle;
-        Start start;
-        Pause pause;
+        StartMenu start;
+        PauseMenu pause;
         MiniGame miniGame;
         Controls controls;
         SubmissionBar submissionBar;
@@ -48,11 +49,16 @@ namespace Escape
         /// </summary>
         protected override void Initialize()
         {
-            start = new Start(this, GraphicsDevice);
+            start = new StartMenu(this, GraphicsDevice);
             castle = new Castle(this);
-            pause = new Pause(this, GraphicsDevice);
+            pause = new PauseMenu(this, GraphicsDevice);
             miniGame = new MiniGame(this, GraphicsDevice);
             currentScreen = start;
+
+            Song song = this.Content.Load<Song>("Songs\\rtr.wav");
+            MediaPlayer.Play(song);
+            MediaPlayer.IsRepeating = true;
+            
 
             submissionBar = new SubmissionBar(50, 50, graphics);
             base.Initialize();
@@ -166,10 +172,12 @@ namespace Escape
         public void SwitchToCastle()
         {
             currentScreen = castle;
+            MediaPlayer.Resume();
         }
         public void SwitchToPause()
         {
             currentScreen = pause;
+            MediaPlayer.Pause();
         }
     }
 }
