@@ -129,9 +129,6 @@
     <Content Include="Content\naryu.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\rtr.mp3">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Content\snowflake.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
