@@ -5,5 +5,5 @@ using System.Text;
 
 namespace Escape
 {
-    public enum Direction { N, S, E, W, NE, NW, SE, SW };
+    public enum Direction { LEFT, RIGHT, UP, DOWN, N, NE, E, SE, S, SW, W, NW };
 }

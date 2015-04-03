@@ -30,10 +30,7 @@ namespace Escape
         public Room UpRoom { get; set; }
         public Room DownRoom { get; set; }
 
-        public Door LeftDoor { get; set; }
-        public Door RightDoor { get; set; }
-        public Door UpDoor { get; set; }
-        public Door DownDoor { get; set; }
+        public Dictionary<Direction, Door> Doors { get; set; }
 
         public Room(MainGame mg)
         {
@@ -79,10 +76,12 @@ namespace Escape
 
             }
 
-            LeftDoor = new Door(0, 11 * 25, true);
-            RightDoor = new Door(mg.GAME_WIDTH - 25, 11 * 25, true);
-            UpDoor = new Door(19 * 25, 0, false);
-            DownDoor = new Door(19 * 25, mg.GAME_HEIGHT - 25, false);
+            Doors = new Dictionary<Direction, Door>();
+
+            Doors.Add(Direction.LEFT, new Door(0, 11 * 25, true));
+            Doors.Add(Direction.RIGHT, new Door(mg.GAME_WIDTH - 25, 11 * 25, true));
+            Doors.Add(Direction.UP, new Door(19 * 25, 0, false));
+            Doors.Add(Direction.DOWN, new Door(19 * 25, mg.GAME_HEIGHT - 25, false));
 
             Obstacles.Add(new Hole(300, 300, 0));
             Obstacles.Add(new Hole(400, 400, 1));
@@ -111,6 +110,7 @@ namespace Escape
             Walls = new List<Wall>();
             Obstacles = new List<Obstacle>();
             Enemies = new List<Enemy>();
+            Doors = new Dictionary<Direction, Door>();
 
             //http://stackoverflow.com/questions/25331714
             var path = @"Content\Rooms\" + csvName;
@@ -200,13 +200,7 @@ namespace Escape
                 w.Draw(sb);
             }
 
-            List<Door> doors = new List<Door>();
-            doors.Add(LeftDoor);
-            doors.Add(RightDoor);
-            doors.Add(UpDoor);
-            doors.Add(DownDoor);
-
-            foreach (Door d in doors)
+            foreach (Door d in Doors.Values)
             {
                 if (d != null)
                 {
@@ -240,15 +234,9 @@ namespace Escape
                 w.LoadContent(cm);
             }
 
-            List<Door> doors = new List<Door>();
-            doors.Add(LeftDoor);
-            doors.Add(RightDoor);
-            doors.Add(UpDoor);
-            doors.Add(DownDoor);
-
-            foreach(Door d in doors)
+            foreach (Door d in Doors.Values)
             {
-                if(d != null)
+                if (d != null)
                 {
                     d.LoadContent(cm);
                 }
@@ -284,6 +272,26 @@ namespace Escape
             FireBall f = new FireBall(position, dir);
             f.LoadContent(contentManager);
             Obstacles.Add(f);
+        }
+
+        public Door LeftDoor()
+        {
+            return Doors[Direction.LEFT];
+        }
+
+        public Door RightDoor()
+        {
+            return Doors[Direction.RIGHT];
+        }
+
+        public Door UpDoor()
+        {
+            return Doors[Direction.UP];
+        }
+
+        public Door DownDoor()
+        {
+            return Doors[Direction.DOWN];
         }
 
         private void checkSnowflakeEnemyCollisions()

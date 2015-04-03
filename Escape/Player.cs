@@ -260,22 +260,22 @@ namespace Escape
 
             if (door != null)
             {
-                if (door.Equals(currentRoom.LeftDoor))
+                if (door.Equals(currentRoom.LeftDoor()))
                 {
                     Castle.MoveLeft();
                     this.FlipPosition(currentRoom);
                 }
-                else if (door.Equals(currentRoom.RightDoor))
+                else if (door.Equals(currentRoom.RightDoor()))
                 {
                     Castle.MoveRight();
                     this.FlipPosition(currentRoom);
                 }
-                else if (door.Equals(currentRoom.UpDoor))
+                else if (door.Equals(currentRoom.UpDoor()))
                 {
                     Castle.MoveUp();
                     this.FlipPosition(currentRoom);
                 }
-                else if (door.Equals(currentRoom.DownDoor))
+                else if (door.Equals(currentRoom.DownDoor()))
                 {
                     Castle.MoveDown();
                     this.FlipPosition(currentRoom);
@@ -397,13 +397,7 @@ namespace Escape
             int tempH = this.PlayerHeight / 4;
             Rectangle tempBox = new Rectangle(tempX, tempY, tempW, tempH);
 
-            List<Door> doors = new List<Door>();
-            doors.Add(currentRoom.LeftDoor);
-            doors.Add(currentRoom.RightDoor);
-            doors.Add(currentRoom.UpDoor);
-            doors.Add(currentRoom.DownDoor);
-
-            foreach(Door d in doors)
+            foreach(Door d in currentRoom.Doors.Values)
             {
                 if (d == null)
                 {
