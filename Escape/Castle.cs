@@ -15,7 +15,6 @@ namespace Escape
         public Vector2 CastlePosition { get; set; }
         public int CastleHeight { get; set; }
         public int CastleWidth { get; set; }
-        public List<Room> Rooms { get; set; }
         public Room CurrentRoom { get; set; }
         public Player Player { get; set; }
 
@@ -30,14 +29,15 @@ namespace Escape
 
         public void InitializeRooms()
         {
-            Rooms = new List<Room>();
-            Rooms.Add(new Room(this.mg));
-
-            CurrentRoom = Rooms.First<Room>();
+            CurrentRoom = new Room(mg);
             CurrentRoom.LeftRoom = new Room(mg, "RoomTemplate.csv");
             CurrentRoom.LeftRoom.RightRoom = CurrentRoom;
-
-            Rooms.Add(CurrentRoom.LeftRoom);
+            CurrentRoom.RightRoom = new Room(mg, "R1.csv");
+            CurrentRoom.RightRoom.LeftRoom = CurrentRoom;
+            CurrentRoom.UpRoom = new Room(mg, "R3.csv");
+            CurrentRoom.UpRoom.DownRoom = CurrentRoom;
+            CurrentRoom.DownRoom = new Room(mg, "R5.csv");
+            CurrentRoom.DownRoom.UpRoom = CurrentRoom;
         }
 
         public void Update(Controls controls, GameTime gameTime)
@@ -46,12 +46,10 @@ namespace Escape
             {
                 mg.SwitchToPause();
             }
+
             Player.Update(controls, gameTime, CurrentRoom);
 
-            foreach (Room r in Rooms)
-            {
-                r.Update(gameTime, this);
-            }
+            CurrentRoom.Update(gameTime, this);
         }
 
         public void MoveLeft()
