@@ -42,6 +42,7 @@
     <Compile Include="Direction.cs" />
     <Compile Include="Door.cs" />
     <Compile Include="Enemy.cs" />
+    <Compile Include="NewPlayer.cs" />
     <Compile Include="Projectile.cs" />
     <Compile Include="Floor.cs" />
     <Compile Include="Hole.cs" />
@@ -59,6 +60,7 @@
     <Compile Include="Room.cs" />
     <Compile Include="Screen.cs" />
     <Compile Include="SoldierSprite.cs" />
+    <Compile Include="Sprite.cs" />
     <Compile Include="SpriteEntity.cs" />
     <Compile Include="SpriteSheet.cs" />
     <Compile Include="StartMenu.cs" />

@@ -17,12 +17,15 @@ namespace Escape
         public int CastleWidth { get; set; }
         public Room CurrentRoom { get; set; }
         public Player Player { get; set; }
+        public NewPlayer Hero;
 
         public Castle(MainGame mg)
         {
             this.mg = mg;
 
             Player = new Player(mg, this, 50, 50);
+            Hero = new NewPlayer(mg.Content, mg.Control);
+            Hero.Position += new Vector2(200, 200);
 
             InitializeRooms();
         }
@@ -51,7 +54,7 @@ namespace Escape
             }
 
             Player.Update(controls, gameTime, CurrentRoom);
-
+            Hero.Update(gameTime, this);
             CurrentRoom.Update(gameTime, this);
         }
 
@@ -79,10 +82,19 @@ namespace Escape
         {
             CurrentRoom.Draw(sb);
             Player.Draw(sb);
+            Hero.Draw(sb);
         }
 
         public override void LoadContent(ContentManager cm)
         {
+            // preload assets
+            string[] preloadTextures = {
+                                           "fireball.png",
+                                           "snowflake.png",
+                                       };
+            foreach (var textureName in preloadTextures) {
+                cm.Load<Texture2D>(textureName);
+            }
             Player.LoadContent(cm);
 
         }
