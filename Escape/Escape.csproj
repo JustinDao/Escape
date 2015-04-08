@@ -57,10 +57,18 @@
     <Compile Include="Question.cs" />
     <Compile Include="Room.cs" />
     <Compile Include="Screen.cs" />
+    <Compile Include="SoldierSprite.cs" />
     <Compile Include="SpriteEntity.cs" />
     <Compile Include="SpriteSheet.cs" />
     <Compile Include="StartMenu.cs" />
     <Compile Include="SubmissionBar.cs" />
+    <Compile Include="TexturePackerLoader\SpriteFrame.cs" />
+    <Compile Include="TexturePackerLoader\SpriteRender.cs" />
+    <Compile Include="TexturePackerLoader\TPSpriteSheet.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="TexturePackerLoader\SpriteSheetLoader.cs" />
+    <Compile Include="TestThing.cs" />
     <Compile Include="Wall.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -133,6 +141,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\soldier.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\soldier_sprite_sheet.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\soldier_sprite_sheet.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Songs\rtr.wav">

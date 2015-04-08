@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
 using Tao.Sdl;
 using Microsoft.Xna.Framework.Media;
+using TexturePackerLoader;
 #endregion
 
 namespace Escape
@@ -20,6 +21,7 @@ namespace Escape
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        SpriteRender spriteRender;
         Screen currentScreen;
         Castle castle;
         StartMenu start;
@@ -27,6 +29,7 @@ namespace Escape
         MiniGame miniGame;
         Controls controls;
         SubmissionBar submissionBar;
+        TestThing t;
 
         public int GAME_WIDTH = 1000;
         public int GAME_HEIGHT = 600;
@@ -54,6 +57,7 @@ namespace Escape
             pause = new PauseMenu(this, GraphicsDevice);
             miniGame = new MiniGame(this, GraphicsDevice);
             currentScreen = start;
+            t = new TestThing(this);
 
             Song song = this.Content.Load<Song>("Songs\\rtr.wav");
             MediaPlayer.Play(song);
@@ -76,6 +80,7 @@ namespace Escape
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            spriteRender = new SpriteRender(this.spriteBatch);
             start.LoadContent(this.Content);
             castle.LoadContent(this.Content);
             pause.LoadContent(this.Content);
@@ -117,22 +122,23 @@ namespace Escape
             }
             else if (currentScreen == castle)
             {
-                
-            castle.Update(controls, gameTime);
+                castle.Update(controls, gameTime);
 
-            if (!miniGame.Active && !castle.Player.PlayerControl)
-            {
-                miniGame.Reinitialize();
-                miniGame.Active = true;
+                if (!miniGame.Active && !castle.Player.PlayerControl)
+                {
+                    miniGame.Reinitialize();
+                    miniGame.Active = true;
+                }
+
+                submissionBar.Update(castle.Player, graphics);
+
+                if (miniGame.Active)
+                {
+                    miniGame.Update(controls, gameTime, castle.Player);
+                }            
             }
 
-            submissionBar.Update(castle.Player, graphics);
-
-            if (miniGame.Active)
-            {
-                miniGame.Update(controls, gameTime, castle.Player);
-            }            
-            }      
+            t.Update(gameTime, this.controls);
 
             base.Update(gameTime);
         }
@@ -162,7 +168,9 @@ namespace Escape
             if (miniGame.Active)
             {
                 miniGame.Draw(spriteBatch);
-            }            
+            }
+
+            this.t.Draw(spriteBatch, spriteRender);
 
             spriteBatch.End();
 
