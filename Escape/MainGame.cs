@@ -25,7 +25,7 @@ namespace Escape
         StartMenu start;
         PauseMenu pause;
         MiniGame miniGame;
-        Controls controls;
+        public Controls Control;
         SubmissionBar submissionBar;
 
         public int GAME_WIDTH = 1000;
@@ -49,6 +49,7 @@ namespace Escape
         /// </summary>
         protected override void Initialize()
         {
+            Control = new Controls();
             start = new StartMenu(this, GraphicsDevice);
             castle = new Castle(this);
             pause = new PauseMenu(this, GraphicsDevice);
@@ -65,7 +66,6 @@ namespace Escape
 
             Joystick.Init();
             Console.WriteLine("Number of joysticks: " + Sdl.SDL_NumJoysticks());
-            controls = new Controls();
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace Escape
         protected override void Update(GameTime gameTime)
         {
             //set our keyboardstate tracker update can change the gamestate on every cycle
-            controls.Update();
+            Control.Update();
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
@@ -109,16 +109,16 @@ namespace Escape
 
             if (currentScreen == start)
             {
-                start.Update(controls);
+                start.Update(Control);
             }
             else if(currentScreen == pause)
             {
-                pause.Update(controls);
+                pause.Update(Control);
             }
             else if (currentScreen == castle)
             {
                 
-            castle.Update(controls, gameTime);
+            castle.Update(Control, gameTime);
 
             if (!miniGame.Active && !castle.Player.PlayerControl)
             {
@@ -130,7 +130,7 @@ namespace Escape
 
             if (miniGame.Active)
             {
-                miniGame.Update(controls, gameTime, castle.Player);
+                miniGame.Update(Control, gameTime, castle.Player);
             }            
             }      
 

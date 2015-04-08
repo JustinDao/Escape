@@ -18,12 +18,24 @@ namespace Escape
         public Color Tint = Color.White;
         public float Depth = 0f;
 
-        public readonly Texture2D Texture;
-        public Rectangle SourceRect;
+        public Sprite CurrentSprite;
+        public Texture2D Texture
+        {
+            get
+            {
+                return CurrentSprite.Texture;
+            }
+        }
+        public Rectangle SourceRect
+        {
+            get
+            {
+                return CurrentSprite.SourceRect;
+            }
+        }
         public SpriteEntity(ContentManager cm, string spriteName, Rectangle? sourceRect = null)
         {
-            Texture = cm.Load<Texture2D>(spriteName);
-            SourceRect = sourceRect.GetValueOrDefault(new Rectangle(0, 0, Texture.Width, Texture.Height));
+            CurrentSprite = new Sprite(cm, spriteName, sourceRect);
         }
         public override void Draw(SpriteBatch batch)
         {

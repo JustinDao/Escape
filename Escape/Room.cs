@@ -28,6 +28,8 @@ namespace Escape
 
         public Dictionary<Direction, Room> Neighbors { get; set; }
 
+        public Random Rng = new Random();
+
         public Room LeftRoom
         { 
             get
@@ -272,9 +274,11 @@ namespace Escape
         public void AddSnowflakes(Vector2 position)
         {
             int numFlakes = 16;
+            // var rand = (float)Rng.NextDouble();
+            // var angleOffset = rand * 2 * (float)Math.PI;
             for (int i = 0; i < numFlakes; i++)
             {
-                float angle = (float)(2 * Math.PI * ((float)i / (float)numFlakes));
+                float angle = (float)(2 * Math.PI * ((float)i / (float)numFlakes)) /* + angleOffset */;
                 float speed = 400;
                 Vector2 vel = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)) * speed;
                 Projectile anna = Projectile.CreateSnowflake(contentManager, position, vel, 100);

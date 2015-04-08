@@ -16,7 +16,7 @@ namespace Escape
             Vector2 position, Vector2 velocity, float range = 0)
             : base(cm, spriteName)
         {
-            Origin = new Vector2(0.5f);
+            Origin = new Vector2(0.5f, 0.5f);
             Position = position;
             StartPosition = position;
             Velocity = velocity;
