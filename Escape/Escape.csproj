@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Bar.cs" />
+    <Compile Include="Boulder.cs" />
     <Compile Include="Castle.cs" />
     <Compile Include="Controls.cs" />
     <Compile Include="Direction.cs" />
