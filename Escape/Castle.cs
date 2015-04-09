@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TexturePackerLoader;
 
 namespace Escape
 {
@@ -24,7 +25,7 @@ namespace Escape
             this.mg = mg;
 
             Player = new Player(mg, this, 50, 50);
-            Hero = new NewPlayer(mg.Content, mg.Control);
+            Hero = new NewPlayer(mg.Content, mg.SpriteRender, mg.Control);
             Hero.Position += new Vector2(200, 200);
 
             InitializeRooms();

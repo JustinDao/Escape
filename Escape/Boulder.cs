@@ -15,5 +15,10 @@ namespace Escape
             Origin = new Vector2(0.5f);
             Position = position;
         }
+
+        public override void Update(GameTime gt, Screen s)
+        {
+
+        }
     }
 }

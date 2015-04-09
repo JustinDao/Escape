@@ -35,6 +35,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AnimatedSpriteEntity.cs" />
     <Compile Include="Bar.cs" />
     <Compile Include="Boulder.cs" />
     <Compile Include="Castle.cs" />

@@ -21,7 +21,7 @@ namespace Escape
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        SpriteRender spriteRender;
+        public SpriteRender SpriteRender;
         Screen currentScreen;
         Castle castle;
         StartMenu start;
@@ -52,7 +52,11 @@ namespace Escape
         /// </summary>
         protected override void Initialize()
         {
+            // Create a new SpriteBatch, which can be used to draw textures.
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+            SpriteRender = new SpriteRender(this.spriteBatch);
             Control = new Controls();
+
             start = new StartMenu(this, GraphicsDevice);
             castle = new Castle(this);
             pause = new PauseMenu(this, GraphicsDevice);
@@ -78,9 +82,6 @@ namespace Escape
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-            spriteRender = new SpriteRender(this.spriteBatch);
             start.LoadContent(this.Content);
             castle.LoadContent(this.Content);
             pause.LoadContent(this.Content);
@@ -122,7 +123,7 @@ namespace Escape
             }
             else if (currentScreen == castle)
             {
-                castle.Update(controls, gameTime);
+                castle.Update(Control, gameTime);
 
                 if (!miniGame.Active && !castle.Player.PlayerControl)
                 {
@@ -138,7 +139,7 @@ namespace Escape
                 }            
             }      
 
-            t.Update(gameTime, this.controls);
+            t.Update(gameTime, this.Control);
 
             base.Update(gameTime);
         }
@@ -170,7 +171,7 @@ namespace Escape
                 miniGame.Draw(spriteBatch);
             }            
 
-            this.t.Draw(spriteBatch, spriteRender);
+            this.t.Draw(spriteBatch, SpriteRender);
 
             spriteBatch.End();
 

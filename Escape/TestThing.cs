@@ -159,7 +159,7 @@ namespace Escape
                     {
                         currentSpriteIndex = 0;
                     }
-                }               
+                }    
 
             }
 
