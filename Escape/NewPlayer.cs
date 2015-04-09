@@ -18,6 +18,7 @@ namespace Escape
         public bool HasIce = false;
         // controls
         public readonly Controls Ctrls;
+
         // Value of the Player's current Submission
         public int Submission { get; set; }
         // Flag if the player has control of the character
@@ -32,7 +33,6 @@ namespace Escape
             }
         }
 
-
         // The maximum submission value
         private int MAX_SUBMISSION = 100;
         // Variables to hold Submission Time and Interval
@@ -41,6 +41,67 @@ namespace Escape
 
         // Check for switching rooms through doors
         private bool StandingOnDoor = false;
+
+        // The angle of movement in radians
+        public float MoveAngle
+        {
+            get
+            {
+                if (PlayerControl)
+                {
+                    return (float)Math.Atan2(Velocity.Y, Velocity.X);
+                }
+                else
+                {
+                    return (float)Math.Atan2(AIVelocity.Y, AIVelocity.X);
+                }
+
+            }
+        }
+
+        // the last direction moved
+        Vector2 lastDir = new Vector2();
+
+        // Velocity (direction AND magnitude) of the player
+        Vector2 Velocity
+        {
+            get
+            {
+                if (PlayerControl)
+                {
+                    var stick = Ctrls.gp.ThumbSticks.Left;
+                    stick.Y *= -1;
+
+                    // If not using controller check keyboard input
+                    if (stick.LengthSquared() == 0)
+                    {
+                        if (Ctrls.isPressed(Keys.Right, Buttons.DPadRight))
+                        {
+                            stick.X = 1;
+                        }
+                        else if (Ctrls.isPressed(Keys.Left, Buttons.DPadLeft))
+                        {
+                            stick.X = -1;
+                        }
+
+                        if (Ctrls.isPressed(Keys.Up, Buttons.DPadUp))
+                        {
+                            stick.Y = -1;
+                        }
+                        else if (Ctrls.isPressed(Keys.Down, Buttons.DPadDown))
+                        {
+                            stick.Y = 1;
+                        }
+                    }
+
+                    return stick * SPEED;
+                }
+                else
+                {
+                    return AIVelocity * SPEED * 2;
+                }
+            }
+        }
 
         // Variables for AI Movement
         // The current Velocity of the AI
@@ -58,7 +119,7 @@ namespace Escape
         float currentSpriteInterval = 0;
         int MAX_SPRITE_INDEX = 8;
         int SPRITE_INTERVAL = 50;
-           
+
         // Sprites
         public string[] UpSprites = {
             TexturePackerMonoGameDefinitions.SoldierSprite.Backward_Layer_1,
@@ -111,50 +172,16 @@ namespace Escape
         // The Current Array of Sprites
         public string[] CurrentSprites;
 
-        public override string SpriteString 
+        // The current Sprite referenced by a string
+        public override string SpriteString
         {
             get
             {
                 return CurrentSprites[currentSpriteIndex];
             }
-        }        
-
-        public float MoveAngle
-        {
-            get
-            {
-                if (PlayerControl)
-                {
-                    return (float)Math.Atan2(Velocity.Y, Velocity.X);
-                }
-                else
-                {
-                    return (float)Math.Atan2(AIVelocity.Y, AIVelocity.X);
-                }
-                
-            }
         }
 
-        // other info
-        Vector2 lastDir = new Vector2();
-        // Stores Velocity
-        Vector2 Velocity
-        {
-            get
-            {
-                if (PlayerControl)
-                {
-                    var stick = Ctrls.gp.ThumbSticks.Left;
-                    stick.Y *= -1;
-                    return stick * SPEED;
-                }
-                else
-                {
-                    return AIVelocity * SPEED * 2;
-                }
-            }
-        }
-        
+        // Constructor
         public NewPlayer(ContentManager cm, SpriteRender sr, Controls ctrls)
             : base(cm, sr, "soldier_sprite_sheet.png")
         {
@@ -171,36 +198,12 @@ namespace Escape
         {
             // Get Time since last frame
             var delta = (float)gt.ElapsedGameTime.TotalSeconds;
-            // Get current velocity
-            var velocity = Velocity;
-
-            // If the velocity is > 0 in any direction
-            // update the last direction
-            // update sprites
-            if (velocity.LengthSquared() > 0)
-            {
-                lastDir = new Vector2(velocity.X, velocity.Y); // copy?
-                lastDir.Normalize();
-
-                currentSpriteInterval += (float)gt.ElapsedGameTime.TotalMilliseconds;
-
-                if (currentSpriteInterval > SPRITE_INTERVAL)
-                {
-                    currentSpriteIndex += 1;
-                    currentSpriteInterval = 0;
-
-                    if (currentSpriteIndex > MAX_SPRITE_INDEX)
-                    {
-                        currentSpriteIndex = 0;
-                    }
-                }
-            }
 
             // Update the SpriteSheet
-            UpdateSprites();
+            UpdateSprites(gt);
 
             // Move the player
-            Position += velocity * delta;
+            Position += Velocity * delta;
 
             // stuff that involves the castle
             var castle = s as Castle;
@@ -212,6 +215,9 @@ namespace Escape
 
             // doors
             CheckDoors(castle);
+
+            // Check holes
+            CheckHoles(room);
 
             // collision
             CollideWalls(room);
@@ -410,8 +416,49 @@ namespace Escape
             }
         }
 
-        private void UpdateSprites()
+        private void CheckHoles(Room room)
         {
+            foreach (Entity o in room.Obstacles)
+            {
+                if (o is Hole)
+                {
+                    Hole h = (Hole)o;
+
+                    if (h.HitBox.Intersects(CollisionBox))
+                    {
+                        Respawn();
+                        return;
+                    }
+                }
+            }
+        }
+
+        private void UpdateSprites(GameTime gt)
+        {
+            // If the velocity is > 0 in any direction
+            // update the last direction
+            // update sprites
+            if (Velocity.LengthSquared() > 0)
+            {
+                lastDir = new Vector2(Velocity.X, Velocity.Y); // copy?
+                lastDir.Normalize();
+
+                currentSpriteInterval += (float)gt.ElapsedGameTime.TotalMilliseconds;
+
+                if (currentSpriteInterval > SPRITE_INTERVAL)
+                {
+                    currentSpriteIndex += 1;
+                    currentSpriteInterval = 0;
+
+                    if (currentSpriteIndex > MAX_SPRITE_INDEX)
+                    {
+                        currentSpriteIndex = 0;
+                    }
+                }
+            }
+
+            // Check Direction, and update Sprites accordingly
+
             var pi = Math.PI;
 
             float angle = MoveAngle;
@@ -436,7 +483,7 @@ namespace Escape
             else
             {
                 CurrentSprites = UpSprites;
-            }  
+            }
         }
 
         // Helper Methods
@@ -445,6 +492,12 @@ namespace Escape
         {
             this.PlayerControl = true;
             this.Submission = MAX_SUBMISSION;
+        }
+
+        private void Respawn()
+        {
+            // TODO: What happens when you die
+            this.Position = new Vector2(200, 200);
         }
 
         private Door GetIntersectingDoor(Room room)
@@ -513,6 +566,6 @@ namespace Escape
             this.Position = new Vector2(x, y);
         }
 
-        
+
     }
 }
