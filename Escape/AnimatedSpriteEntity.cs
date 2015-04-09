@@ -28,7 +28,15 @@ namespace Escape
         {
             get
             {
-                return this.SpriteSheet.Sprite(SpriteString).SourceRectangle;
+                var sprite = this.SpriteSheet.Sprite(SpriteString);
+                var rect = sprite.SourceRectangle;
+
+                if (sprite.IsRotated)
+                {
+                    return new Rectangle(rect.X, rect.Y, rect.Height, rect.Width);
+                }
+
+                return rect;                
             }
         }
 
@@ -43,6 +51,16 @@ namespace Escape
 
         public override void Draw(SpriteBatch sb)
         {
+            // // Uncomment this code to draw a red box around animated sprites
+            //var BoxColor = Color.Red;
+            //var Texture = new Texture2D(sb.GraphicsDevice, SourceRect.Width, SourceRect.Height);
+            //Color[] data = new Color[80 * 30];
+            //for (int i = 0; i < data.Length; ++i) data[i] = BoxColor;
+            //Texture.SetData(data);
+
+            //var tempOrigin = new Vector2(Origin.X * SourceRect.Width, Origin.Y * SourceRect.Height) * Scale;
+            //sb.Draw(Texture, Position, SourceRect, Tint, Rotation, tempOrigin, Scale, SpriteEffects.None, Depth);
+
             this.SpriteRender.Draw(
                 this.SpriteSheet.Sprite(
                     SpriteString

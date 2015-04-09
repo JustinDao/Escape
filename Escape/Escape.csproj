@@ -43,7 +43,7 @@
     <Compile Include="Direction.cs" />
     <Compile Include="Door.cs" />
     <Compile Include="Enemy.cs" />
-    <Compile Include="NewPlayer.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Projectile.cs" />
     <Compile Include="Floor.cs" />
     <Compile Include="Hole.cs" />
@@ -52,7 +52,6 @@
     <Compile Include="MiniGame.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="PauseMenu.cs" />
-    <Compile Include="Player.cs" />
     <Compile Include="PowerUp.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProjectileType.cs" />

@@ -29,7 +29,6 @@ namespace Escape
         MiniGame miniGame;
         public Controls Control;
         SubmissionBar submissionBar;
-        TestThing t;
 
         public int GAME_WIDTH = 1000;
         public int GAME_HEIGHT = 600;
@@ -62,7 +61,6 @@ namespace Escape
             pause = new PauseMenu(this, GraphicsDevice);
             miniGame = new MiniGame(this, GraphicsDevice);
             currentScreen = start;
-            t = new TestThing(this);
 
             Song song = this.Content.Load<Song>("Songs\\rtr.wav");
             //MediaPlayer.Play(song);
@@ -139,8 +137,6 @@ namespace Escape
                 }            
             }      
 
-            t.Update(gameTime, this.Control);
-
             base.Update(gameTime);
         }
 
@@ -170,8 +166,6 @@ namespace Escape
             {
                 miniGame.Draw(spriteBatch);
             }            
-
-            this.t.Draw(spriteBatch, SpriteRender);
 
             spriteBatch.End();
 
