@@ -65,7 +65,7 @@ namespace Escape
             t = new TestThing(this);
 
             Song song = this.Content.Load<Song>("Songs\\rtr.wav");
-            MediaPlayer.Play(song);
+            //MediaPlayer.Play(song);
             MediaPlayer.IsRepeating = true;
             
 

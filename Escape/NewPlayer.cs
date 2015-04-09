@@ -14,8 +14,8 @@ namespace Escape
         // constants
         public static readonly float SPEED = 300f;
         // power-ups
-        public bool HasFire = true;
-        public bool HasIce = true;
+        public bool HasFire = false;
+        public bool HasIce = false;
         // controls
         public readonly Controls Ctrls;
         // Value of the Player's current Submission
@@ -23,11 +23,24 @@ namespace Escape
         // Flag if the player has control of the character
         public bool PlayerControl { get; protected set; }
 
+        // Collision Box (bottom half of the HitBox)
+        public Rectangle CollisionBox
+        {
+            get
+            {
+                return new Rectangle(HitBox.X, HitBox.Y + HitBox.Height / 2, HitBox.Width, HitBox.Height / 2);
+            }
+        }
+
+
         // The maximum submission value
         private int MAX_SUBMISSION = 100;
         // Variables to hold Submission Time and Interval
         private float SubmissionInterval = 100; // Time in milliseconds
         private float SubmissionTime = 0;
+
+        // Check for switching rooms through doors
+        private bool StandingOnDoor = false;
 
         // Variables for AI Movement
         // The current Velocity of the AI
@@ -152,13 +165,15 @@ namespace Escape
             CurrentSprites = DownSprites;
         }
 
+        // Update Methods
+
         public override void Update(GameTime gt, Screen s)
         {
             // Get Time since last frame
             var delta = (float)gt.ElapsedGameTime.TotalSeconds;
             // Get current velocity
             var velocity = Velocity;
-               
+
             // If the velocity is > 0 in any direction
             // update the last direction
             // update sprites
@@ -178,9 +193,12 @@ namespace Escape
                     {
                         currentSpriteIndex = 0;
                     }
-                } 
+                }
             }
-            
+
+            // Update the SpriteSheet
+            UpdateSprites();
+
             // Move the player
             Position += velocity * delta;
 
@@ -189,8 +207,17 @@ namespace Escape
             if (castle == null) return;
             var room = castle.CurrentRoom;
 
+            // Check the boundaries
+            CheckBoundaries(castle);
+
+            // doors
+            CheckDoors(castle);
+
             // collision
             CollideWalls(room);
+
+            // powerups
+            CheckPowerUps(room);
 
             // submission
             UpdateSubmission(gt);
@@ -200,6 +227,15 @@ namespace Escape
             {
                 UpdateAI(gt);
             }
+
+            // Controller Actions
+            Action(room);
+
+        }
+
+        private void Action(Room room)
+        {
+            if (!PlayerControl) return;
 
             // fire
             if (Ctrls.onPress(Keys.None, Buttons.A) && HasFire && lastDir.LengthSquared() > 0)
@@ -213,13 +249,14 @@ namespace Escape
             {
                 room.AddSnowflakes(Position);
             }
+
         }
 
         private void CollideWalls(Room room)
         {
             foreach (Wall wall in room.Walls)
             {
-                var pBox = HitBox;
+                var pBox = CollisionBox;
                 var wBox = wall.HitBox;
                 var overlap = Rectangle.Intersect(pBox, wBox);
                 if (overlap.Width == 0 && overlap.Height == 0)
@@ -267,10 +304,33 @@ namespace Escape
             }
         }
 
-        public void RegainControl()
+        private void CheckPowerUps(Room room)
         {
-            this.PlayerControl = true;
-            this.Submission = MAX_SUBMISSION;
+            List<Entity> toRemove = new List<Entity>();
+
+            foreach (Entity o in room.Obstacles)
+            {
+                if (o is PowerUp)
+                {
+                    PowerUp p = o as PowerUp;
+                    if (p.HitBox.Intersects(this.HitBox))
+                    {
+                        if (p.IsFire)
+                        {
+                            this.HasFire = true;
+                            toRemove.Add(o);
+                        }
+
+                        if (p.IsIce)
+                        {
+                            this.HasIce = true;
+                            toRemove.Add(o);
+                        }
+                    }
+                }
+            }
+
+            room.Obstacles = room.Obstacles.Except(toRemove).ToList();
         }
 
         private void UpdateAI(GameTime gt)
@@ -283,6 +343,126 @@ namespace Escape
                 AITime = 0;
                 AIInterval = rand.Next(AI_SWITCH_TIME);
             }
+        }
+
+        private void CheckDoors(Castle castle)
+        {
+            var room = castle.CurrentRoom;
+
+            Door door = GetIntersectingDoor(room);
+
+            if (door != null)
+            {
+                if (!StandingOnDoor)
+                {
+                    if (door.Equals(room.LeftDoor()))
+                    {
+                        castle.MoveLeft();
+                        this.FlipPosition(room);
+                    }
+                    else if (door.Equals(room.RightDoor()))
+                    {
+                        castle.MoveRight();
+                        this.FlipPosition(room);
+                    }
+                    else if (door.Equals(room.UpDoor()))
+                    {
+                        castle.MoveUp();
+                        this.FlipPosition(room);
+                    }
+                    else if (door.Equals(room.DownDoor()))
+                    {
+                        castle.MoveDown();
+                        this.FlipPosition(room);
+                    }
+                }
+
+                StandingOnDoor = true;
+            }
+            else
+            {
+                StandingOnDoor = false;
+            }
+        }
+
+        private void CheckBoundaries(Castle castle)
+        {
+            var game = castle.mg;
+
+            if (this.Position.X < 0)
+            {
+                Position = new Vector2(0, Position.Y);
+            }
+
+            else if (this.Position.X > game.GAME_WIDTH - this.CollisionBox.Width)
+            {
+                Position = new Vector2(game.GAME_WIDTH - this.CollisionBox.Width, Position.Y);
+            }
+
+            if (this.Position.Y < -25)
+            {
+                Position = new Vector2(Position.X, 0);
+            }
+
+            else if (this.Position.Y > game.GAME_HEIGHT - this.CollisionBox.Height)
+            {
+                Position = new Vector2(Position.X, game.GAME_HEIGHT - this.CollisionBox.Height);
+            }
+        }
+
+        private void UpdateSprites()
+        {
+            var pi = Math.PI;
+
+            float angle = MoveAngle;
+
+            if (angle < 0)
+            {
+                angle += (float)(2 * pi);
+            }
+
+            if (angle < pi / 4 || angle > 7 * pi / 4)
+            {
+                CurrentSprites = RightSprites;
+            }
+            else if (angle < 3 * pi / 4)
+            {
+                CurrentSprites = DownSprites;
+            }
+            else if (angle < 5 * pi / 4)
+            {
+                CurrentSprites = LeftSprites;
+            }
+            else
+            {
+                CurrentSprites = UpSprites;
+            }  
+        }
+
+        // Helper Methods
+
+        public void RegainControl()
+        {
+            this.PlayerControl = true;
+            this.Submission = MAX_SUBMISSION;
+        }
+
+        private Door GetIntersectingDoor(Room room)
+        {
+            foreach (Door d in room.Doors.Values)
+            {
+                if (d == null)
+                {
+                    return null;
+                }
+
+                if (d.HitBox.Intersects(CollisionBox))
+                {
+                    return d;
+                }
+            }
+
+            return null;
         }
 
         private Vector2 GetRandomVelocity()
@@ -298,5 +478,41 @@ namespace Escape
                 AIVelocity = GetRandomVelocity();
             }
         }
+
+        private void FlipPosition(Room room)
+        {
+            int x = (int)this.Position.X;
+            int y = (int)this.Position.Y;
+
+            int wid = room.Width;
+            int hei = room.Height;
+
+            if (x > (wid / 2) - 50 && x < (wid / 2) + 50)
+            {
+                if (y < hei / 2)
+                {
+                    y = hei;
+                }
+                else
+                {
+                    y = 0;
+                }
+            }
+            if (y > (hei / 2) - 50 && y < (hei / 2) + 50)
+            {
+                if (x < wid / 2)
+                {
+                    x = wid;
+                }
+                else
+                {
+                    x = 0;
+                }
+            }
+
+            this.Position = new Vector2(x, y);
+        }
+
+        
     }
 }
