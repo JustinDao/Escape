@@ -8,7 +8,9 @@ Standard XBox 360 Controls:
 
 Left Joystick: Movement
 A - FireBall
-B - Ice Power
+X - Ice Power
+B - Strength
+Y - Speed
 
 During MiniGame Mode:
 
