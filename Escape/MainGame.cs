@@ -70,7 +70,7 @@ namespace Escape
             MediaPlayer.IsRepeating = true;
             
 
-            submissionBar = new SubmissionBar(50, 50, graphics);
+            submissionBar = new SubmissionBar(new Rectangle(20, 20, 200, 20), graphics);
             base.Initialize();
 
             Joystick.Init();

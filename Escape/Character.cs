@@ -10,7 +10,7 @@ namespace Escape
 {
     abstract class Character : AnimatedSpriteEntity
     {
-
+        protected bool ignoreHoles = false;
         // Collision Box (bottom half of the HitBox)
         public Rectangle CollisionBox
         {
@@ -127,10 +127,9 @@ namespace Escape
 
         }
 
-        protected void collideObstacle(Entity e)
+        protected void collideObstacle(Rectangle eBox)
         {
             var pBox = CollisionBox;
-            var eBox = e.HitBox;
             var overlap = Rectangle.Intersect(pBox, eBox);
 
             // If there is no overlap, skip
@@ -163,11 +162,17 @@ namespace Escape
         {
             foreach (var wall in room.Walls)
             {
-                collideObstacle(wall);
+                collideObstacle(wall.HitBox);
             }
             foreach (var e in room.Obstacles)
             {
-                collideObstacle(e);
+                if (e is Hole && ignoreHoles) continue;
+                collideObstacle(e.HitBox);
+            }
+            foreach (var e in room.Enemies)
+            {
+                if (e == this) continue;
+                collideObstacle(e.CollisionBox);
             }
         }
 

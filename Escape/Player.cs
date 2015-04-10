@@ -43,7 +43,7 @@ namespace Escape
         public bool PlayerControl { get; protected set; }
 
         // The maximum submission value
-        private int MAX_SUBMISSION = 100;
+        public const int MAX_SUBMISSION = 10000;
         // Variables to hold Submission Time and Interval
         private float SubmissionInterval = 100; // Time in milliseconds
         private float SubmissionTime = 0;

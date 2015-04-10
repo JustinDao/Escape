@@ -10,13 +10,32 @@ namespace Escape
 {
     abstract class Bar
     {
-        public Rectangle Box;
-        public Texture2D Texture;
-        public Vector2 Coor;
-        public int XPosition;
-        public int YPosition;
-        public int Width = 100;
-        public int Height = 20;
-        public Color BoxColor;
+        public static Texture2D tex = null;
+        public readonly Color FGColor;
+        public readonly Color BGColor;
+        public Rectangle Bounds;
+        public float Percent;
+
+        public Bar(GraphicsDeviceManager gdm, Rectangle bounds, Color fg, Color bg)
+        {
+            Bounds = bounds;
+            FGColor = fg;
+            BGColor = bg;
+            if (tex == null)
+            {
+                tex = new Texture2D(gdm.GraphicsDevice, 1, 1);
+                Color[] data = new Color[1] {
+                    Color.White
+                };
+                tex.SetData(data);
+            }
+        }
+
+        public void Draw(SpriteBatch batch)
+        {
+            batch.Draw(tex, Bounds, BGColor);
+            var fg = new Rectangle(Bounds.X, Bounds.Y, (int)(Percent * Bounds.Width), Bounds.Height);
+            batch.Draw(tex, fg, FGColor);
+        }
     }
 }
