@@ -73,6 +73,7 @@ namespace Escape
             : base(cm, sr, "fireboss_sprite_sheet.png", patrolPoints)
         {
             Scale = 1.5f;
+            Drop = new PowerUp(cm, Vector2.Zero, "din.png", isFire: true);
         }
 
         public override void CollideObstacles(Room room)

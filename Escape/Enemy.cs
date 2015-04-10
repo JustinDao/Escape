@@ -10,6 +10,7 @@ namespace Escape
 {
     abstract class Enemy : Character
     {
+        public PowerUp Drop = null;
         const float FLASH_TIME = 0.75f;
         float flashTimer = 0;
         public bool BeingAttacked = false;

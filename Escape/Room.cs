@@ -439,6 +439,12 @@ namespace Escape
                     DyingEnemies.Add(e, e.DeathFadeTime);
                     Enemies.RemoveAt(i);
                     i--;
+                    if (e.Drop != null)
+                    {
+                        var drop = e.Drop;
+                        PowerUps.Add(drop);
+                        drop.Position = new Vector2(e.HitBox.Center.X, e.HitBox.Center.Y);
+                    }
                 }
             }
         }
