@@ -142,6 +142,9 @@
     <Content Include="Content\Candle\Layer_3.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Cover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\din.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
