@@ -12,19 +12,18 @@ namespace Escape
     {
         public bool IsFire;
         public bool IsIce;
-        public bool IsSpeed;
-        public PowerUp(ContentManager cm, Vector2 pos, string spriteName, bool isFire, bool isIce, bool isSpeed)
+		public bool IsStrength;
+		public PowerUp(ContentManager cm, Vector2 pos, string spriteName, bool isFire, bool isIce, bool isStrength)
             : base(cm, spriteName)
         {
             Scale = 0.5f;
             Position = pos;
             IsFire = isFire;
             IsIce = isIce;
-            IsSpeed = isSpeed;
+			IsStrength = isStrength;
         }
         public override void Update(GameTime gt, Screen s)
         {
-            throw new NotImplementedException("No Update() for PowerUp");
         }
     }
 }
