@@ -42,7 +42,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Character.cs" />
-    <Compile Include="Enemy.cs" />
     <Compile Include="EnemyFollow.cs" />
     <Compile Include="Ghost.cs" />
     <Compile Include="GhostSprites.cs" />
@@ -68,16 +67,14 @@
     <Compile Include="SoldierSprites.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="SpriteEntity.cs" />
-    <Compile Include="SpriteSheet.cs" />
     <Compile Include="StartMenu.cs" />
     <Compile Include="SubmissionBar.cs" />
     <Compile Include="TexturePackerLoader\SpriteFrame.cs" />
     <Compile Include="TexturePackerLoader\SpriteRender.cs" />
-    <Compile Include="TexturePackerLoader\TPSpriteSheet.cs">
+    <Compile Include="TexturePackerLoader\SpriteSheet.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="TexturePackerLoader\SpriteSheetLoader.cs" />
-    <Compile Include="TestThing.cs" />
     <Compile Include="Wall.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -162,6 +159,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\soldier_sprite_sheet.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Songs\castle.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Songs\start.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\questions.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\tile_1_single.png">

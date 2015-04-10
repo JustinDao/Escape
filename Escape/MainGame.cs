@@ -59,10 +59,10 @@ namespace Escape
             start = new StartMenu(this, GraphicsDevice);
             castle = new Castle(this);
             pause = new PauseMenu(this, GraphicsDevice);
-            miniGame = new MiniGame(this, GraphicsDevice);
+            miniGame = new MiniGame(this, GraphicsDevice, castle.Player);
             currentScreen = start;
 
-            //Song song = this.Content.Load<Song>("Songs\\rtr.wav");
+            Song song = this.Content.Load<Song>("Songs\\castle.wav");
             //MediaPlayer.Play(song);
             MediaPlayer.IsRepeating = true;
             

@@ -16,23 +16,25 @@ namespace Escape
         public bool Active { get; set; }
 
         private Question currentQuestion;
+        private List<Question> QuestionSet;
         private int timeRemaining;
         private int timeInterval;
-        private int questionsRemaining;
         private Rectangle BackgroundBox { get; set; }
         private SpriteFont Font { get; set; }
 
         private int TOTAL_TIME = 60;
 
-        public MiniGame(MainGame mg, GraphicsDevice gd)
+        public MiniGame(MainGame mg, GraphicsDevice gd, Player player)
         {
             this.mg = mg;
             this.gd = gd;
             this.BackgroundBox = new Rectangle(0, 0, mg.GAME_WIDTH, mg.GAME_HEIGHT);
-            this.currentQuestion = new Question();
             this.timeRemaining = TOTAL_TIME;
             this.timeInterval = 0;
             this.Active = false;
+            this.QuestionSet = new List<Question>(player.Questions);
+
+            randomizeQuestions();
         }
 
         public void Reinitialize()
@@ -82,9 +84,26 @@ namespace Escape
 
             if (controls.onPress(currentQuestion.CorrectKey, currentQuestion.CorrectButton)) 
             {
-                this.Active = false;
-                player.RegainControl();
+                if (currentQuestion == QuestionSet.Last())
+                {
+                    this.Active = false;
+                    player.RegainControl();
+                    randomizeQuestions();
+                }
+                else
+                {
+                    currentQuestion = QuestionSet[QuestionSet.IndexOf(currentQuestion) + 1];
+                }
             }            
+        }
+
+        private void randomizeQuestions()
+        {
+            //http://stackoverflow.com/questions/5383498
+            var rnd = new Random();
+            QuestionSet = QuestionSet.OrderBy(item => rnd.Next()).ToList();
+
+            this.currentQuestion = QuestionSet.First();
         }
     }
 }
