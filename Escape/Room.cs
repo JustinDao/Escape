@@ -163,9 +163,10 @@ namespace Escape
 
 			Obstacles.Add(new Boulder(contentManager, new Vector2(175, 300), castle.Player));
 
-			Obstacles.Add(new PowerUp(contentManager, new Vector2(175, 75), "din.png", true, false, false));
-            Obstacles.Add(new PowerUp(contentManager, new Vector2(500, 500), "naryu.png", false, true, false));
-			Obstacles.Add(new PowerUp(contentManager, new Vector2(700, 500), "farore.png", false, false, true));
+            Obstacles.Add(new PowerUp(contentManager, new Vector2(200, 300), "yellow.png", false, false, false, true));
+			Obstacles.Add(new PowerUp(contentManager, new Vector2(175, 75), "din.png", true, false, false, false));
+            Obstacles.Add(new PowerUp(contentManager, new Vector2(500, 500), "naryu.png", false, true, false, false));
+			Obstacles.Add(new PowerUp(contentManager, new Vector2(700, 500), "farore.png", false, false, true, false));
         }
 
         public Room(MainGame mg, Castle castle, String csvName)

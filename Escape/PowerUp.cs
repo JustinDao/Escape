@@ -13,7 +13,8 @@ namespace Escape
         public bool IsFire;
         public bool IsIce;
 		public bool IsStrength;
-		public PowerUp(ContentManager cm, Vector2 pos, string spriteName, bool isFire, bool isIce, bool isStrength)
+        public bool IsSpeed;
+		public PowerUp(ContentManager cm, Vector2 pos, string spriteName, bool isFire, bool isIce, bool isStrength, bool isSpeed)
             : base(cm, spriteName)
         {
             Scale = 0.5f;
@@ -21,9 +22,12 @@ namespace Escape
             IsFire = isFire;
             IsIce = isIce;
 			IsStrength = isStrength;
+            IsSpeed = isSpeed;
         }
+
         public override void Update(GameTime gt, Screen s)
         {
+            // nothing here
         }
     }
 }

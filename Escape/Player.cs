@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using TexturePackerLoader;
@@ -15,6 +16,7 @@ namespace Escape
         // power-ups
         public bool HasFire = false;
         public bool HasIce = false;
+        public bool HasSpeed = false;
 		public bool HasStrength = false;
 		public bool UsingStrength 
 		{
@@ -53,7 +55,8 @@ namespace Escape
         // Random number generator
         private Random rand = new Random();
 
-
+        // Questions
+        public List<Question> Questions;
 
         // overrides
         public override float MaxSpeed
@@ -174,7 +177,14 @@ namespace Escape
                         }
                     }
 
-                    return stick * MaxSpeed;
+                    if (HasSpeed && Ctrls.isPressed(Keys.D4, Buttons.Y))
+                    {
+                        return stick * MaxSpeed * 2;
+                    }
+                    else
+                    {
+                        return stick * MaxSpeed;
+                    }
                 }
                 else
                 {
@@ -189,6 +199,33 @@ namespace Escape
             Ctrls = ctrls;
             PlayerControl = true;
             Submission = MAX_SUBMISSION;
+
+            Questions = new List<Question>();
+
+            // Create Question Set
+            var path = @"Content\\questions.txt";
+
+            using (var stream = TitleContainer.OpenStream(path))
+            using (var reader = new StreamReader(stream))
+            {
+                while (!reader.EndOfStream)
+               {
+                    var line = reader.ReadLine();
+
+                    string[] cells = line.Split(';');
+
+                    var question = cells[0];
+
+                    var answers = new List<string>();
+
+                    for(int i = 1; i < cells.Length; i++)
+                    {
+                        answers.Add(cells[i]);
+                    }
+
+                    Questions.Add(new Question(question, answers, rand.Next(answers.Count)));
+                }
+            }
         }
 
         public override void Update(GameTime gt, Screen s)
@@ -295,6 +332,12 @@ namespace Escape
 							this.HasStrength = true;
 							toRemove.Add(o);
 						}
+
+                        if (p.IsSpeed)
+                        {
+                            this.HasSpeed = true;
+                            toRemove.Add(o);
+                        }
                     }
                 }
             }

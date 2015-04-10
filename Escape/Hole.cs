@@ -17,7 +17,7 @@ namespace Escape
         }
         public override void Update(GameTime gt, Screen s)
         {
-            throw new NotImplementedException("No Update() for Hole");
+            // nothing here
         }
     }
 }
