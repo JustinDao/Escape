@@ -55,10 +55,10 @@ namespace Escape
             return fire;
         }
         public static Projectile CreateBoulder(ContentManager cm,
-            Vector2 pos, Vector2 vel, bool evil = false)
+            Vector2 pos, Vector2 vel, Enemy owner = null)
         {
             var boulder = new Projectile(cm, "boulder.png", ProjectileType.BOULDER,
-                pos, vel);
+                pos, vel, owner);
             boulder.Scale = 0.5f;
             return boulder;
         }

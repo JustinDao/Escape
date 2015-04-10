@@ -114,7 +114,7 @@ namespace Escape
         {
             var direction = player.Position - this.Position;
             direction.Normalize();
-            castle.CurrentRoom.AddBoulder(this.Position, direction, evil: true);
+            castle.CurrentRoom.AddBoulder(this.Position, direction, this);
         }
 
     }
