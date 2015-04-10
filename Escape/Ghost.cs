@@ -76,6 +76,7 @@ namespace Escape
         public Ghost(ContentManager cm, SpriteRender sr, AnimatedSpriteEntity target)
             : base(cm, sr, target, "ghost_sprite_sheet.png")
         {
+            ignoreHoles = true;
             Target = target;
             Position = new Vector2(500, 500);
         }
@@ -84,20 +85,6 @@ namespace Escape
         {   
             // base update!
             base.Update(gt, s);
-        }
-
-        public override void CollideObstacles(Room room)
-        {
-            foreach (var wall in room.Walls)
-            {
-                collideObstacle(wall);
-            }
-            foreach (var e in room.Obstacles)
-            {
-                if (e is Hole) continue;
-
-                collideObstacle(e);
-            }
         }
 
 
