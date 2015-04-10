@@ -24,8 +24,10 @@ namespace Escape
         public List<Wall> Walls { get; set; }
         public List<Entity> Obstacles { get; set; }
         public List<Projectile> Projectiles = new List<Projectile>();
+        public List<PowerUp> PowerUps = new List<PowerUp>();
 
         public List<Enemy> Enemies = new List<Enemy>();
+        public Dictionary<Enemy, float> DyingEnemies = new Dictionary<Enemy, float>();
         public List<Item> Items { get; set; }
 
         public Dictionary<Direction, Room> Neighbors { get; set; }
@@ -162,10 +164,10 @@ namespace Escape
 
 			Obstacles.Add(new Boulder(contentManager, new Vector2(175, 300), castle.Player));
 
-            Obstacles.Add(new PowerUp(contentManager, new Vector2(200, 300), "yellow.png", false, false, false, true));
-			Obstacles.Add(new PowerUp(contentManager, new Vector2(175, 75), "din.png", true, false, false, false));
-            Obstacles.Add(new PowerUp(contentManager, new Vector2(500, 500), "naryu.png", false, true, false, false));
-			Obstacles.Add(new PowerUp(contentManager, new Vector2(700, 500), "farore.png", false, false, true, false));
+            PowerUps.Add(new PowerUp(contentManager, new Vector2(200, 300), "yellow.png", false, false, false, true));
+            PowerUps.Add(new PowerUp(contentManager, new Vector2(175, 75), "din.png", true, false, false, false));
+            PowerUps.Add(new PowerUp(contentManager, new Vector2(500, 500), "naryu.png", false, true, false, false));
+            PowerUps.Add(new PowerUp(contentManager, new Vector2(700, 500), "farore.png", false, false, true, false));
         }
 
         public Room(MainGame mg, Castle castle, String csvName)
@@ -219,6 +221,7 @@ namespace Escape
 
         public void Update(GameTime gameTime, Screen s)
         {
+            float delta = (float) gameTime.ElapsedGameTime.TotalSeconds;
             List<Projectile> outProjectiles = new List<Projectile>();
 
             foreach (Projectile p in Projectiles)
@@ -240,12 +243,28 @@ namespace Escape
 
             Projectiles = Projectiles.Except(outProjectiles).ToList();
 
-            foreach (Character e in Enemies)
+            foreach (Enemy e in Enemies)
             {
                 e.Update(gameTime, this.castle);
             }
 
+            var dying = DyingEnemies.Keys.ToList();
+            foreach (Enemy e in dying)
+            {
+                var t = DyingEnemies[e] - delta;
+                if (t <= 0)
+                {
+                    DyingEnemies.Remove(e);
+                }
+                else
+                {
+                    DyingEnemies[e] = t;
+                }
+            }
+
             checkEnemyProjectileCollisions();
+            checkMeleeAttacks();
+            removeDeadEnemies();
         }
 
         public void Draw(SpriteBatch sb)
@@ -273,8 +292,22 @@ namespace Escape
                 o.Draw(sb);
             }
 
-            foreach (Character e in Enemies)
+            foreach (PowerUp p in PowerUps)
             {
+                p.Draw(sb);
+            }
+
+            foreach (Enemy e in Enemies)
+            {
+                e.Draw(sb);
+            }
+
+            foreach (var pair in DyingEnemies)
+            {
+                Enemy e = pair.Key;
+                float timeLeft = pair.Value;
+                var percentLeft = timeLeft / e.DeathFadeTime;
+                e.OverrideTint = new Color(Color.Black, percentLeft);
                 e.Draw(sb);
             }
 
@@ -325,9 +358,36 @@ namespace Escape
             return Doors.ContainsKey(Direction.DOWN) ? Doors[Direction.DOWN] : null;
         }
 
+        private void checkMeleeAttacks()
+        {
+            var p = castle.Player;
+            if (p.AttackArea.HasValue)
+            {
+                var area = p.AttackArea.Value;
+                foreach (var baddie in Enemies)
+                {
+                    if (!baddie.HitBox.Intersects(area))
+                    {
+                        baddie.BeingAttacked = false;
+                    }
+                    else if (!baddie.BeingAttacked)
+                    {
+                        baddie.BeingAttacked = true;
+                        baddie.Health--;
+                    }
+                }
+            }
+            else
+            {
+                foreach (var baddie in Enemies)
+                {
+                    baddie.BeingAttacked = false;
+                }
+            }
+        }
+
         private void checkEnemyProjectileCollisions()
         {
-            List<Enemy> enemiesToRemove = new List<Enemy>();
             List<Projectile> projectilesToRemove = new List<Projectile>();
             // TODO move to enemy
             // TODO skip enemies already hit
@@ -353,7 +413,7 @@ namespace Escape
                                 }
                                 else
                                 {
-                                    enemiesToRemove.Add(g);
+                                    g.Health--;
                                     projectilesToRemove.Add(p);
                                 }
                                 break;
@@ -363,8 +423,20 @@ namespace Escape
             }
 
             Projectiles = Projectiles.Except(projectilesToRemove).ToList();
-            Enemies = Enemies.Except(enemiesToRemove).ToList();
         }
 
+        private void removeDeadEnemies()
+        {
+            for (int i = 0; i < Enemies.Count(); i++)
+            {
+                var e = Enemies[i];
+                if (e.Health <= 0)
+                {
+                    DyingEnemies.Add(e, e.DeathFadeTime);
+                    Enemies.RemoveAt(i);
+                    i--;
+                }
+            }
+        }
     }
 }

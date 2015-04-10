@@ -72,15 +72,6 @@ namespace Escape
             get { return 100; }
         }
 
-        public override Color Tint
-        {
-            get
-            {
-                if (Frozen) return Color.Cyan;
-                return Color.White;
-            }
-        }
-
         // Constuctor
         public Ghost(ContentManager cm, SpriteRender sr, AnimatedSpriteEntity target)
             : base(cm, sr, target, "ghost_sprite_sheet.png")

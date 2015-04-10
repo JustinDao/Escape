@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace Escape
         const float ATTACK_REACH = 100 - ATTACK_SIZE;
         public Vector2 AttackVector = Vector2.Zero;
         public Rectangle? AttackArea = null;
+        Texture2D weaponTexture;
         // power-ups
         public bool HasFire = false;
         public bool HasIce = false;
@@ -208,6 +210,8 @@ namespace Escape
             PlayerControl = true;
             Submission = MAX_SUBMISSION;
 
+            weaponTexture = cm.Load<Texture2D>("spear.png");
+
             Questions = new List<Question>();
 
             // Create Question Set
@@ -276,6 +280,25 @@ namespace Escape
             base.Update(gt, s);
         }
 
+        public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch sb)
+        {
+            base.Draw(sb);
+            if (AttackArea.HasValue)
+            {
+                var area = AttackArea.Value;
+                // sb.Draw(weaponTexture, AttackArea.Value, Tint);
+                sb.Draw(
+                    weaponTexture,
+                    new Vector2(area.Center.X, area.Center.Y),
+                    null,
+                    Tint,
+                    (float)Math.Atan2(AttackVector.Y,AttackVector.X),
+                    new Vector2(weaponTexture.Width, weaponTexture.Height/2f),
+                    1,
+                    SpriteEffects.FlipHorizontally,
+                    Depth);
+            }
+        }
         private void CheckEndGame(Screen s)
         {
             if (!(s is Castle)) return;
@@ -294,11 +317,16 @@ namespace Escape
 
         private void Action(Room room)
         {
-            if (!PlayerControl) return;
+            if (!PlayerControl)
+            {
+                AttackArea = null;
+                return;
+            }
 
             // lance
             AttackArea = null;
             var rStick = Ctrls.gp.ThumbSticks.Right;
+            rStick.Y *= -1;
             AttackVector = rStick;
             if (AttackVector.LengthSquared() > 0)
             {
@@ -349,15 +377,13 @@ namespace Escape
 
         private void CheckPowerUps(Room room)
         {
-            List<Entity> toRemove = new List<Entity>();
+            List<PowerUp> toRemove = new List<PowerUp>();
 
-            foreach (Entity o in room.Obstacles)
-            {
-                if (o is PowerUp)
+            foreach (PowerUp p in room.PowerUps)
                 {
-                    PowerUp p = o as PowerUp;
                     if (p.HitBox.Intersects(this.HitBox))
                     {
+                    var o = p;
                         if (p.IsFire)
                         {
                             this.HasFire = true;
@@ -381,11 +407,11 @@ namespace Escape
                             this.HasSpeed = true;
                             toRemove.Add(o);
                         }
-                    }
+                    
                 }
             }
 
-            room.Obstacles = room.Obstacles.Except(toRemove).ToList();
+            room.PowerUps = room.PowerUps.Except(toRemove).ToList();
         }
 
         private void UpdateAI(GameTime gt)
