@@ -90,6 +90,8 @@ namespace Escape
 
         public Vector2 Target;
 
+        public bool reached = false;
+
         public override Vector2 CurrentVelocity
         {
             get
@@ -121,7 +123,30 @@ namespace Escape
 
             if (CurrentVelocity.LengthSquared() * delta >= (Target - Position).LengthSquared())
             {
+                if (!(s is EndScreen)) return;
+
+                if(!reached)
+                {
+                    reached = true;
+
+                    var e = s as EndScreen;
+
+                    if (!e.DrawAmulet)
+                        e.DrawAmulet = true;
+                    else if (!e.BackAway)
+                        e.BackAway = true;
+                    else if (!e.DrawPortal)
+                    {
+                        e.DrawPortal = true;
+                        e.DrawAmulet = false;
+                    }                        
+                }               
+
                 return;
+            }
+            else
+            {
+                reached = false;
             }
 
             base.Update(gt, s);

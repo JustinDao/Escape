@@ -1,0 +1,14 @@
+#
+# Sprite sheet data for MonoGame.
+#
+# To learn how to import these sprites into your MonoGame project visit:
+# http://www.codeandweb.com/texturepacker/monogame
+#
+# Sprite sheet: portal_sprite_sheet.png (116 x 512)
+# $TexturePacker:SmartUpdate:950676d2b956e5eeca9123cfc9f51861:a1b4b25ece6b69efee142e048dd07576:35d0cea304e4bb9af3c6f2d0e62903f3$
+#
+
+First;0;2;240;97;143;174;174;0.5670103092783505;0.5104895104895105
+Fourth;0;2;385;97;123;147;173;0.520618556701031;0.3861788617886179
+Second;0;2;101;107;137;150;158;0.5046728971962616;0.44525547445255476
+Third;1;2;2;112;97;166;138;0.6082474226804123;0.44642857142857145

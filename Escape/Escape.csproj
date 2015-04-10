@@ -35,6 +35,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="MacGuffin.cs" />
     <Compile Include="AnimatedSpriteEntity.cs" />
     <Compile Include="Bar.cs" />
     <Compile Include="Boulder.cs" />
@@ -54,7 +55,11 @@
     <Compile Include="Controls.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Door.cs" />
-    <Compile Include="PlayerCutScene.cs" />
+    <Compile Include="PlayerCutScene.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="Portal.cs" />
+    <Compile Include="PortalSprites.cs" />
     <Compile Include="Projectile.cs" />
     <Compile Include="Floor.cs" />
     <Compile Include="Hole.cs" />
@@ -114,7 +119,9 @@
     <Content Include="Content\farore.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\final.png" />
+    <Content Include="Content\final.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\fireball.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -164,6 +171,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\naryu.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\portal_sprite_sheet.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\portal_sprite_sheet.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\snowflake.png">
