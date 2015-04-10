@@ -58,6 +58,10 @@ namespace Escape
             get { return 400; }
         }
 
+
+        private float currentFireballInterval = 0;
+        private float fireballInterval = 1;
+
         public FireBoss(ContentManager cm, SpriteRender sr, Vector2[] patrolPoints)
             : base(cm, sr, "fireboss_sprite_sheet.png", patrolPoints)
         {
@@ -76,6 +80,36 @@ namespace Escape
 
                 collideObstacle(e);
             }
+        }
+
+        public override void Update(GameTime gt, Screen s)
+        {
+            Console.WriteLine("FireBoss update()");
+            currentFireballInterval += (float)gt.ElapsedGameTime.TotalSeconds;
+
+            if (currentFireballInterval > fireballInterval)
+            {
+                Console.WriteLine("Time to boom!");
+                if (s is Castle)
+                {
+                    Console.WriteLine("It's a castle!!!");
+                    var castle = s as Castle;
+                    var player = castle.Player;
+
+                    ShootFireBall(castle, player);
+                }
+                currentFireballInterval -= fireballInterval;
+            }
+
+            base.Update(gt, s);
+        }
+
+        public void ShootFireBall(Castle castle, Player player)
+        {
+            var direction = player.Position - this.Position;
+            direction.Normalize();
+            Console.WriteLine("BOOM!!!");
+            castle.CurrentRoom.AddFireBall(this.Position, direction, evil: true);
         }
 
     }
