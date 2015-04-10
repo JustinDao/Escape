@@ -33,6 +33,13 @@ namespace Escape
         {
             CurrentRoom = new Room(mg, this);
             CurrentRoom.LeftRoom = new Room(mg, "RoomTemplate.csv");
+
+            CurrentRoom.LeftRoom.Enemies.Add(new FireBoss(mg.Content, mg.SpriteRender, new Vector2[] 
+                { 
+                    new Vector2(250, 100), new Vector2(450, 100), new Vector2(250, 450) 
+                }
+            ));
+
             CurrentRoom.LeftRoom.RightRoom = CurrentRoom;
             CurrentRoom.RightRoom = new Room(mg, "R2.csv");
             CurrentRoom.RightRoom.LeftRoom = CurrentRoom;

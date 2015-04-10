@@ -43,6 +43,9 @@
     </Compile>
     <Compile Include="Character.cs" />
     <Compile Include="EnemyFollow.cs" />
+    <Compile Include="EnemyPatrol.cs" />
+    <Compile Include="FireBoss.cs" />
+    <Compile Include="FireBossSprites.cs" />
     <Compile Include="Ghost.cs" />
     <Compile Include="GhostSprites.cs" />
     <Compile Include="Player.cs" />
@@ -105,6 +108,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\fireball.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\fireboss_sprite_sheet.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\fireboss_sprite_sheet.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\ghost_sprite_sheet.png">

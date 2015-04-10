@@ -34,7 +34,6 @@ namespace Escape
 
         }
 
-
         public override void LoadContent(ContentManager cm)
         {
             this.BackgroundTexture = new Texture2D(this.gd, 1, 1);

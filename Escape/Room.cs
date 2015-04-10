@@ -33,7 +33,7 @@ namespace Escape
         public Random Rng = new Random();
 
         public Room LeftRoom
-        { 
+        {
             get
             {
                 return this.Neighbors[Direction.LEFT];
@@ -47,7 +47,7 @@ namespace Escape
         }
 
         public Room RightRoom
-        { 
+        {
             get
             {
                 return this.Neighbors[Direction.RIGHT];
