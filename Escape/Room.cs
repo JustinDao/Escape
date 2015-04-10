@@ -165,7 +165,6 @@ namespace Escape
 			Obstacles.Add(new Boulder(contentManager, new Vector2(175, 300), castle.Player));
 
             PowerUps.Add(new PowerUp(contentManager, new Vector2(200, 300), "yellow.png", false, false, false, true));
-            PowerUps.Add(new PowerUp(contentManager, new Vector2(175, 75), "din.png", true, false, false, false));
             PowerUps.Add(new PowerUp(contentManager, new Vector2(500, 500), "naryu.png", false, true, false, false));
             PowerUps.Add(new PowerUp(contentManager, new Vector2(700, 500), "farore.png", false, false, true, false));
         }
