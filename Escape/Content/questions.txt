@@ -1,0 +1,4 @@
+﻿What is your favorite color?;Yellow;Blue;Red;Green
+How many kids do you have?;1;2;4;5
+What is your dream job?;A Game Developer!;Superhero;Blacksmith;Dancer
+What's your favorite season?;Spring;Summer;Fall;Winter

@@ -33,10 +33,12 @@ namespace Escape
                 return CurrentSprite.SourceRect;
             }
         }
+
         public SpriteEntity(ContentManager cm, string spriteName, Rectangle? sourceRect = null)
         {
             CurrentSprite = new Sprite(cm, spriteName, sourceRect);
         }
+
         public override void Draw(SpriteBatch batch)
         {
             var tempOrigin = new Vector2(Origin.X * SourceRect.Width, Origin.Y * SourceRect.Height) * Scale;
