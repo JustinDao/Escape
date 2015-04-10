@@ -12,13 +12,15 @@ namespace Escape
     {
         public bool IsFire;
         public bool IsIce;
-        public PowerUp(ContentManager cm, Vector2 pos, string spriteName, bool isFire, bool isIce)
+        public bool IsSpeed;
+        public PowerUp(ContentManager cm, Vector2 pos, string spriteName, bool isFire, bool isIce, bool isSpeed)
             : base(cm, spriteName)
         {
             Scale = 0.5f;
             Position = pos;
             IsFire = isFire;
             IsIce = isIce;
+            IsSpeed = isSpeed;
         }
         public override void Update(GameTime gt, Screen s)
         {

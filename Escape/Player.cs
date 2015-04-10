@@ -15,6 +15,7 @@ namespace Escape
         // power-ups
         public bool HasFire = false;
         public bool HasIce = false;
+        public bool HasSpeed = false;
         // controls
         public readonly Controls Ctrls;
         // Value of the Player's current Submission
@@ -165,8 +166,14 @@ namespace Escape
                             stick.Y = 1;
                         }
                     }
-
-                    return stick * MaxSpeed;
+                    if (HasSpeed && Ctrls.isPressed(Keys.D4, Buttons.Y))
+                    {
+                        return stick * MaxSpeed * 2;
+                    }
+                    else
+                    {
+                        return stick * MaxSpeed;
+                    }
                 }
                 else
                 {
@@ -237,6 +244,8 @@ namespace Escape
             {
                 room.AddSnowflakes(Position);
             }
+            
+            
 
         }
 
@@ -262,31 +271,35 @@ namespace Escape
 
         private void CheckPowerUps(Room room)
         {
-            List<Entity> toRemove = new List<Entity>();
+            List<PowerUp> toRemove = new List<PowerUp>();
 
-            foreach (Entity o in room.Obstacles)
+            foreach (PowerUp o in room.PowerUps)
             {
-                if (o is PowerUp)
+            
+                PowerUp p = o as PowerUp;
+                if (p.HitBox.Intersects(this.HitBox))
                 {
-                    PowerUp p = o as PowerUp;
-                    if (p.HitBox.Intersects(this.HitBox))
+                    if (p.IsFire)
                     {
-                        if (p.IsFire)
-                        {
-                            this.HasFire = true;
-                            toRemove.Add(o);
-                        }
-
-                        if (p.IsIce)
-                        {
-                            this.HasIce = true;
-                            toRemove.Add(o);
-                        }
+                        this.HasFire = true;
+                        toRemove.Add(o);
                     }
+
+                    if (p.IsIce)
+                    {
+                        this.HasIce = true;
+                        toRemove.Add(o);
+                    }
+                    if (p.IsSpeed)
+                    {
+                        this.HasSpeed = true;
+                        toRemove.Add(o);
+                    }
+                    
                 }
             }
 
-            room.Obstacles = room.Obstacles.Except(toRemove).ToList();
+            room.PowerUps = room.PowerUps.Except(toRemove).ToList();
         }
 
         private void UpdateAI(GameTime gt)
