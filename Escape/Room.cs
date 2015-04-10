@@ -269,10 +269,9 @@ namespace Escape
                             case 31:
                                 Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Candle\\Layer_3-002.png"));
                                 break;
-
 							case 32:
 								Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count));
-							    Boulders.Add(new Boulder(contentManager, new Vector2((25 * x_count) + 1, (25 * y_count) + 2), castle.Player));
+							    Boulders.Add(new Boulder(contentManager, new Vector2((25 * x_count), (25 * y_count)), castle.Player));
 								break;
                             default: // default to a hole
                                 if (int.Parse(cells[x_count]) > 11) break;
