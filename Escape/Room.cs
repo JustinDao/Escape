@@ -208,6 +208,10 @@ namespace Escape
                             case 1: // c
                                 Walls.Add(new Wall(contentManager, 25 * x_count, 25 * y_count));
                                 break;
+							case 12:
+								Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count));
+								Obstacles.Add(new Boulder(contentManager, new Vector2(25 * x_count - 5, 25 * y_count - 5), castle.Player));
+								break;
                             default: // default to a hole
                                 Obstacles.Add(new Hole(contentManager, 25 * x_count, 25 * y_count, int.Parse(cells[x_count]) - 2));
                                 break;
