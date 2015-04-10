@@ -10,6 +10,8 @@ namespace Escape
 {
     abstract class Enemy : Character
     {
+        const float FLASH_TIME = 0.75f;
+        float flashTimer = 0;
         public bool BeingAttacked = false;
         public virtual int MaxHealth
         {
@@ -29,6 +31,7 @@ namespace Escape
             {
                 if (value < hp)
                 {
+                    flashTimer = FLASH_TIME;
                     OnDamage(hp - value);
                 }
                 hp = value;
@@ -53,7 +56,7 @@ namespace Escape
         {
             get
             {
-                return 1;
+                return 2;
             }
         }
 
@@ -62,22 +65,19 @@ namespace Escape
         {
             get
             {
-                var hit = BeingAttacked || Health == 0;
                 if (OverrideTint.HasValue)
                 {
                     return OverrideTint.Value;
                 }
-                else if (Frozen && hit)
+                else if (flashTimer > 0)
                 {
-                    return Color.Purple;
+                    var percent = 1 - (flashTimer / FLASH_TIME);
+                    var col = new Color(1,percent,percent);
+                    return Frozen ? Color.Lerp(Color.Red, Color.Cyan, percent) : col;
                 }
                 else if (Frozen)
                 {
                     return Color.Cyan;
-                }
-                else if (hit)
-                {
-                    return Color.Red;
                 }
                 else return base.Tint;
             }
@@ -96,9 +96,14 @@ namespace Escape
 
         public override void Update(GameTime gt, Screen s)
         {
+            float delta = (float)gt.ElapsedGameTime.TotalSeconds;
+            if (flashTimer > 0)
+            {
+                flashTimer -= delta;
+            }
             if (FreezeTimer > 0)
             {
-                FreezeTimer -= (float)gt.ElapsedGameTime.TotalSeconds;
+                FreezeTimer -= delta;
             }
             base.Update(gt, s);
         }

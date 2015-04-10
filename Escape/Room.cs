@@ -307,7 +307,7 @@ namespace Escape
                 Enemy e = pair.Key;
                 float timeLeft = pair.Value;
                 var percentLeft = timeLeft / e.DeathFadeTime;
-                e.OverrideTint = new Color(Color.Black, percentLeft);
+                e.OverrideTint = new Color(percentLeft, 0, 0, percentLeft);
                 e.Draw(sb);
             }
 
