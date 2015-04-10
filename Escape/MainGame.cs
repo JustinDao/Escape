@@ -63,14 +63,9 @@ namespace Escape
             pause = new PauseMenu(this, GraphicsDevice);
             miniGame = new MiniGame(this, GraphicsDevice, castle.Player);
             endScreen = new EndScreen(this);
-            currentScreen = start;
+            currentScreen = start;            
 
-            Song song = this.Content.Load<Song>("Songs\\castle.wav");
-            //MediaPlayer.Play(song);
-            MediaPlayer.IsRepeating = true;
-            
-
-            submissionBar = new SubmissionBar(new Rectangle(20, 20, 200, 20), graphics);
+            submissionBar = new SubmissionBar(50, 50, graphics);
             base.Initialize();
 
             Joystick.Init();
