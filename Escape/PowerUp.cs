@@ -14,7 +14,8 @@ namespace Escape
         public bool IsIce;
 		public bool IsStrength;
         public bool IsSpeed;
-		public PowerUp(ContentManager cm, Vector2 pos, string spriteName, bool isFire, bool isIce, bool isStrength, bool isSpeed)
+		public PowerUp(ContentManager cm, Vector2 pos, string spriteName,
+            bool isFire = false, bool isIce = false, bool isStrength = false, bool isSpeed = false)
             : base(cm, spriteName)
         {
             Scale = 0.5f;

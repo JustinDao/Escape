@@ -42,7 +42,7 @@ namespace Escape
 
             MainRoom.LeftRoom.Enemies.Add(new FireBoss(mg.Content, mg.SpriteRender, new Vector2[] 
                 { 
-                    new Vector2(300, 100), new Vector2(500, 100)
+                    new Vector2(300, 100), new Vector2(500, 100), new Vector2(300, 300), new Vector2(500, 300)
                 }
             ));
 
@@ -60,6 +60,21 @@ namespace Escape
             MainRoom.RightRoom.UpRoom = new Room(mg, this, "BoulderRoom.csv");
             MainRoom.RightRoom.UpRoom.DownRoom = MainRoom.RightRoom;
 
+            CurrentRoom.RightRoom = new Room(mg, this, "R2.csv");
+            CurrentRoom.RightRoom.LeftRoom = CurrentRoom;
+
+            CurrentRoom.UpRoom = new Room(mg, this, "R3.csv");
+            CurrentRoom.UpRoom.Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, this.Player, new Vector2(400, 300)));
+            CurrentRoom.UpRoom.Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, this.Player, new Vector2(450, 500)));
+            CurrentRoom.UpRoom.Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, this.Player, new Vector2(150, 400)));
+
+            CurrentRoom.UpRoom.DownRoom = CurrentRoom;
+            CurrentRoom.UpRoom.UpRoom = new Room(mg, this, "R4.csv");
+            CurrentRoom.UpRoom.UpRoom.Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, this.Player, new Vector2(400, 300)));
+
+            CurrentRoom.UpRoom.UpRoom.DownRoom = CurrentRoom.UpRoom;
+            CurrentRoom.DownRoom = new Room(mg, this, "R5.csv");
+            CurrentRoom.DownRoom.UpRoom = CurrentRoom;
             MainRoom.UpRoom = new Room(mg, this, "R3.csv");
             MainRoom.UpRoom.DownRoom = MainRoom;
 

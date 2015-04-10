@@ -25,6 +25,7 @@ namespace Escape
         public List<Entity> Obstacles { get; set; }
         public List<Projectile> Projectiles = new List<Projectile>();
         public List<PowerUp> PowerUps = new List<PowerUp>();
+		public List<Boulder> Boulders = new List<Boulder>();
 
         public List<Enemy> Enemies = new List<Enemy>();
         public Dictionary<Enemy, float> DyingEnemies = new Dictionary<Enemy, float>();
@@ -102,7 +103,7 @@ namespace Escape
             this.Width = mg.GAME_WIDTH;
             this.Height = mg.GAME_HEIGHT;
 
-            Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, castle.Player));
+            Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, castle.Player, new Vector2(500, 500)));
 
             Floors = new List<Floor>();
             for (int i = 0; i < this.Width / 25; i++)
@@ -162,10 +163,9 @@ namespace Escape
             Obstacles.Add(new Hole(contentManager, 425, 425, 9));
             Obstacles.Add(new Hole(contentManager, 450, 425, 9));
 
-			Obstacles.Add(new Boulder(contentManager, new Vector2(175, 300), castle.Player));
+			Boulders.Add(new Boulder(contentManager, new Vector2(175, 300), castle.Player));
 
             PowerUps.Add(new PowerUp(contentManager, new Vector2(200, 300), "yellow.png", false, false, false, true));
-            PowerUps.Add(new PowerUp(contentManager, new Vector2(175, 75), "din.png", true, false, false, false));
             PowerUps.Add(new PowerUp(contentManager, new Vector2(500, 500), "naryu.png", false, true, false, false));
             PowerUps.Add(new PowerUp(contentManager, new Vector2(700, 500), "farore.png", false, false, true, false));
         }
@@ -270,6 +270,10 @@ namespace Escape
                                 Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Candle\\Layer_3-002.png"));
                                 break;
 
+							case 32:
+								Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count));
+							    Boulders.Add(new Boulder(contentManager, new Vector2((25 * x_count) + 1, (25 * y_count) + 2), castle.Player));
+								break;
                             default: // default to a hole
                                 if (int.Parse(cells[x_count]) > 11) break;
                                 Obstacles.Add(new Hole(contentManager, 25 * x_count, 25 * y_count, int.Parse(cells[x_count]) - 2));
@@ -302,6 +306,16 @@ namespace Escape
 			foreach (Entity o in Obstacles)
 			{
 				o.Update(gameTime, s);
+			}
+
+			for (int i = 0; i < Boulders.Count(); i++)
+			{
+				var b = Boulders[i];
+				b.Update(gameTime, s);
+				if (b.Removed)
+				{
+					i--;
+				}
 			}
 
             Projectiles = Projectiles.Except(outProjectiles).ToList();
@@ -359,6 +373,11 @@ namespace Escape
             {
                 p.Draw(sb);
             }
+
+			foreach (Boulder b in Boulders)
+			{
+				b.Draw(sb);
+			}
 
             foreach (Enemy e in Enemies)
             {
@@ -498,6 +517,12 @@ namespace Escape
                     DyingEnemies.Add(e, e.DeathFadeTime);
                     Enemies.RemoveAt(i);
                     i--;
+                    if (e.Drop != null)
+                    {
+                        var drop = e.Drop;
+                        PowerUps.Add(drop);
+                        drop.Position = new Vector2(e.HitBox.Center.X, e.HitBox.Center.Y);
+                    }
                 }
             }
         }

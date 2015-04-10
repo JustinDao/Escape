@@ -72,21 +72,9 @@ namespace Escape
         public FireBoss(ContentManager cm, SpriteRender sr, Vector2[] patrolPoints)
             : base(cm, sr, "fireboss_sprite_sheet.png", patrolPoints)
         {
+            ignoreHoles = true;
             Scale = 1.5f;
-        }
-
-        public override void CollideObstacles(Room room)
-        {
-            foreach (var wall in room.Walls)
-            {
-                collideObstacle(wall);
-            }
-            foreach (var e in room.Obstacles)
-            {
-                if (e is Hole) continue;
-
-                collideObstacle(e);
-            }
+            Drop = new PowerUp(cm, Vector2.Zero, "din.png", isFire: true);
         }
 
         public override void Update(GameTime gt, Screen s)
