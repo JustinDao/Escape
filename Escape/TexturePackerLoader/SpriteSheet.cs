@@ -4,11 +4,11 @@ namespace TexturePackerLoader
 
     using Microsoft.Xna.Framework.Graphics;
 
-    public class TPSpriteSheet
+    public class SpriteSheet
     {
         private readonly IDictionary<string, SpriteFrame> spriteList;
 
-        public TPSpriteSheet()
+        public SpriteSheet()
         {
             spriteList = new Dictionary<string, SpriteFrame>();
         }
@@ -18,7 +18,7 @@ namespace TexturePackerLoader
             spriteList.Add(name, sprite);
         }
 
-        public void Add(TPSpriteSheet otherSheet)
+        public void Add(SpriteSheet otherSheet)
         {
             foreach (var sprite in otherSheet.spriteList)
             {

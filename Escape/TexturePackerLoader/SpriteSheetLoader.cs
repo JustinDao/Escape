@@ -28,21 +28,21 @@
 #endif
         }
 
-        public TPSpriteSheet MultiLoad(string imageResourceFormat, int numSheets)
+        public SpriteSheet MultiLoad(string imageResourceFormat, int numSheets)
         {
-            TPSpriteSheet result = new TPSpriteSheet();
+            SpriteSheet result = new SpriteSheet();
             for (int i = 0; i < numSheets; i++)
             {
                 string imageResource = string.Format(imageResourceFormat, i);
 
-                TPSpriteSheet tmp = Load(imageResource);
+                SpriteSheet tmp = Load(imageResource);
                 result.Add(tmp);
             }
             return result;
         }
 
 
-        public TPSpriteSheet Load(string imageResource)
+        public SpriteSheet Load(string imageResource)
         {
             var texture = this.contentManager.Load<Texture2D>(imageResource);
 
@@ -52,7 +52,7 @@
 
             var dataFileLines = this.ReadDataFile(dataFile);
 
-            var sheet = new TPSpriteSheet();
+            var sheet = new SpriteSheet();
 
             foreach (
                 var cols in

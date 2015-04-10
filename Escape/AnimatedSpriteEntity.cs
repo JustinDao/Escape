@@ -16,10 +16,16 @@ namespace Escape
         public Vector2 Position;
         public Vector2 Origin;
         public float Rotation = 0f; // DEGREES CCW :(
-        public Color Tint = Color.White;
+        public virtual Color Tint 
+        { 
+            get
+            {
+                return Color.White;
+            }
+        }
         public float Depth = 0f;
 
-        public TPSpriteSheet SpriteSheet;
+        public SpriteSheet SpriteSheet;
         public SpriteRender SpriteRender;
 
         public abstract string SpriteString { get; }

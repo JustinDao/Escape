@@ -379,7 +379,7 @@ namespace Escape
 
         private void ChangeAIDirection()
         {
-            // Flip Direction of AI if intersecting with e
+            // Flip Direction of AI if intersecting with c
             if (!PlayerControl)
             {
                 aiVelocity = GetRandomVelocity();

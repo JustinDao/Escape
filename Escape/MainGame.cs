@@ -62,7 +62,7 @@ namespace Escape
             miniGame = new MiniGame(this, GraphicsDevice);
             currentScreen = start;
 
-            Song song = this.Content.Load<Song>("Songs\\rtr.wav");
+            Song song = this.Content.Load<Song>("Songs\\castle.wav");
             //MediaPlayer.Play(song);
             MediaPlayer.IsRepeating = true;
             
