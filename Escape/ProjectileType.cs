@@ -7,6 +7,6 @@ namespace Escape
 {
     public enum ProjectileType
     {
-        FIREBALL, SNOWFLAKE
+        FIREBALL, SNOWFLAKE, BOULDER
     }
 }

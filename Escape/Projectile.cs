@@ -47,6 +47,14 @@ namespace Escape
             fire.Scale = 0.15f;
             return fire;
         }
+        public static Projectile CreateBoulder(ContentManager cm,
+            Vector2 pos, Vector2 vel, bool evil = false)
+        {
+            var boulder = new Projectile(cm, "boulder.png", ProjectileType.BOULDER,
+                pos, vel, evil);
+            boulder.Scale = 0.5f;
+            return boulder;
+        }
     }
 }
 

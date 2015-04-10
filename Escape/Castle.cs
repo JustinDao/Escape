@@ -59,6 +59,11 @@ namespace Escape
 
             CurrentRoom.UpRoom.UpRoom.DownRoom = CurrentRoom.UpRoom;
             CurrentRoom.DownRoom = new Room(mg, this, "R5.csv");
+            CurrentRoom.DownRoom.Enemies.Add(new EarthBoss(mg.Content, mg.SpriteRender, new Vector2[] 
+                { 
+                    new Vector2(100, 100), new Vector2(200, 100), new Vector2(300, 200), new Vector2(400, 300)
+                }
+            ));
             CurrentRoom.DownRoom.UpRoom = CurrentRoom;
 
             // Infinite Room Loop!

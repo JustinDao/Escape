@@ -340,6 +340,10 @@ namespace Escape
         {
             Projectiles.Add(Projectile.CreateFireball(contentManager, position, dir * 500, evil));
         }
+        public void AddBoulder(Vector2 position, Vector2 dir, bool evil = false)
+        {
+            Projectiles.Add(Projectile.CreateBoulder(contentManager, position, dir * 500, evil));
+        }
 
         public Door LeftDoor()
         {
