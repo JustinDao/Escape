@@ -10,7 +10,7 @@ namespace Escape
 {
     abstract class Enemy : Character
     {
-        const float FLASH_TIME = 0.5f;
+        const float FLASH_TIME = 0.75f;
         float flashTimer = 0;
         public bool BeingAttacked = false;
         public virtual int MaxHealth
@@ -56,7 +56,7 @@ namespace Escape
         {
             get
             {
-                return 1;
+                return 2;
             }
         }
 
