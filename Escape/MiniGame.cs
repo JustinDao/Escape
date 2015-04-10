@@ -16,13 +16,17 @@ namespace Escape
         public bool Active { get; set; }
 
         private Question currentQuestion;
-        private List<Question> QuestionSet;
+        private List<Question> CurrentQuestions;
+        private List<Question> AllQuestions;
         private int timeRemaining;
         private int timeInterval;
         private Rectangle BackgroundBox { get; set; }
         private SpriteFont Font { get; set; }
 
         private int TOTAL_TIME = 60;
+
+        private int numQuestions = 1;
+        private int MAX_QUESTIONS = 5;
 
         public MiniGame(MainGame mg, GraphicsDevice gd, Player player)
         {
@@ -32,7 +36,7 @@ namespace Escape
             this.timeRemaining = TOTAL_TIME;
             this.timeInterval = 0;
             this.Active = false;
-            this.QuestionSet = new List<Question>(player.Questions);
+            this.AllQuestions = new List<Question>(player.Questions);
 
             randomizeQuestions();
         }
@@ -91,7 +95,7 @@ namespace Escape
 
             if (controls.onPress(currentQuestion.CorrectKey, currentQuestion.CorrectButton)) 
             {
-                if (currentQuestion == QuestionSet.Last())
+                if (currentQuestion == CurrentQuestions.Last())
                 {
                     this.Active = false;
                     player.RegainControl();
@@ -99,7 +103,7 @@ namespace Escape
                 }
                 else
                 {
-                    currentQuestion = QuestionSet[QuestionSet.IndexOf(currentQuestion) + 1];
+                    currentQuestion = CurrentQuestions[CurrentQuestions.IndexOf(currentQuestion) + 1];
                 }
             }            
         }
@@ -108,9 +112,9 @@ namespace Escape
         {
             //http://stackoverflow.com/questions/5383498
             var rnd = new Random();
-            QuestionSet = QuestionSet.OrderBy(item => rnd.Next()).ToList();
-
-            this.currentQuestion = QuestionSet.First();
+            CurrentQuestions = AllQuestions.OrderBy(item => rnd.Next()).ToList().Take(numQuestions++).ToList();
+            if (numQuestions > MAX_QUESTIONS) numQuestions = MAX_QUESTIONS;
+            this.currentQuestion = CurrentQuestions.First();
         }
     }
 }
