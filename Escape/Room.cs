@@ -25,7 +25,7 @@ namespace Escape
         public List<Entity> Obstacles { get; set; }
         public List<Projectile> Projectiles = new List<Projectile>();
 
-        public List<Character> Enemies { get; set; }
+        public List<Enemy> Enemies = new List<Enemy>();
         public List<Item> Items { get; set; }
 
         public Dictionary<Direction, Room> Neighbors { get; set; }
@@ -100,7 +100,6 @@ namespace Escape
             this.Width = mg.GAME_WIDTH;
             this.Height = mg.GAME_HEIGHT;
 
-            this.Enemies = new List<Character>();
             Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, castle.Player));
 
             Floors = new List<Floor>();
@@ -180,7 +179,6 @@ namespace Escape
             Floors = new List<Floor>();
             Walls = new List<Wall>();
             Obstacles = new List<Entity>();
-            Enemies = new List<Character>();
             Doors = new Dictionary<Direction, Door>();
             Neighbors = new Dictionary<Direction, Room>();
 
@@ -329,31 +327,28 @@ namespace Escape
 
         private void checkEnemyProjectileCollisions()
         {
-            List<Character> enemiesToRemove = new List<Character>();
+            List<Enemy> enemiesToRemove = new List<Enemy>();
             List<Projectile> projectilesToRemove = new List<Projectile>();
             // TODO move to enemy
             // TODO skip enemies already hit
             foreach (var p in Projectiles)
             {
                 if (p.Evil) continue;
-                foreach (Character c in Enemies)
+                foreach (Enemy g in Enemies)
                 {
-                    if (!(c is Ghost)) continue;
-
-                    Ghost g = c as Ghost;
 
                     if (g.HitBox.Intersects(p.HitBox))
                     {
                         switch (p.Type)
                         {
                             case ProjectileType.SNOWFLAKE:
-                                g.Frozen = true;
+                                g.FreezeTimer = 3;
                                 projectilesToRemove.Add(p);
                                 break;
                             case ProjectileType.FIREBALL:
                                 if (g.Frozen)
                                 {
-                                    g.Frozen = false;
+                                    g.FreezeTimer = 0;
                                     projectilesToRemove.Add(p);
                                 }
                                 else

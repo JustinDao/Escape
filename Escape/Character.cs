@@ -35,6 +35,14 @@ namespace Escape
             get;
         }
 
+        public virtual float SpeedMult
+        {
+            get
+            {
+                return 1;
+            }
+        }
+
         // Velocity (direction AND magnitude) of the character
         public abstract Vector2 CurrentVelocity
         {
@@ -104,7 +112,7 @@ namespace Escape
             UpdateSprites(gt);
 
             // Move the player
-            Position += CurrentVelocity * delta;
+            Position += CurrentVelocity * delta * SpeedMult;
 
             // stuff that involves the castle
             var castle = s as Castle;
