@@ -20,6 +20,9 @@ namespace Escape
         public Vector2 AttackVector = Vector2.Zero;
         public Rectangle? AttackArea = null;
         Texture2D weaponTexture;
+        // getting hit
+        const float HIT_TIME = 1;
+        public float HitTimer = 0;
         // power-ups
         public bool HasFire = false;
         public bool HasIce = false;
@@ -69,6 +72,14 @@ namespace Escape
         public List<Question> Questions;
 
         // overrides
+        public override Color Tint
+        {
+            get
+            {
+                return HitTimer > 0 ? Color.Red : base.Tint;
+            }
+        }
+
         public override float MaxSpeed
         {
             get { return 300; }
@@ -242,6 +253,12 @@ namespace Escape
 
         public override void Update(GameTime gt, Screen s)
         {
+            float delta = (float)gt.ElapsedGameTime.TotalSeconds;
+            if (HitTimer > 0)
+            {
+                HitTimer -= delta;
+            }
+
             // Check If the Player should beat the game
             CheckEndGame(s);
 
@@ -424,6 +441,19 @@ namespace Escape
                 aiTime = 0;
                 aiInterval = rand.Next(AI_SWITCH_TIME);
             }
+        }
+
+        public override void OnEnemyCollision(Enemy e)
+        {
+            if (HitTimer > 0) return;
+            HitTimer = HIT_TIME;
+            Submission -= e.Damage;
+        }
+
+        public void OnProjectileCollision(Projectile p)
+        {
+            if (!p.Evil) return;
+            OnEnemyCollision(p.Owner); // hacky :P
         }
 
         private void CheckDoors(Castle castle)

@@ -101,7 +101,7 @@ namespace Escape
             var direction = player.Position - this.Position;
             direction.Normalize();
             Console.WriteLine("BOOM!!!");
-            castle.CurrentRoom.AddFireBall(this.Position, direction, evil: true);
+            castle.CurrentRoom.AddFireBall(this.Position, direction, evil: this);
         }
 
     }

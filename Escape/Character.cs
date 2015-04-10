@@ -127,7 +127,7 @@ namespace Escape
 
         }
 
-        protected void collideObstacle(Rectangle eBox)
+        protected bool collideObstacle(Rectangle eBox)
         {
             var pBox = CollisionBox;
             var overlap = Rectangle.Intersect(pBox, eBox);
@@ -135,7 +135,7 @@ namespace Escape
             // If there is no overlap, skip
             if (overlap.Width == 0 && overlap.Height == 0)
             {
-                return;
+                return false;
             }
 
             if (overlap.Width > overlap.Height) // move vertically
@@ -156,6 +156,12 @@ namespace Escape
                 }
                 Position.X += mov;
             }
+            return true;
+        }
+
+        public virtual void OnEnemyCollision(Enemy e)
+        {
+            // do nothing by default
         }
 
         public virtual void CollideObstacles(Room room)
@@ -172,7 +178,10 @@ namespace Escape
             foreach (var e in room.Enemies)
             {
                 if (e == this) continue;
-                collideObstacle(e.CollisionBox);
+                if (collideObstacle(e.CollisionBox))
+                {
+                    OnEnemyCollision(e);
+                }
             }
         }
 

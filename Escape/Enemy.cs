@@ -10,6 +10,13 @@ namespace Escape
 {
     abstract class Enemy : Character
     {
+        public virtual int Damage
+        {
+            get
+            {
+                return 200;
+            }
+        }
         public PowerUp Drop = null;
         const float FLASH_TIME = 0.75f;
         float flashTimer = 0;

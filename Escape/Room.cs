@@ -276,7 +276,7 @@ namespace Escape
                 }
             }
 
-            checkEnemyProjectileCollisions();
+            checkProjectileCollisions();
             checkMeleeAttacks();
             removeDeadEnemies();
         }
@@ -352,7 +352,7 @@ namespace Escape
             }
         }
 
-        public void AddFireBall(Vector2 position, Vector2 dir, bool evil = false)
+        public void AddFireBall(Vector2 position, Vector2 dir, Enemy evil = null)
         {
             Projectiles.Add(Projectile.CreateFireball(contentManager, position, dir * 500, evil));
         }
@@ -405,14 +405,24 @@ namespace Escape
             }
         }
 
-        private void checkEnemyProjectileCollisions()
+        private void checkProjectileCollisions()
         {
             List<Projectile> projectilesToRemove = new List<Projectile>();
             // TODO move to enemy
             // TODO skip enemies already hit
             foreach (var p in Projectiles)
             {
-                if (p.Evil) continue;
+                if (p.Evil)
+                {
+                    var player = castle.Player;
+                    if (p.HitBox.Intersects(player.CollisionBox))
+                    {
+                        player.OnProjectileCollision(p);
+                        projectilesToRemove.Add(p);
+                    }
+                    continue;
+                }
+                // else
                 foreach (Enemy g in Enemies)
                 {
 
