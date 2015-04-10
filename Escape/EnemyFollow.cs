@@ -8,7 +8,7 @@ using TexturePackerLoader;
 
 namespace Escape
 {
-    abstract class EnemyFollow : Character
+    abstract class EnemyFollow : Enemy
     {
         public AnimatedSpriteEntity Target;
 

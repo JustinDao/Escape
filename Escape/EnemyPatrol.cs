@@ -8,7 +8,7 @@ using TexturePackerLoader;
 
 namespace Escape
 {
-    abstract class EnemyPatrol : Character
+    abstract class EnemyPatrol : Enemy
     {
         public Vector2[] PatrolPoints;
         int targetIndex = 0;

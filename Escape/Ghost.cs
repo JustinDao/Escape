@@ -10,8 +10,6 @@ namespace Escape
 {
     class Ghost : EnemyFollow
     {
-        public bool Frozen = false;
-
         public override string[] UpSprites
         {
             get
@@ -93,8 +91,6 @@ namespace Escape
 
         public override void Update(GameTime gt, Screen s)
         {   
-            if (Frozen) return;
-
             // base update!
             base.Update(gt, s);
         }

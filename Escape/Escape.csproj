@@ -42,6 +42,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Character.cs" />
+    <Compile Include="Enemy.cs" />
     <Compile Include="EnemyFollow.cs" />
     <Compile Include="EnemyPatrol.cs" />
     <Compile Include="FireBoss.cs" />
