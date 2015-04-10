@@ -23,6 +23,7 @@ namespace Escape
         public List<Floor> Floors { get; set; }
         public List<Wall> Walls { get; set; }
         public List<Entity> Obstacles { get; set; }
+        public List<PowerUp> PowerUps = new List<PowerUp>();
         public List<Projectile> Projectiles = new List<Projectile>();
 
         public List<Character> Enemies { get; set; }
@@ -161,8 +162,9 @@ namespace Escape
             Obstacles.Add(new Hole(contentManager, 425, 425, 9));
             Obstacles.Add(new Hole(contentManager, 450, 425, 9));
 
-            Obstacles.Add(new PowerUp(contentManager, new Vector2(175, 75), "din.png", true, false));
-            Obstacles.Add(new PowerUp(contentManager, new Vector2(500, 500), "naryu.png", false, true));
+            PowerUps.Add(new PowerUp(contentManager, new Vector2(175, 75), "din.png", true, false, false));
+            PowerUps.Add(new PowerUp(contentManager, new Vector2(500, 500), "naryu.png", false, true, false));
+            PowerUps.Add(new PowerUp(contentManager, new Vector2(200, 300), "yellow.png", false, false, true));
         }
 
         public Room(MainGame mg, String csvName)
@@ -268,6 +270,10 @@ namespace Escape
             foreach (Character e in Enemies)
             {
                 e.Draw(sb);
+            }
+            foreach (var p in PowerUps)
+            {
+                p.Draw(sb);
             }
 
             foreach (Projectile p in Projectiles)
