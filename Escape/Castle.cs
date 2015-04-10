@@ -47,9 +47,16 @@ namespace Escape
 
             CurrentRoom.RightRoom = new Room(mg, this, "R2.csv");
             CurrentRoom.RightRoom.LeftRoom = CurrentRoom;
+
             CurrentRoom.UpRoom = new Room(mg, this, "R3.csv");
+            CurrentRoom.UpRoom.Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, this.Player, new Vector2(400, 300)));
+            CurrentRoom.UpRoom.Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, this.Player, new Vector2(450, 500)));
+            CurrentRoom.UpRoom.Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, this.Player, new Vector2(150, 400)));
+
             CurrentRoom.UpRoom.DownRoom = CurrentRoom;
             CurrentRoom.UpRoom.UpRoom = new Room(mg, this, "R4.csv");
+            CurrentRoom.UpRoom.UpRoom.Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, this.Player, new Vector2(400, 300)));
+
             CurrentRoom.UpRoom.UpRoom.DownRoom = CurrentRoom.UpRoom;
             CurrentRoom.DownRoom = new Room(mg, this, "R5.csv");
             CurrentRoom.DownRoom.UpRoom = CurrentRoom;

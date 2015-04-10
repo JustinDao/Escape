@@ -102,7 +102,7 @@ namespace Escape
             this.Width = mg.GAME_WIDTH;
             this.Height = mg.GAME_HEIGHT;
 
-            Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, castle.Player));
+            Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, castle.Player, new Vector2(500, 500)));
 
             Floors = new List<Floor>();
             for (int i = 0; i < this.Width / 25; i++)

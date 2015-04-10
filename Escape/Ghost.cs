@@ -73,11 +73,11 @@ namespace Escape
         }
 
         // Constuctor
-        public Ghost(ContentManager cm, SpriteRender sr, AnimatedSpriteEntity target)
+        public Ghost(ContentManager cm, SpriteRender sr, AnimatedSpriteEntity target, Vector2 position)
             : base(cm, sr, target, "ghost_sprite_sheet.png")
         {
             Target = target;
-            Position = new Vector2(500, 500);
+            Position = position;
         }
 
         public override void Update(GameTime gt, Screen s)
