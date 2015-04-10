@@ -168,10 +168,11 @@ namespace Escape
 			Obstacles.Add(new PowerUp(contentManager, new Vector2(700, 500), "farore.png", false, false, true));
         }
 
-        public Room(MainGame mg, String csvName)
+        public Room(MainGame mg, Castle castle, String csvName)
         {
             contentManager = mg.Content;
             this.mg = mg;
+            this.castle = castle;
             this.Width = mg.GAME_WIDTH;
             this.Height = mg.GAME_HEIGHT;
 
@@ -300,9 +301,9 @@ namespace Escape
             }
         }
 
-        public void AddFireBall(Vector2 position, Vector2 dir)
+        public void AddFireBall(Vector2 position, Vector2 dir, bool evil = false)
         {
-            Projectiles.Add(Projectile.CreateFireball(contentManager, position, dir * 500));
+            Projectiles.Add(Projectile.CreateFireball(contentManager, position, dir * 500, evil));
         }
 
         public Door LeftDoor()
@@ -333,6 +334,7 @@ namespace Escape
             // TODO skip enemies already hit
             foreach (var p in Projectiles)
             {
+                if (p.Evil) continue;
                 foreach (Character c in Enemies)
                 {
                     if (!(c is Ghost)) continue;
@@ -367,56 +369,6 @@ namespace Escape
             Projectiles = Projectiles.Except(projectilesToRemove).ToList();
             Enemies = Enemies.Except(enemiesToRemove).ToList();
         }
-
-        //private void checkSnowflakeEnemyCollisions()
-        //{
-        //    foreach (var o in Projectiles)
-        //    {
-        //        var s = o as Projectile;
-        //        if (s == null || s.Type != ProjectileType.SNOWFLAKE) continue;
-        //        foreach (Enemy c in Enemies)
-        //        {
-        //            if (c.HitBox.Intersects(s.HitBox))
-        //            {
-        //                c.Frozen = true;
-        //            }
-        //        }
-        //    }
-        //}
-
-        //private void checkFireBallEnemyCollisions()
-        //{
-        //    List<Enemy> enemiesToRemove = new List<Enemy>();
-        //    List<Entity> fireBallsToRemove = new List<Entity>();
-
-        //    foreach (Entity o in Obstacles)
-        //    {
-        //        if (o is Projectile && (o as Projectile).Type == ProjectileType.FIREBALL)
-        //        {
-        //            Projectile f = (Projectile)o;
-
-        //            foreach (Enemy c in Enemies)
-        //            {
-        //                if (c.HitBox.Intersects(f.HitBox))
-        //                {
-        //                    if (c.Frozen)
-        //                    {
-        //                        c.Frozen = false;
-        //                    }
-        //                    else
-        //                    {
-        //                        enemiesToRemove.Add(c);
-        //                    }
-        //                    fireBallsToRemove.Add(f);
-        //                    break;
-        //                }
-        //            }
-        //        }
-        //    }
-
-        //    Obstacles = Obstacles.Except(fireBallsToRemove).ToList();
-        //    Enemies = Enemies.Except(enemiesToRemove).ToList();
-        //}
 
     }
 }

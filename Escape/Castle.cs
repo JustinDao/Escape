@@ -32,7 +32,7 @@ namespace Escape
         public void InitializeRooms()
         {
             CurrentRoom = new Room(mg, this);
-            CurrentRoom.LeftRoom = new Room(mg, "RoomTemplate.csv");
+            CurrentRoom.LeftRoom = new Room(mg, this, "RoomTemplate.csv");
 
             CurrentRoom.LeftRoom.Enemies.Add(new FireBoss(mg.Content, mg.SpriteRender, new Vector2[] 
                 { 
@@ -41,13 +41,13 @@ namespace Escape
             ));
 
             CurrentRoom.LeftRoom.RightRoom = CurrentRoom;
-            CurrentRoom.RightRoom = new Room(mg, "R2.csv");
+            CurrentRoom.RightRoom = new Room(mg, this, "R2.csv");
             CurrentRoom.RightRoom.LeftRoom = CurrentRoom;
-            CurrentRoom.UpRoom = new Room(mg, "R3.csv");
+            CurrentRoom.UpRoom = new Room(mg, this, "R3.csv");
             CurrentRoom.UpRoom.DownRoom = CurrentRoom;
-            CurrentRoom.UpRoom.UpRoom = new Room(mg, "R4.csv");
+            CurrentRoom.UpRoom.UpRoom = new Room(mg, this, "R4.csv");
             CurrentRoom.UpRoom.UpRoom.DownRoom = CurrentRoom.UpRoom;
-            CurrentRoom.DownRoom = new Room(mg, "R5.csv");
+            CurrentRoom.DownRoom = new Room(mg, this, "R5.csv");
             CurrentRoom.DownRoom.UpRoom = CurrentRoom;
 
             // Infinite Room Loop!
