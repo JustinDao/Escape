@@ -14,7 +14,7 @@ namespace Escape
         {
             get
             {
-                return base.Damage * 2;
+                return base.Damage * 3;
             }
         }
         public override int MaxHealth

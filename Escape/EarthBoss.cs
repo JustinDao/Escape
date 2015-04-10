@@ -79,6 +79,13 @@ namespace Escape
             get { return 200; }
         }
 
+        public override int Damage
+        {
+            get
+            {
+                return base.Damage * 2;
+            }
+        }
 
         private float currentBoulderInterval = 0;
         private float boulderInterval = 1;

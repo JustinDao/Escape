@@ -103,7 +103,7 @@ namespace Escape
             this.Width = mg.GAME_WIDTH;
             this.Height = mg.GAME_HEIGHT;
 
-            Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, castle.Player, new Vector2(500, 500)));
+            Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, castle.Player, new Vector2(750, 100)));
 
             Floors = new List<Floor>();
             for (int i = 0; i < this.Width / 25; i++)
@@ -167,7 +167,6 @@ namespace Escape
 
             PowerUps.Add(new PowerUp(contentManager, new Vector2(200, 300), "yellow.png", false, false, false, true));
             PowerUps.Add(new PowerUp(contentManager, new Vector2(500, 500), "naryu.png", false, true, false, false));
-            PowerUps.Add(new PowerUp(contentManager, new Vector2(700, 500), "farore.png", false, false, true, false));
         }
 
         public Room(MainGame mg, Castle castle, String csvName)
