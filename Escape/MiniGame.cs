@@ -48,12 +48,19 @@ namespace Escape
             sb.Draw(BackgroundTexture, BackgroundBox, Color.White * 0.6f);
             sb.DrawString(Font, currentQuestion.QuestionText, new Vector2(mg.GAME_WIDTH / 2, 200), Color.Black);
 
+            var middle = mg.GAME_WIDTH / 2;
             Color[] colors = { Color.Yellow, Color.Blue, Color.Red, Color.Green };
+            Vector2[] position = {
+                                     new Vector2(middle, 300),
+                                     new Vector2(middle - 200, 350),
+                                     new Vector2(middle + 200, 350),
+                                     new Vector2(middle, 400),
+                                 };
 
             for(int i = 0; i < currentQuestion.Options.Count; i++)
             {
                 String option = currentQuestion.Options[i];
-                sb.DrawString(Font, option, new Vector2(mg.GAME_WIDTH / 2, 300 + 50 * i), colors[i]);
+                sb.DrawString(Font, option, position[i], /*new Vector2(mg.GAME_WIDTH / 2, 300 + 50 * i)*/ colors[i]);
             }
 
             sb.DrawString(Font, this.timeRemaining.ToString(), new Vector2(mg.GAME_WIDTH - 50, 50), Color.Black);
