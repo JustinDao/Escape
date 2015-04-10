@@ -25,6 +25,7 @@ namespace Escape
         public List<Entity> Obstacles { get; set; }
         public List<Projectile> Projectiles = new List<Projectile>();
         public List<PowerUp> PowerUps = new List<PowerUp>();
+		public List<Boulder> Boulders = new List<Boulder>();
 
         public List<Enemy> Enemies = new List<Enemy>();
         public Dictionary<Enemy, float> DyingEnemies = new Dictionary<Enemy, float>();
@@ -162,7 +163,7 @@ namespace Escape
             Obstacles.Add(new Hole(contentManager, 425, 425, 9));
             Obstacles.Add(new Hole(contentManager, 450, 425, 9));
 
-			Obstacles.Add(new Boulder(contentManager, new Vector2(175, 300), castle.Player));
+			Boulders.Add(new Boulder(contentManager, new Vector2(175, 300), castle.Player));
 
             PowerUps.Add(new PowerUp(contentManager, new Vector2(200, 300), "yellow.png", false, false, false, true));
             PowerUps.Add(new PowerUp(contentManager, new Vector2(500, 500), "naryu.png", false, true, false, false));
@@ -207,11 +208,73 @@ namespace Escape
                             case 1: // c
                                 Walls.Add(new Wall(contentManager, 25 * x_count, 25 * y_count));
                                 break;
-							case 12:
+                            // 2 - 11 are Holes
+                            case 12:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Water\\Layer_1.png"));
+                                break;
+                            case 13:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Water\\Layer_2.png"));
+                                break;
+                            case 14:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Water\\Layer_3.png"));
+                                break;
+                            case 15:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Water\\Layer_4.png"));
+                                break;
+                            case 16:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Water\\Layer_5.png"));
+                                break;
+                            case 17:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Water\\Layer_6.png"));
+                                break;
+                            case 18:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Water\\Layer_7.png"));
+                                break;
+                            case 19:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Water\\Layer_8.png"));
+                                break;
+                            case 20:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Water\\Layer_9.png"));
+                                break;
+                            case 21:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Water\\Layer_10.png"));
+                                break;
+                            case 22:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Water\\Layer_11.png"));
+                                break;
+                            case 23:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "StartRoomEntities\\Door.png"));
+                                break;
+                            case 24:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "StartRoomEntities\\Layer_1.png"));
+                                break;
+                            case 25:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "StartRoomEntities\\Layer_2.png"));
+                                break;
+                            case 26:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "StartRoomEntities\\Layer_3.png"));
+                                break;
+                            case 27:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "StartRoomEntities\\Layer_4.png"));
+                                break;
+                            case 28:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "StartRoomEntities\\Layer_5.png"));
+                                break;
+                            case 29:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Candle\\Layer_1-002.png"));
+                                break;
+                            case 30:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Candle\\Layer_2-002.png"));
+                                break;
+                            case 31:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Candle\\Layer_3-002.png"));
+                                break;
+							case 32:
 								Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count));
-								Obstacles.Add(new Boulder(contentManager, new Vector2(25 * x_count - 5, 25 * y_count - 5), castle.Player));
+							    Boulders.Add(new Boulder(contentManager, new Vector2((25 * x_count), (25 * y_count)), castle.Player));
 								break;
                             default: // default to a hole
+                                if (int.Parse(cells[x_count]) > 11) break;
                                 Obstacles.Add(new Hole(contentManager, 25 * x_count, 25 * y_count, int.Parse(cells[x_count]) - 2));
                                 break;
                         }
@@ -244,6 +307,16 @@ namespace Escape
 				o.Update(gameTime, s);
 			}
 
+			for (int i = 0; i < Boulders.Count(); i++)
+			{
+				var b = Boulders[i];
+				b.Update(gameTime, s);
+				if (b.Removed)
+				{
+					i--;
+				}
+			}
+
             Projectiles = Projectiles.Except(outProjectiles).ToList();
 
             foreach (Enemy e in Enemies)
@@ -265,7 +338,7 @@ namespace Escape
                 }
             }
 
-            checkEnemyProjectileCollisions();
+            checkProjectileCollisions();
             checkMeleeAttacks();
             removeDeadEnemies();
         }
@@ -299,6 +372,11 @@ namespace Escape
             {
                 p.Draw(sb);
             }
+
+			foreach (Boulder b in Boulders)
+			{
+				b.Draw(sb);
+			}
 
             foreach (Enemy e in Enemies)
             {
@@ -336,7 +414,7 @@ namespace Escape
             }
         }
 
-        public void AddFireBall(Vector2 position, Vector2 dir, bool evil = false)
+        public void AddFireBall(Vector2 position, Vector2 dir, Enemy evil = null)
         {
             Projectiles.Add(Projectile.CreateFireball(contentManager, position, dir * 500, evil));
         }
@@ -393,14 +471,24 @@ namespace Escape
             }
         }
 
-        private void checkEnemyProjectileCollisions()
+        private void checkProjectileCollisions()
         {
             List<Projectile> projectilesToRemove = new List<Projectile>();
             // TODO move to enemy
             // TODO skip enemies already hit
             foreach (var p in Projectiles)
             {
-                if (p.Evil) continue;
+                if (p.Evil)
+                {
+                    var player = castle.Player;
+                    if (p.HitBox.Intersects(player.CollisionBox))
+                    {
+                        player.OnProjectileCollision(p);
+                        projectilesToRemove.Add(p);
+                    }
+                    continue;
+                }
+                // else
                 foreach (Enemy g in Enemies)
                 {
 

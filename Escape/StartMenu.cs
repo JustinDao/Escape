@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-
+using Microsoft.Xna.Framework.Media;
 
 namespace Escape
 {
@@ -24,6 +24,9 @@ namespace Escape
             this.gd = gd;
             this.BackgroundBox = new Rectangle(0, 0, mg.GAME_WIDTH, mg.GAME_HEIGHT);
             this.Active = false;
+
+			MediaPlayer.Play(mg.Content.Load<Song>("Songs\\start.wav"));
+
         }
 
         public override void Draw(SpriteBatch sb)
@@ -46,7 +49,9 @@ namespace Escape
 
             if (controls.onPress(Keys.Space, Buttons.Start))
             {
+				MediaPlayer.Stop();
                 mg.SwitchToCastle();
+				MediaPlayer.Play(mg.Content.Load<Song>("Songs\\castle.wav"));
             }
         }
     }

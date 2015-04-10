@@ -8,13 +8,20 @@ namespace Escape
 
     class Projectile : SpriteEntity
     {
-        public bool Evil;
+        public Enemy Owner;
+        public bool Evil
+        {
+            get
+            {
+                return Owner != null;
+            }
+        }
         public float Range;
         public ProjectileType Type;
         public Vector2 StartPosition;
         public Vector2 Velocity;
         public Projectile(ContentManager cm, string spriteName, ProjectileType type,
-            Vector2 position, Vector2 velocity, bool evil = false, float range = 0)
+            Vector2 position, Vector2 velocity, Enemy owner = null, float range = 0)
             : base(cm, spriteName)
         {
             Origin = new Vector2(0.5f, 0.5f);
@@ -23,7 +30,7 @@ namespace Escape
             Velocity = velocity;
             Type = type;
             Range = range;
-            Evil = evil;
+            Owner = owner;
         }
         public override void Update(GameTime gt, Screen s)
         {
@@ -40,10 +47,10 @@ namespace Escape
             return snow;
         }
         public static Projectile CreateFireball(ContentManager cm,
-            Vector2 pos, Vector2 vel, bool evil = false)
+            Vector2 pos, Vector2 vel, Enemy owner = null)
         {
             var fire = new Projectile(cm, "fireball.png", ProjectileType.FIREBALL,
-                pos, vel, evil);
+                pos, vel, owner: owner);
             fire.Scale = 0.15f;
             return fire;
         }

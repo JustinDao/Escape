@@ -10,6 +10,13 @@ namespace Escape
 {
     class FireBoss : EnemyPatrol
     {
+        public override int Damage
+        {
+            get
+            {
+                return base.Damage * 2;
+            }
+        }
         public override int MaxHealth
         {
             get
@@ -101,7 +108,7 @@ namespace Escape
             var direction = player.Position - this.Position;
             direction.Normalize();
             Console.WriteLine("BOOM!!!");
-            castle.CurrentRoom.AddFireBall(this.Position, direction, evil: true);
+            castle.CurrentRoom.AddFireBall(this.Position, direction, evil: this);
         }
 
     }

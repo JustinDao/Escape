@@ -2,3 +2,6 @@
 How many kids do you have?;1;2;4;5
 What is your dream job?;A Game Developer!;Superhero;Blacksmith;Dancer
 What's your favorite season?;Spring;Summer;Fall;Winter
+What is your favorite movie?;Finding Nemo;Toy Story 3;The Mona Lisa;Tommorow's End
+What famous person have you met?;King Arthur;Odin;Mark Sherriff;Hom Tanks
+When do you normally wake up?;Sunrise;Around Noon;After Noon;Whenever I feel like it
