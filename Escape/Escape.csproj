@@ -183,7 +183,9 @@
     <Content Include="Content\questions.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\spear.png" />
+    <Content Include="Content\spear.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\tile_1_single.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
