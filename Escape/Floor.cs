@@ -10,7 +10,7 @@ namespace Escape
 {
     class Floor : SpriteEntity
     {
-        public Floor(ContentManager cm, int x, int y) : base(cm, "tile_50_50.png")
+        public Floor(ContentManager cm, int x, int y, string sprite = "tile_50_50.png") : base(cm, sprite)
         {
             Scale = 0.5f;
             Position = new Vector2(x, y);

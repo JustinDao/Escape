@@ -208,11 +208,73 @@ namespace Escape
                             case 1: // c
                                 Walls.Add(new Wall(contentManager, 25 * x_count, 25 * y_count));
                                 break;
-							case 12:
+                            // 2 - 11 are Holes
+                            case 12:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Water\\Layer_1.png"));
+                                break;
+                            case 13:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Water\\Layer_2.png"));
+                                break;
+                            case 14:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Water\\Layer_3.png"));
+                                break;
+                            case 15:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Water\\Layer_4.png"));
+                                break;
+                            case 16:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Water\\Layer_5.png"));
+                                break;
+                            case 17:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Water\\Layer_6.png"));
+                                break;
+                            case 18:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Water\\Layer_7.png"));
+                                break;
+                            case 19:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Water\\Layer_8.png"));
+                                break;
+                            case 20:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Water\\Layer_9.png"));
+                                break;
+                            case 21:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Water\\Layer_10.png"));
+                                break;
+                            case 22:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Water\\Layer_11.png"));
+                                break;
+                            case 23:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "StartRoomEntities\\Door.png"));
+                                break;
+                            case 24:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "StartRoomEntities\\Layer_1.png"));
+                                break;
+                            case 25:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "StartRoomEntities\\Layer_2.png"));
+                                break;
+                            case 26:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "StartRoomEntities\\Layer_3.png"));
+                                break;
+                            case 27:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "StartRoomEntities\\Layer_4.png"));
+                                break;
+                            case 28:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "StartRoomEntities\\Layer_5.png"));
+                                break;
+                            case 29:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Candle\\Layer_1-002.png"));
+                                break;
+                            case 30:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Candle\\Layer_2-002.png"));
+                                break;
+                            case 31:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Candle\\Layer_3-002.png"));
+                                break;
+							case 32:
 								Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count));
-							Boulders.Add(new Boulder(contentManager, new Vector2((25 * x_count) + 1, (25 * y_count) + 2), castle.Player));
+							    Boulders.Add(new Boulder(contentManager, new Vector2((25 * x_count), (25 * y_count)), castle.Player));
 								break;
                             default: // default to a hole
+                                if (int.Parse(cells[x_count]) > 11) break;
                                 Obstacles.Add(new Hole(contentManager, 25 * x_count, 25 * y_count, int.Parse(cells[x_count]) - 2));
                                 break;
                         }
