@@ -119,7 +119,7 @@ namespace Escape
 
         }
 
-        private void collideObstacle(Entity e)
+        protected void collideObstacle(Entity e)
         {
             var pBox = CollisionBox;
             var eBox = e.HitBox;
@@ -151,7 +151,7 @@ namespace Escape
             }
         }
 
-        public void CollideObstacles(Room room)
+        public virtual void CollideObstacles(Room room)
         {
             foreach (var wall in room.Walls)
             {
@@ -163,7 +163,7 @@ namespace Escape
             }
         }
 
-        private void CheckBoundaries(Castle castle)
+        protected void CheckBoundaries(Castle castle)
         {
             var game = castle.mg;
 
@@ -188,7 +188,7 @@ namespace Escape
             }
         }
 
-        private void UpdateSprites(GameTime gt)
+        protected void UpdateSprites(GameTime gt)
         {
             // If the velocity is > 0 in any direction
             // update the last direction

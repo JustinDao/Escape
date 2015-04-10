@@ -38,13 +38,18 @@
     <Compile Include="AnimatedSpriteEntity.cs" />
     <Compile Include="Bar.cs" />
     <Compile Include="Boulder.cs" />
-    <Compile Include="Castle.cs" />
+    <Compile Include="Castle.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="Character.cs" />
+    <Compile Include="Enemy.cs" />
+    <Compile Include="EnemyFollow.cs" />
+    <Compile Include="Ghost.cs" />
+    <Compile Include="GhostSprites.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Controls.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Door.cs" />
-    <Compile Include="Enemy.cs" />
     <Compile Include="Projectile.cs" />
     <Compile Include="Floor.cs" />
     <Compile Include="Hole.cs" />
@@ -60,7 +65,7 @@
     <Compile Include="Question.cs" />
     <Compile Include="Room.cs" />
     <Compile Include="Screen.cs" />
-    <Compile Include="SoldierSprite.cs" />
+    <Compile Include="SoldierSprites.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="SpriteEntity.cs" />
     <Compile Include="SpriteSheet.cs" />
@@ -103,6 +108,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\fireball.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ghost_sprite_sheet.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ghost_sprite_sheet.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\hole0.png">

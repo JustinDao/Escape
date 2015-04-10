@@ -31,7 +31,7 @@ namespace Escape
 
         public void InitializeRooms()
         {
-            CurrentRoom = new Room(mg);
+            CurrentRoom = new Room(mg, this);
             CurrentRoom.LeftRoom = new Room(mg, "RoomTemplate.csv");
             CurrentRoom.LeftRoom.RightRoom = CurrentRoom;
             CurrentRoom.RightRoom = new Room(mg, "R2.csv");

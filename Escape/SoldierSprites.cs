@@ -9,7 +9,7 @@
  */
 namespace TexturePackerMonoGameDefinitions
 {
-	public class SoldierSprite
+	public class SoldierSprites
 	{
 		public const string Backward_Layer_1 = "Backward/Layer_1";
 		public const string Backward_Layer_2 = "Backward/Layer_2";

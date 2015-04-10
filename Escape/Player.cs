@@ -67,15 +67,15 @@ namespace Escape
             get
             {
                 return new string[] {
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Backward_Layer_1,
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Backward_Layer_2,
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Backward_Layer_3,
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Backward_Layer_4,
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Backward_Layer_5,
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Backward_Layer_6,
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Backward_Layer_7,
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Backward_Layer_8,
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Backward_Layer_9,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Backward_Layer_1,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Backward_Layer_2,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Backward_Layer_3,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Backward_Layer_4,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Backward_Layer_5,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Backward_Layer_6,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Backward_Layer_7,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Backward_Layer_8,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Backward_Layer_9,
                 };
             }
         }
@@ -85,15 +85,15 @@ namespace Escape
             get
             {
                 return new string[] {
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Forward_Layer_19,
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Forward_Layer_20,
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Forward_Layer_21,
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Forward_Layer_22,
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Forward_Layer_23,
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Forward_Layer_24,
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Forward_Layer_25,
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Forward_Layer_26,
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Forward_Layer_27,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Forward_Layer_19,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Forward_Layer_20,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Forward_Layer_21,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Forward_Layer_22,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Forward_Layer_23,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Forward_Layer_24,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Forward_Layer_25,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Forward_Layer_26,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Forward_Layer_27,
                 };
             }
         }
@@ -103,15 +103,15 @@ namespace Escape
             get
             {
                 return new string[] {
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Left_Layer_10,
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Left_Layer_11,
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Left_Layer_12,
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Left_Layer_13,
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Left_Layer_14,
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Left_Layer_15,
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Left_Layer_16,
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Left_Layer_17,
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Left_Layer_18,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Left_Layer_10,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Left_Layer_11,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Left_Layer_12,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Left_Layer_13,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Left_Layer_14,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Left_Layer_15,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Left_Layer_16,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Left_Layer_17,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Left_Layer_18,
                 };
             }
         }
@@ -121,15 +121,15 @@ namespace Escape
             get
             {
                 return new string[] {
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Right_Layer_28,
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Right_Layer_29,
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Right_Layer_30,
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Right_Layer_31,
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Right_Layer_32,
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Right_Layer_33,
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Right_Layer_34,
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Right_Layer_35,
-                    TexturePackerMonoGameDefinitions.SoldierSprite.Right_Layer_36,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Right_Layer_28,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Right_Layer_29,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Right_Layer_30,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Right_Layer_31,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Right_Layer_32,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Right_Layer_33,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Right_Layer_34,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Right_Layer_35,
+                    TexturePackerMonoGameDefinitions.SoldierSprites.Right_Layer_36,
                 };
             }
         }
