@@ -39,11 +39,12 @@
     <Compile Include="Bar.cs" />
     <Compile Include="Boulder.cs" />
     <Compile Include="Castle.cs" />
+    <Compile Include="Character.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Controls.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Door.cs" />
     <Compile Include="Enemy.cs" />
-    <Compile Include="Player.cs" />
     <Compile Include="Projectile.cs" />
     <Compile Include="Floor.cs" />
     <Compile Include="Hole.cs" />

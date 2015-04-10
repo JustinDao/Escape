@@ -34,10 +34,12 @@ namespace Escape
             CurrentRoom = new Room(mg);
             CurrentRoom.LeftRoom = new Room(mg, "RoomTemplate.csv");
             CurrentRoom.LeftRoom.RightRoom = CurrentRoom;
-            CurrentRoom.RightRoom = new Room(mg, "R1.csv");
+            CurrentRoom.RightRoom = new Room(mg, "R2.csv");
             CurrentRoom.RightRoom.LeftRoom = CurrentRoom;
             CurrentRoom.UpRoom = new Room(mg, "R3.csv");
             CurrentRoom.UpRoom.DownRoom = CurrentRoom;
+            CurrentRoom.UpRoom.UpRoom = new Room(mg, "R4.csv");
+            CurrentRoom.UpRoom.UpRoom.DownRoom = CurrentRoom.UpRoom;
             CurrentRoom.DownRoom = new Room(mg, "R5.csv");
             CurrentRoom.DownRoom.UpRoom = CurrentRoom;
 

@@ -22,6 +22,7 @@ namespace Escape
         public List<Floor> Floors { get; set; }
         public List<Wall> Walls { get; set; }
         public List<Entity> Obstacles { get; set; }
+        public List<Projectile> Projectiles = new List<Projectile>();
 
         public List<Enemy> Enemies { get; set; }
         public List<Item> Items { get; set; }
@@ -197,8 +198,11 @@ namespace Escape
                             case 0: // floor
                                 Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count));
                                 break;
-                            case 1: // wall
+                            case 1: // e
                                 Walls.Add(new Wall(contentManager, 25 * x_count, 25 * y_count));
+                                break;
+                            default: // default to a hole
+                                Obstacles.Add(new Hole(contentManager, 25 * x_count, 25 * y_count, int.Parse(cells[x_count]) - 2));
                                 break;
                         }
                     }
@@ -210,33 +214,28 @@ namespace Escape
 
         public void Update(GameTime gameTime, Screen s)
         {
-            List<Entity> toRemove = new List<Entity>();
+            List<Projectile> outProjectiles = new List<Projectile>();
 
-            foreach (Entity o in Obstacles)
+            foreach (Projectile p in Projectiles)
             {
-                if (o is Projectile)
+                p.Update(gameTime, s);
+                Rectangle bounds = new Rectangle(0, 0, Width, Height);
+                bool outOfBounds = !bounds.Intersects(p.HitBox);
+                bool outOfRange = p.Range > 0 && ((p.Position - p.StartPosition).Length() > p.Range);
+                if (outOfBounds || outOfRange)
                 {
-                    var p = o as Projectile;
-                    p.Update(gameTime, s);
-                    Rectangle bounds = new Rectangle(0, 0, Width, Height);
-                    bool outOfBounds = !bounds.Intersects(p.HitBox);
-                    bool outOfRange = p.Range > 0 && ((p.Position - p.StartPosition).Length() > p.Range);
-                    if (outOfBounds || outOfRange)
-                    {
-                        toRemove.Add(p);
-                    }
+                    outProjectiles.Add(p);
                 }
             }
 
-            Obstacles = Obstacles.Except(toRemove).ToList();
+            Projectiles = Projectiles.Except(outProjectiles).ToList();
 
             foreach (Enemy e in Enemies)
             {
                 e.Update(gameTime, this);
             }
 
-            checkFireBallEnemyCollisions();
-            checkSnowflakeEnemyCollisions();
+            checkEnemyProjectileCollisions();
         }
 
         public void Draw(SpriteBatch sb)
@@ -269,6 +268,11 @@ namespace Escape
                 o.Draw(sb);
             }
 
+            foreach (Projectile p in Projectiles)
+            {
+                p.Draw(sb);
+            }
+
         }
 
         public void AddSnowflakes(Vector2 position)
@@ -282,13 +286,13 @@ namespace Escape
                 float speed = 400;
                 Vector2 vel = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)) * speed;
                 Projectile anna = Projectile.CreateSnowflake(contentManager, position, vel, 100);
-                Obstacles.Add(anna);
+                Projectiles.Add(anna);
             }
         }
 
         public void AddFireBall(Vector2 position, Vector2 dir)
         {
-            Obstacles.Add(Projectile.CreateFireball(contentManager, position, dir * 500));
+            Projectiles.Add(Projectile.CreateFireball(contentManager, position, dir * 500));
         }
 
         public Door LeftDoor()
@@ -311,54 +315,94 @@ namespace Escape
             return Doors.ContainsKey(Direction.DOWN) ? Doors[Direction.DOWN] : null;
         }
 
-        private void checkSnowflakeEnemyCollisions()
-        {
-            foreach (Entity o in Obstacles)
-            {
-                var s = o as Projectile;
-                if (s == null || s.Type != ProjectileType.SNOWFLAKE) continue;
-                foreach (Enemy e in Enemies)
-                {
-                    if (e.HitBox.Intersects(s.HitBox))
-                    {
-                        e.Frozen = true;
-                    }
-                }
-            }
-        }
-
-        private void checkFireBallEnemyCollisions()
+        private void checkEnemyProjectileCollisions()
         {
             List<Enemy> enemiesToRemove = new List<Enemy>();
-            List<Entity> fireBallsToRemove = new List<Entity>();
-
-            foreach (Entity o in Obstacles)
+            List<Projectile> projectilesToRemove = new List<Projectile>();
+            // TODO move to enemy
+            // TODO skip enemies already hit
+            foreach (var p in Projectiles)
             {
-                if (o is Projectile && (o as Projectile).Type == ProjectileType.FIREBALL)
+                foreach (Enemy e in Enemies)
                 {
-                    Projectile f = (Projectile)o;
-
-                    foreach (Enemy e in Enemies)
+                    if (e.HitBox.Intersects(p.HitBox))
                     {
-                        if (e.HitBox.Intersects(f.HitBox))
+                        switch (p.Type)
                         {
-                            if (e.Frozen)
-                            {
-                                e.Frozen = false;
-                            }
-                            else
-                            {
-                                enemiesToRemove.Add(e);
-                            }
-                            fireBallsToRemove.Add(f);
-                            break;
+                            case ProjectileType.SNOWFLAKE:
+                                e.Frozen = true;
+                                projectilesToRemove.Add(p);
+                                break;
+                            case ProjectileType.FIREBALL:
+                                if (e.Frozen)
+                                {
+                                    e.Frozen = false;
+                                    projectilesToRemove.Add(p);
+                                }
+                                else
+                                {
+                                    enemiesToRemove.Add(e);
+                                    projectilesToRemove.Add(p);
+                                }
+                                break;
                         }
                     }
                 }
             }
 
-            Obstacles = Obstacles.Except(fireBallsToRemove).ToList();
+            Projectiles = Projectiles.Except(projectilesToRemove).ToList();
             Enemies = Enemies.Except(enemiesToRemove).ToList();
         }
+
+        //private void checkSnowflakeEnemyCollisions()
+        //{
+        //    foreach (var o in Projectiles)
+        //    {
+        //        var s = o as Projectile;
+        //        if (s == null || s.Type != ProjectileType.SNOWFLAKE) continue;
+        //        foreach (Enemy e in Enemies)
+        //        {
+        //            if (e.HitBox.Intersects(s.HitBox))
+        //            {
+        //                e.Frozen = true;
+        //            }
+        //        }
+        //    }
+        //}
+
+        //private void checkFireBallEnemyCollisions()
+        //{
+        //    List<Enemy> enemiesToRemove = new List<Enemy>();
+        //    List<Entity> fireBallsToRemove = new List<Entity>();
+
+        //    foreach (Entity o in Obstacles)
+        //    {
+        //        if (o is Projectile && (o as Projectile).Type == ProjectileType.FIREBALL)
+        //        {
+        //            Projectile f = (Projectile)o;
+
+        //            foreach (Enemy e in Enemies)
+        //            {
+        //                if (e.HitBox.Intersects(f.HitBox))
+        //                {
+        //                    if (e.Frozen)
+        //                    {
+        //                        e.Frozen = false;
+        //                    }
+        //                    else
+        //                    {
+        //                        enemiesToRemove.Add(e);
+        //                    }
+        //                    fireBallsToRemove.Add(f);
+        //                    break;
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    Obstacles = Obstacles.Except(fireBallsToRemove).ToList();
+        //    Enemies = Enemies.Except(enemiesToRemove).ToList();
+        //}
+
     }
 }
