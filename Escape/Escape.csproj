@@ -67,6 +67,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Question.cs" />
     <Compile Include="Room.cs" />
+    <Compile Include="RoomEnd.cs" />
     <Compile Include="Screen.cs" />
     <Compile Include="SoldierSprites.cs" />
     <Compile Include="Sprite.cs" />
@@ -111,6 +112,7 @@
     <Content Include="Content\farore.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\final.png" />
     <Content Include="Content\fireball.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -208,6 +210,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\QuestionFont.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Rooms\EndRoom.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Content\Rooms\R1.csv">

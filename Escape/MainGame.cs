@@ -26,6 +26,7 @@ namespace Escape
         Castle castle;
         StartMenu start;
         PauseMenu pause;
+        bool isPaused = false;
         MiniGame miniGame;
         public Controls Control;
         SubmissionBar submissionBar;
@@ -111,13 +112,13 @@ namespace Escape
             // TODO: Add your update logic here
             //Up, down, left, right affect the coordinates of the sprite
 
-            if (currentScreen == start)
-            {
-                start.Update(Control);
-            }
-            else if(currentScreen == pause)
+            if (isPaused)
             {
                 pause.Update(Control);
+            }
+            else if (currentScreen == start)
+            {
+                start.Update(Control);
             }
             else if (currentScreen == castle)
             {
@@ -151,36 +152,44 @@ namespace Escape
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
-            if (currentScreen == pause)
-            {
-                castle.Draw(spriteBatch);
-            }
             currentScreen.Draw(spriteBatch);
 
             if (currentScreen == castle) 
             {
-            submissionBar.Draw(spriteBatch);
+                submissionBar.Draw(spriteBatch);
             }
 
             if (miniGame.Active)
             {
                 miniGame.Draw(spriteBatch);
-            }            
+            }
+
+            if (this.isPaused)
+            {
+                pause.Draw(spriteBatch);
+            }  
+
 
             spriteBatch.End();
 
             base.Draw(gameTime);
         }
 
+        public void Pause()
+        {
+            isPaused = true;
+            MediaPlayer.Pause();
+        }
+
+        public void UnPause()
+        {
+            isPaused = false;
+            MediaPlayer.Resume();
+        }
+
         public void SwitchToCastle()
         {
             currentScreen = castle;
-            MediaPlayer.Resume();
-        }
-        public void SwitchToPause()
-        {
-            currentScreen = pause;
-            MediaPlayer.Pause();
         }
     }
 }

@@ -41,6 +41,10 @@ namespace Escape
             ));
 
             CurrentRoom.LeftRoom.RightRoom = CurrentRoom;
+
+            CurrentRoom.LeftRoom.UpRoom = new RoomEnd(mg, this);
+            CurrentRoom.LeftRoom.UpRoom.DownRoom = CurrentRoom.LeftRoom;
+
             CurrentRoom.RightRoom = new Room(mg, this, "R2.csv");
             CurrentRoom.RightRoom.LeftRoom = CurrentRoom;
             CurrentRoom.UpRoom = new Room(mg, this, "R3.csv");
@@ -58,7 +62,7 @@ namespace Escape
         {
             if (controls.onPress(Keys.Space, Buttons.Start))
             {
-                mg.SwitchToPause();
+                mg.Pause();
             }
 
             Player.Update(gameTime, this);
