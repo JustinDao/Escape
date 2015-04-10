@@ -47,7 +47,7 @@ namespace Escape
 
             if (controls.onPress(Keys.Space, Buttons.Start))
             {
-                mg.SwitchToCastle();
+                mg.UnPause();
             }
         }
     }
