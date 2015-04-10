@@ -32,15 +32,14 @@ namespace Escape
         public override void Draw(SpriteBatch sb)
         {
             sb.Draw(BackgroundTexture, BackgroundBox, Color.White);
-            sb.DrawString(Font, "ESCAPE", new Vector2(mg.GAME_WIDTH / 2, 200), Color.Black);
-            sb.DrawString(Font, "START", new Vector2(mg.GAME_WIDTH / 2, 500), Color.Black);
-
+//			sb.DrawString(Font, "ESCAPE", new Vector2((mg.GAME_WIDTH / 2)-30, 200), Color.Black);
+//			sb.DrawString(Font, "START", new Vector2((mg.GAME_WIDTH / 2)-25, 500), Color.Black);
         }
 
         public override void LoadContent(ContentManager cm)
         {
-            this.BackgroundTexture = new Texture2D(this.gd, 1, 1);
-            this.BackgroundTexture.SetData(new Color[] { Color.White });
+			this.BackgroundTexture = cm.Load<Texture2D>("Cover.png");
+//            this.BackgroundTexture.SetData(new Color[] { Color.White });
             this.Font = cm.Load<SpriteFont>("QuestionFont");
         }
 
