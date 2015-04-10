@@ -13,18 +13,23 @@ namespace Escape
     class Player : Character
     {
         // player stuff
+        // attacking!
+        const int ATTACK_SIZE = 20;
+        const float ATTACK_REACH = 100 - ATTACK_SIZE;
+        public Vector2 AttackVector = Vector2.Zero;
+        public Rectangle? AttackArea = null;
         // power-ups
         public bool HasFire = false;
         public bool HasIce = false;
         public bool HasSpeed = false;
-		public bool HasStrength = false;
-		public bool UsingStrength 
-		{
-			get
-			{
-				return (Ctrls.isPressed(Keys.D3, Buttons.B) && HasStrength);
-			}
-		}
+        public bool HasStrength = false;
+        public bool UsingStrength
+        {
+            get
+            {
+                return (Ctrls.isPressed(Keys.D3, Buttons.B) && HasStrength);
+            }
+        }
         // controls
         public readonly Controls Ctrls;
         // Value of the Player's current Submission
@@ -209,7 +214,7 @@ namespace Escape
             using (var reader = new StreamReader(stream))
             {
                 while (!reader.EndOfStream)
-               {
+                {
                     var line = reader.ReadLine();
 
                     string[] cells = line.Split(';');
@@ -218,7 +223,7 @@ namespace Escape
 
                     var answers = new List<string>();
 
-                    for(int i = 1; i < cells.Length; i++)
+                    for (int i = 1; i < cells.Length; i++)
                     {
                         answers.Add(cells[i]);
                     }
@@ -269,6 +274,22 @@ namespace Escape
         private void Action(Room room)
         {
             if (!PlayerControl) return;
+
+            // lance
+            AttackArea = null;
+            var rStick = Ctrls.gp.ThumbSticks.Right;
+            AttackVector = rStick;
+            if (AttackVector.LengthSquared() > 0)
+            {
+                var pCenter = HitBox.Center;
+                AttackArea = new Rectangle(pCenter.X - ATTACK_SIZE / 2,
+                    pCenter.Y - ATTACK_SIZE / 2,
+                    ATTACK_SIZE,
+                    ATTACK_SIZE
+                );
+                AttackArea.X += (int)(ATTACK_REACH * AttackVector.X);
+                AttackArea.Y += (int)(ATTACK_REACH * AttackVector.Y);
+            }
 
             // fire
             if (Ctrls.onPress(Keys.D1, Buttons.A) && HasFire && lastDir.LengthSquared() > 0)
@@ -327,11 +348,11 @@ namespace Escape
                             toRemove.Add(o);
                         }
 
-						if (p.IsStrength)
-						{
-							this.HasStrength = true;
-							toRemove.Add(o);
-						}
+                        if (p.IsStrength)
+                        {
+                            this.HasStrength = true;
+                            toRemove.Add(o);
+                        }
 
                         if (p.IsSpeed)
                         {
@@ -477,6 +498,6 @@ namespace Escape
         }
 
 
-    
+
     }
 }

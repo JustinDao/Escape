@@ -36,7 +36,7 @@ namespace Escape
 
             CurrentRoom.LeftRoom.Enemies.Add(new FireBoss(mg.Content, mg.SpriteRender, new Vector2[] 
                 { 
-                    new Vector2(250, 100), new Vector2(450, 100), new Vector2(250, 450) 
+                    new Vector2(300, 100), new Vector2(500, 100)
                 }
             ));
 

@@ -55,7 +55,7 @@ namespace Escape
 
         public override float MaxSpeed
         {
-            get { return 400; }
+            get { return 200; }
         }
 
 
