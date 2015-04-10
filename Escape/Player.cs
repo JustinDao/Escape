@@ -400,7 +400,8 @@ namespace Escape
                 {
                     if (p.HitBox.Intersects(this.HitBox))
                     {
-                    var o = p;
+                        var o = p;
+                        Submission = MAX_SUBMISSION;
                         if (p.IsFire)
                         {
                             this.HasFire = true;

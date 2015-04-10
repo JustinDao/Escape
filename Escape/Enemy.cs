@@ -14,7 +14,7 @@ namespace Escape
         {
             get
             {
-                return 200;
+                return 500;
             }
         }
         public PowerUp Drop = null;

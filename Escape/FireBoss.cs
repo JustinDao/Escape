@@ -10,6 +10,13 @@ namespace Escape
 {
     class FireBoss : EnemyPatrol
     {
+        public override int Damage
+        {
+            get
+            {
+                return base.Damage * 2;
+            }
+        }
         public override int MaxHealth
         {
             get
