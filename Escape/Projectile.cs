@@ -58,7 +58,7 @@ namespace Escape
             Vector2 pos, Vector2 vel, bool evil = false)
         {
             var boulder = new Projectile(cm, "boulder.png", ProjectileType.BOULDER,
-                pos, vel, evil);
+                pos, vel);
             boulder.Scale = 0.5f;
             return boulder;
         }

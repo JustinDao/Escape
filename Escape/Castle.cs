@@ -71,14 +71,13 @@ namespace Escape
             MainRoom.UpRoom.Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, this.Player, new Vector2(450, 500)));
             MainRoom.UpRoom.Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, this.Player, new Vector2(150, 400)));
 
-            CurrentRoom.UpRoom.UpRoom.DownRoom = CurrentRoom.UpRoom;
-            CurrentRoom.DownRoom = new Room(mg, this, "R5.csv");
-            CurrentRoom.DownRoom.Enemies.Add(new EarthBoss(mg.Content, mg.SpriteRender, new Vector2[] 
+            MainRoom.UpRoom.UpRoom = new Room(mg, this, "R5.csv");
+            MainRoom.UpRoom.UpRoom.DownRoom = MainRoom.UpRoom;
+            MainRoom.UpRoom.UpRoom.Enemies.Add(new EarthBoss(mg.Content, mg.SpriteRender, new Vector2[] 
                 { 
                     new Vector2(100, 100), new Vector2(200, 100), new Vector2(300, 200), new Vector2(400, 300)
                 }
             ));
-            CurrentRoom.DownRoom.UpRoom = CurrentRoom;
 
             // Infinite Room Loop!
             MainRoom.LeftRoom.LeftRoom = MainRoom;
