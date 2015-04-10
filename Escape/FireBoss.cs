@@ -10,6 +10,13 @@ namespace Escape
 {
     class FireBoss : EnemyPatrol
     {
+        public override int MaxHealth
+        {
+            get
+            {
+                return 10;
+            }
+        }
         public override string[] DownSprites
         {
             get
