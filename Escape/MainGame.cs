@@ -28,6 +28,7 @@ namespace Escape
         PauseMenu pause;
         bool isPaused = false;
         MiniGame miniGame;
+        EndScreen endScreen;
         public Controls Control;
         SubmissionBar submissionBar;
 
@@ -61,6 +62,7 @@ namespace Escape
             castle = new Castle(this);
             pause = new PauseMenu(this, GraphicsDevice);
             miniGame = new MiniGame(this, GraphicsDevice, castle.Player);
+            endScreen = new EndScreen(this);
             currentScreen = start;
 
             Song song = this.Content.Load<Song>("Songs\\castle.wav");
@@ -115,6 +117,11 @@ namespace Escape
             if (isPaused)
             {
                 pause.Update(Control);
+            }
+            else if (castle.Player.BeatTheGame)
+            {
+                currentScreen = endScreen;
+                endScreen.Update(gameTime);
             }
             else if (currentScreen == start)
             {

@@ -42,6 +42,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Character.cs" />
+    <Compile Include="EndScreen.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="EnemyFollow.cs" />
     <Compile Include="EnemyPatrol.cs" />
@@ -53,6 +54,7 @@
     <Compile Include="Controls.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Door.cs" />
+    <Compile Include="PlayerCutScene.cs" />
     <Compile Include="Projectile.cs" />
     <Compile Include="Floor.cs" />
     <Compile Include="Hole.cs" />

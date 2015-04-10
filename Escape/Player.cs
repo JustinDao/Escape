@@ -30,6 +30,9 @@ namespace Escape
                 return (Ctrls.isPressed(Keys.D3, Buttons.B) && HasStrength);
             }
         }
+
+        public bool BeatTheGame = false;
+
         // controls
         public readonly Controls Ctrls;
         // Value of the Player's current Submission
@@ -77,7 +80,7 @@ namespace Escape
             }
         }
 
-        // eeewww :(
+        // Player Sprites
         public override string[] UpSprites
         {
             get
@@ -235,6 +238,9 @@ namespace Escape
 
         public override void Update(GameTime gt, Screen s)
         {
+            // Check If the Player should beat the game
+            CheckEndGame(s);
+
             // submission
             UpdateSubmission(gt);
 
@@ -270,6 +276,21 @@ namespace Escape
             base.Update(gt, s);
         }
 
+        private void CheckEndGame(Screen s)
+        {
+            if (!(s is Castle)) return;
+
+            var castle = s as Castle;
+
+            if (castle.CurrentRoom is RoomEnd)
+            {
+                if (this.HasFire && this.HasIce && this.HasSpeed && this.HasStrength)
+                {
+                    this.BeatTheGame = true;
+                }
+            }
+            
+        }
 
         private void Action(Room room)
         {
@@ -418,7 +439,6 @@ namespace Escape
                 StandingOnDoor = false;
             }
         }
-
 
         public void RegainControl()
         {

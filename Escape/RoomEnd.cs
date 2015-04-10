@@ -13,15 +13,5 @@ namespace Escape
         {
 
         }
-
-        public void Update(GameTime gameTime, Screen s)
-        {
-            base.Update(gameTime, s);
-        }
-
-        public void Draw(SpriteBatch sb)
-        {
-            base.Draw(sb);
-        }
     }
 }

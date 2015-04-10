@@ -84,15 +84,12 @@ namespace Escape
 
         public override void Update(GameTime gt, Screen s)
         {
-            Console.WriteLine("FireBoss update()");
             currentFireballInterval += (float)gt.ElapsedGameTime.TotalSeconds;
 
             if (currentFireballInterval > fireballInterval)
             {
-                Console.WriteLine("Time to boom!");
                 if (s is Castle)
                 {
-                    Console.WriteLine("It's a castle!!!");
                     var castle = s as Castle;
                     var player = castle.Player;
 
