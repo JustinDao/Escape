@@ -282,13 +282,14 @@ namespace Escape
             if (AttackVector.LengthSquared() > 0)
             {
                 var pCenter = HitBox.Center;
-                AttackArea = new Rectangle(pCenter.X - ATTACK_SIZE / 2,
+                var area = new Rectangle(pCenter.X - ATTACK_SIZE / 2,
                     pCenter.Y - ATTACK_SIZE / 2,
                     ATTACK_SIZE,
                     ATTACK_SIZE
                 );
-                AttackArea.X += (int)(ATTACK_REACH * AttackVector.X);
-                AttackArea.Y += (int)(ATTACK_REACH * AttackVector.Y);
+                area.X += (int)(ATTACK_REACH * AttackVector.X);
+                area.Y += (int)(ATTACK_REACH * AttackVector.Y);
+                AttackArea = area;
             }
 
             // fire
