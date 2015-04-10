@@ -25,6 +25,7 @@ namespace Escape
         public List<Entity> Obstacles { get; set; }
         public List<Projectile> Projectiles = new List<Projectile>();
         public List<PowerUp> PowerUps = new List<PowerUp>();
+		public List<Boulder> Boulders = new List<Boulder>();
 
         public List<Enemy> Enemies = new List<Enemy>();
         public Dictionary<Enemy, float> DyingEnemies = new Dictionary<Enemy, float>();
@@ -162,7 +163,7 @@ namespace Escape
             Obstacles.Add(new Hole(contentManager, 425, 425, 9));
             Obstacles.Add(new Hole(contentManager, 450, 425, 9));
 
-			Obstacles.Add(new Boulder(contentManager, new Vector2(175, 300), castle.Player));
+			Boulders.Add(new Boulder(contentManager, new Vector2(175, 300), castle.Player));
 
             PowerUps.Add(new PowerUp(contentManager, new Vector2(200, 300), "yellow.png", false, false, false, true));
             PowerUps.Add(new PowerUp(contentManager, new Vector2(500, 500), "naryu.png", false, true, false, false));
@@ -209,7 +210,7 @@ namespace Escape
                                 break;
 							case 12:
 								Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count));
-								Obstacles.Add(new Boulder(contentManager, new Vector2(25 * x_count - 5, 25 * y_count - 5), castle.Player));
+							Boulders.Add(new Boulder(contentManager, new Vector2((25 * x_count) + 1, (25 * y_count) + 2), castle.Player));
 								break;
                             default: // default to a hole
                                 Obstacles.Add(new Hole(contentManager, 25 * x_count, 25 * y_count, int.Parse(cells[x_count]) - 2));
@@ -242,6 +243,16 @@ namespace Escape
 			foreach (Entity o in Obstacles)
 			{
 				o.Update(gameTime, s);
+			}
+
+			for (int i = 0; i < Boulders.Count(); i++)
+			{
+				var b = Boulders[i];
+				b.Update(gameTime, s);
+				if (b.Removed)
+				{
+					i--;
+				}
 			}
 
             Projectiles = Projectiles.Except(outProjectiles).ToList();
@@ -299,6 +310,11 @@ namespace Escape
             {
                 p.Draw(sb);
             }
+
+			foreach (Boulder b in Boulders)
+			{
+				b.Draw(sb);
+			}
 
             foreach (Enemy e in Enemies)
             {
