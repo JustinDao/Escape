@@ -77,6 +77,7 @@ namespace Escape
             : base(cm, sr, target, "ghost_sprite_sheet.png")
         {
             ignoreHoles = true;
+            ignoreWater = true;
             Target = target;
             Position = position;
         }

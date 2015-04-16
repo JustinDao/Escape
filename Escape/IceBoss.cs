@@ -90,6 +90,7 @@ namespace Escape
             : base(cm, sr, "ice_boss_sprite_sheet.png", location)
         {
             ignoreHoles = true;
+            ignoreWater = true;
             Scale = 1.5f;
             Drop = new PowerUp(cm, Vector2.Zero, "naryu.png", isIce: true);
         }

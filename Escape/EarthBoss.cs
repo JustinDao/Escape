@@ -110,6 +110,7 @@ namespace Escape
             : base(cm, sr, "earthboss_sprite_sheet.png", location)
         {
             ignoreHoles = true;
+            ignoreWater = true;
             Scale = 1.5f;
             Drop = new PowerUp(cm, Vector2.Zero, "farore.png", isStrength: true);
             for (int i = 0; i < boulders.Count(); i++)

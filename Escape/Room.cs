@@ -220,37 +220,37 @@ namespace Escape
                                 break;
                             // 2 - 11 are Holes
                             case 12:
-                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Water\\Layer_1.png"));
+                                Obstacles.Add(new Water(contentManager, "Water\\Layer_1.png", 25 * x_count, 25 * y_count));
                                 break;
                             case 13:
-                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Water\\Layer_2.png"));
+                                Obstacles.Add(new Water(contentManager, "Water\\Layer_2.png", 25 * x_count, 25 * y_count));
                                 break;
                             case 14:
-                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Water\\Layer_3.png"));
+                                Obstacles.Add(new Water(contentManager, "Water\\Layer_3.png", 25 * x_count, 25 * y_count));
                                 break;
                             case 15:
-                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Water\\Layer_4.png"));
+                                Obstacles.Add(new Water(contentManager, "Water\\Layer_4.png", 25 * x_count, 25 * y_count));
                                 break;
                             case 16:
-                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Water\\Layer_5.png"));
+                                Obstacles.Add(new Water(contentManager, "Water\\Layer_5.png", 25 * x_count, 25 * y_count));
                                 break;
                             case 17:
-                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Water\\Layer_6.png"));
+                                Obstacles.Add(new Water(contentManager, "Water\\Layer_6.png", 25 * x_count, 25 * y_count));
                                 break;
                             case 18:
-                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Water\\Layer_7.png"));
+                                Obstacles.Add(new Water(contentManager, "Water\\Layer_7.png", 25 * x_count, 25 * y_count));
                                 break;
                             case 19:
-                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Water\\Layer_8.png"));
+                                Obstacles.Add(new Water(contentManager, "Water\\Layer_8.png", 25 * x_count, 25 * y_count));
                                 break;
                             case 20:
-                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Water\\Layer_9.png"));
+                                Obstacles.Add(new Water(contentManager, "Water\\Layer_9.png", 25 * x_count, 25 * y_count));
                                 break;
                             case 21:
-                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Water\\Layer_10.png"));
+                                Obstacles.Add(new Water(contentManager, "Water\\Layer_10.png", 25 * x_count, 25 * y_count));
                                 break;
                             case 22:
-                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Water\\Layer_11.png"));
+                                Obstacles.Add(new Water(contentManager, "Water\\Layer_11.png", 25 * x_count, 25 * y_count));
                                 break;
                             case 23:
                                 Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "StartRoomEntities\\Door.png"));
@@ -575,6 +575,23 @@ namespace Escape
                                     projectilesToRemove.Add(p);
                                 }
                                 break;
+                        }
+                    }
+                }
+
+                foreach (Entity o in Obstacles)
+                {
+                    if (o is Water)
+                    {
+                        var w = o as Water;
+
+                        if (p.HitBox.Intersects(w.HitBox))
+                        {
+                            if (!w.IsFrozen && p.Type == ProjectileType.SNOWFLAKE)
+                            {
+                                w.IsFrozen = true;
+                                projectilesToRemove.Add(p);
+                            }
                         }
                     }
                 }

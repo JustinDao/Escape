@@ -95,6 +95,7 @@
     </Compile>
     <Compile Include="TexturePackerLoader\SpriteSheetLoader.cs" />
     <Compile Include="Wall.cs" />
+    <Compile Include="Water.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="OpenTK">

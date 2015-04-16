@@ -250,6 +250,7 @@ namespace Escape
             }
         }
 
+        // Constructor
         public Player(ContentManager cm, SpriteRender sr, Controls ctrls)
             : base(cm, sr, "soldier_sprite_sheet.png")
         {
@@ -286,6 +287,8 @@ namespace Escape
                 }
             }
         }
+
+        // Update Methods
 
         public override void Update(GameTime gt, Screen s)
         {
@@ -333,25 +336,6 @@ namespace Escape
             base.Update(gt, s);
         }
 
-        public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch sb)
-        {
-            base.Draw(sb);
-            if (AttackArea.HasValue)
-            {
-                var area = AttackArea.Value;
-                // sb.Draw(weaponTexture, AttackArea.Value, Tint);
-                sb.Draw(
-                    weaponTexture,
-                    new Vector2(area.Center.X, area.Center.Y),
-                    null,
-                    Tint,
-                    (float)Math.Atan2(AttackVector.Y,AttackVector.X),
-                    new Vector2(weaponTexture.Width, weaponTexture.Height/2f),
-                    1,
-                    SpriteEffects.FlipHorizontally,
-                    Depth);
-            }
-        }
         private void CheckEndGame(Screen s)
         {
             if (!(s is Castle)) return;
@@ -533,6 +517,29 @@ namespace Escape
                 StandingOnDoor = false;
             }
         }
+
+        // Draw
+        public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch sb)
+        {
+            base.Draw(sb);
+            if (AttackArea.HasValue)
+            {
+                var area = AttackArea.Value;
+                // sb.Draw(weaponTexture, AttackArea.Value, Tint);
+                sb.Draw(
+                    weaponTexture,
+                    new Vector2(area.Center.X, area.Center.Y),
+                    null,
+                    Tint,
+                    (float)Math.Atan2(AttackVector.Y, AttackVector.X),
+                    new Vector2(weaponTexture.Width, weaponTexture.Height / 2f),
+                    1,
+                    SpriteEffects.FlipHorizontally,
+                    Depth);
+            }
+        }
+
+        // Helper / Other Methods
 
         public void RegainControl()
         {

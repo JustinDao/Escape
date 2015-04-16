@@ -11,6 +11,7 @@ namespace Escape
     abstract class Character : AnimatedSpriteEntity
     {
         protected bool ignoreHoles = false;
+        protected bool ignoreWater = false;
         // Collision Box (bottom half of the HitBox)
         public Rectangle CollisionBox
         {
@@ -181,6 +182,8 @@ namespace Escape
             foreach (var e in room.Obstacles)
             {
                 if (e is Hole && ignoreHoles) continue;
+                if (e is Water && ignoreWater) continue;
+                if (e is Water && (e as Water).IsFrozen) continue;
                 CollideObstacle(e.HitBox);
             }
             foreach (var e in room.Enemies)
