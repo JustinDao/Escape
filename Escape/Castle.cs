@@ -34,7 +34,6 @@ namespace Escape
             CurrentRoom = new Room(mg, this, "StartRoom.csv");
 
             CurrentRoom.AddText("Left Stick to move.", new Vector2(100, 500));
-
             CurrentRoom.AddText("Right Stick to attack.", new Vector2(750, 500));
 
             Room MainRoom = new Room(mg, this);
@@ -53,6 +52,8 @@ namespace Escape
             MainRoom.LeftRoom.RightRoom = MainRoom;
 
             MainRoom.LeftRoom.UpRoom = new RoomEnd(mg, this);
+            MainRoom.LeftRoom.UpRoom.AddText("You feel a mysterious force in this room...", new Vector2(mg.GAME_WIDTH / 2 - 200, mg.GAME_HEIGHT / 2));
+
             MainRoom.LeftRoom.UpRoom.DownRoom = MainRoom.LeftRoom;
 
             MainRoom.RightRoom = new Room(mg, this, "R2.csv");
@@ -131,7 +132,8 @@ namespace Escape
                                            "fireball.png",
                                            "snowflake.png",
                                        };
-            foreach (var textureName in preloadTextures) {
+            foreach (var textureName in preloadTextures)
+            {
                 cm.Load<Texture2D>(textureName);
             }
         }

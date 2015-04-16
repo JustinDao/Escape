@@ -49,7 +49,7 @@ namespace Escape
             {
                 mg.CurrentSong.Stop();
                 mg.SwitchToCastle();
-                var song = mg.Content.Load<SoundEffect>("Songs\\castle.wav");
+                var song = mg.Content.Load<SoundEffect>("Songs\\Castle.wav");
                 mg.CurrentSong = song.CreateInstance();
                 mg.CurrentSong.IsLooped = true;
                 mg.CurrentSong.Play();

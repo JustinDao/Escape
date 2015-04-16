@@ -114,7 +114,7 @@ namespace Escape
             // Move the player
             Position += CurrentVelocity * delta * SpeedMult;
 
-            // stuff that involves the castle
+            // stuff that involves the Castle
             var castle = s as Castle;
             if (castle == null) return;
             var room = castle.CurrentRoom;

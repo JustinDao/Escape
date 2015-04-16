@@ -278,7 +278,7 @@ namespace Escape
                 lastDir.Normalize();
             }
 
-            // stuff that involves the castle
+            // stuff that involves the Castle
             var castle = s as Castle;
             if (castle != null)
             {
