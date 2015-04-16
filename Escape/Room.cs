@@ -30,6 +30,7 @@ namespace Escape
         public List<Enemy> Enemies = new List<Enemy>();
         public Dictionary<Enemy, float> DyingEnemies = new Dictionary<Enemy, float>();
         public List<Item> Items { get; set; }
+        public List<Text> OnScreenText { get; set; }
 
         public Dictionary<Direction, Room> Neighbors { get; set; }
 
@@ -116,6 +117,7 @@ namespace Escape
 
             Walls = new List<Wall>();
             Obstacles = new List<Entity>();
+            OnScreenText = new List<Text>();
 
             for (int i = 0; i < this.Width / 25; i++)
             {
@@ -182,6 +184,7 @@ namespace Escape
             Obstacles = new List<Entity>();
             Doors = new Dictionary<Direction, Door>();
             Neighbors = new Dictionary<Direction, Room>();
+            OnScreenText = new List<Text>();
 
             //http://stackoverflow.com/questions/25331714
             var path = @"Content\Rooms\" + csvName;
@@ -396,6 +399,11 @@ namespace Escape
                 p.Draw(sb);
             }
 
+            foreach (Text t in OnScreenText)
+            {
+                t.Draw(sb);
+            }
+
         }
 
         public void AddSnowflakes(Vector2 position)
@@ -420,6 +428,11 @@ namespace Escape
         public void AddBoulder(Vector2 position, Vector2 dir, Enemy owner = null)
         {
             Projectiles.Add(Projectile.CreateBoulder(contentManager, position, dir * 500, owner));
+        }
+
+        public void AddText(string text, Vector2 position)
+        {
+            this.OnScreenText.Add(new Text(mg.Content, text, position, "QuestionFont"));
         }
 
         public Door LeftDoor()

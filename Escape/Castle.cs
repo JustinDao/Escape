@@ -33,6 +33,10 @@ namespace Escape
         {
             CurrentRoom = new Room(mg, this, "StartRoom.csv");
 
+            CurrentRoom.AddText("Left Stick to move.", new Vector2(100, 500));
+
+            CurrentRoom.AddText("Right Stick to attack.", new Vector2(750, 500));
+
             Room MainRoom = new Room(mg, this);
 
             CurrentRoom.UpRoom = MainRoom;
