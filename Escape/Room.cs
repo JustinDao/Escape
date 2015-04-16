@@ -44,6 +44,8 @@ namespace Escape
             }
             set
             {
+				if (value == null) return;
+
                 this.Neighbors.Add(Direction.LEFT, value);
                 this.Doors.Add(Direction.LEFT, new Door(contentManager, 0, 11 * 25, true));
 
@@ -58,6 +60,8 @@ namespace Escape
             }
             set
             {
+				if (value == null) return;
+
                 this.Neighbors.Add(Direction.RIGHT, value);
                 this.Doors.Add(Direction.RIGHT, new Door(contentManager, this.mg.GAME_WIDTH - 25, 11 * 25, true));
 
@@ -72,6 +76,8 @@ namespace Escape
             }
             set
             {
+				if (value == null) return;
+
                 this.Neighbors.Add(Direction.UP, value);
                 this.Doors.Add(Direction.UP, new Door(contentManager, 19 * 25, 0, false));
 
@@ -86,6 +92,8 @@ namespace Escape
             }
             set
             {
+				if (value == null) return;
+
                 this.Neighbors.Add(Direction.DOWN, value);
                 this.Doors.Add(Direction.DOWN, new Door(contentManager, 19 * 25, this.mg.GAME_HEIGHT - 25, false));
 
@@ -151,24 +159,24 @@ namespace Escape
             //Doors.Add(Direction.UP, new Door(19 * 25, 0, false));
             //Doors.Add(Direction.DOWN, new Door(19 * 25, mg.GAME_HEIGHT - 25, false));
 
-           /* Obstacles.Add(new Hole(contentManager, 300, 300, 0));
-            Obstacles.Add(new Hole(contentManager, 400, 400, 1));
-            Obstacles.Add(new Hole(contentManager, 425, 400, 2));
-            Obstacles.Add(new Hole(contentManager, 450, 400, 2));
-            Obstacles.Add(new Hole(contentManager, 475, 400, 3));
-            Obstacles.Add(new Hole(contentManager, 475, 425, 4));
-            Obstacles.Add(new Hole(contentManager, 475, 450, 5));
-            Obstacles.Add(new Hole(contentManager, 450, 450, 6));
-            Obstacles.Add(new Hole(contentManager, 425, 450, 6));
-            Obstacles.Add(new Hole(contentManager, 400, 450, 7));
-            Obstacles.Add(new Hole(contentManager, 400, 425, 8));
-            Obstacles.Add(new Hole(contentManager, 425, 425, 9));
-            Obstacles.Add(new Hole(contentManager, 450, 425, 9));
-
-			Boulders.Add(new Boulder(contentManager, new Vector2(175, 300), castle.Player));
-
-            PowerUps.Add(new PowerUp(contentManager, new Vector2(200, 300), "yellow.png", false, false, false, true));
-            PowerUps.Add(new PowerUp(contentManager, new Vector2(500, 500), "naryu.png", false, true, false, false));*/
+//            Obstacles.Add(new Hole(contentManager, 300, 300, 0));
+//            Obstacles.Add(new Hole(contentManager, 400, 400, 1));
+//            Obstacles.Add(new Hole(contentManager, 425, 400, 2));
+//            Obstacles.Add(new Hole(contentManager, 450, 400, 2));
+//            Obstacles.Add(new Hole(contentManager, 475, 400, 3));
+//            Obstacles.Add(new Hole(contentManager, 475, 425, 4));
+//            Obstacles.Add(new Hole(contentManager, 475, 450, 5));
+//            Obstacles.Add(new Hole(contentManager, 450, 450, 6));
+//            Obstacles.Add(new Hole(contentManager, 425, 450, 6));
+//            Obstacles.Add(new Hole(contentManager, 400, 450, 7));
+//            Obstacles.Add(new Hole(contentManager, 400, 425, 8));
+//            Obstacles.Add(new Hole(contentManager, 425, 425, 9));
+//            Obstacles.Add(new Hole(contentManager, 450, 425, 9));
+//
+//			  Boulders.Add(new Boulder(contentManager, new Vector2(175, 300), castle.Player));
+//
+//            PowerUps.Add(new PowerUp(contentManager, new Vector2(200, 300), "yellow.png", false, false, false, true));
+//            PowerUps.Add(new PowerUp(contentManager, new Vector2(500, 500), "naryu.png", false, true, false, false));
         }
 
         public Room(MainGame mg, Castle castle, String csvName)
@@ -438,6 +446,39 @@ namespace Escape
                 t.Draw(sb);
             }
         }
+
+		public void AddObjectsFromCsv(string csvName)
+		{
+			// CSV is formatted id,x,y
+
+			var path = @"Content\Enemies\" + csvName;
+
+			using (var stream = TitleContainer.OpenStream(path))
+			using (var reader = new StreamReader(stream))
+			{
+				while(!reader.EndOfStream)
+				{
+					var line = reader.ReadLine();
+					var cells = line.Split(',');
+
+					if (cells.Length != 3 || cells.Length != 4) continue;
+
+					switch(cells[0])
+					{
+						case "ghost":
+							this.Enemies.Add(new Ghost(contentManager, mg.SpriteRender, Castle.Player, new Vector2(int.Parse(cells[1]), int.Parse(cells[2]))));
+							break;
+						case "boulder":
+							this.Obstacles.Add(new Boulder(contentManager, new Vector2(int.Parse(cells[1]), int.Parse(cells[2])), Castle.Player));
+							break;
+						case "text":
+							AddText(cells[3], new Vector2(int.Parse(cells[1]), int.Parse(cells[2])));
+							break;
+					}
+				}
+			}
+
+		}
 
         public Door LeftDoor()
         {
