@@ -40,6 +40,11 @@ namespace Escape
             return kb.IsKeyDown(key) || gp.IsButtonDown(button);
         }
 
+        public bool isPressed(Keys key)
+        {
+            return kb.IsKeyDown(key);
+        }
+
         public bool onPress(Keys key, Buttons button)
         {
             if ((gp.IsButtonDown(button) && gpo.IsButtonUp(button)))

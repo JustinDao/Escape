@@ -17,7 +17,39 @@ namespace Escape
         // attacking!
         const int ATTACK_SIZE = 20;
         const float ATTACK_REACH = 100 - ATTACK_SIZE;
-        public Vector2 AttackVector = Vector2.Zero;
+        public Vector2 AttackVector
+        {
+            get
+            {
+                var rStick = Ctrls.gp.ThumbSticks.Right;
+                rStick.Y *= -1;
+
+                if (rStick.LengthSquared() == 0)
+                {
+                    if(this.Ctrls.isPressed(Keys.W))
+                    {
+                        rStick.Y = -1;
+                    }
+
+                    if (this.Ctrls.isPressed(Keys.A))
+                    {
+                        rStick.X = -1;
+                    }
+
+                    if (this.Ctrls.isPressed(Keys.S))
+                    {
+                        rStick.Y = 1;
+                    }
+
+                    if (this.Ctrls.isPressed(Keys.D))
+                    {
+                        rStick.X = 1;
+                    }
+                }
+
+               return rStick;
+            }
+        }
         public Rectangle? AttackArea = null;
         Texture2D weaponTexture;
         // getting hit
@@ -346,9 +378,7 @@ namespace Escape
 
             // lance
             AttackArea = null;
-            var rStick = Ctrls.gp.ThumbSticks.Right;
-            rStick.Y *= -1;
-            AttackVector = rStick;
+            
             // 0.15 buffer for control stick
             if (AttackVector.LengthSquared() > 0.15)
             {
