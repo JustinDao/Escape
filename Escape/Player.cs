@@ -32,7 +32,7 @@ namespace Escape
         {
             get
             {
-                return (Ctrls.isPressed(Keys.D3, Buttons.B) && HasStrength);
+                return (Ctrls.isPressed(Keys.D3, Buttons.A) && HasStrength);
             }
         }
 
@@ -361,7 +361,7 @@ namespace Escape
             }
 
             // fire
-            if (Ctrls.onPress(Keys.D1, Buttons.A) && HasFire && lastDir.LengthSquared() > 0)
+            if (Ctrls.onPress(Keys.D1, Buttons.B) && HasFire && lastDir.LengthSquared() > 0)
             {
                 var fbp = new Vector2(lastDir.X, lastDir.Y);
                 room.AddFireBall(Position, fbp);
