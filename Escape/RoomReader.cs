@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Escape
 {
-	public class RoomReader
+	class RoomReader
 	{
 		public int NumCols;
 		public int NumRows;

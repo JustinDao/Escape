@@ -32,7 +32,7 @@ namespace Escape
 
 		public void InitializeRooms()
 		{
-			this.RR = new RoomReader(mg, this, "master");
+			this.RR = new RoomReader(mg, this, "Master.csv");
 			CurrentRoom = this.RR.StartRoom;
 		}
 
