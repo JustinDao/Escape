@@ -149,7 +149,7 @@ namespace Escape
             //Doors.Add(Direction.UP, new Door(19 * 25, 0, false));
             //Doors.Add(Direction.DOWN, new Door(19 * 25, mg.GAME_HEIGHT - 25, false));
 
-            Obstacles.Add(new Hole(contentManager, 300, 300, 0));
+           /* Obstacles.Add(new Hole(contentManager, 300, 300, 0));
             Obstacles.Add(new Hole(contentManager, 400, 400, 1));
             Obstacles.Add(new Hole(contentManager, 425, 400, 2));
             Obstacles.Add(new Hole(contentManager, 450, 400, 2));
@@ -166,7 +166,7 @@ namespace Escape
 			Boulders.Add(new Boulder(contentManager, new Vector2(175, 300), castle.Player));
 
             PowerUps.Add(new PowerUp(contentManager, new Vector2(200, 300), "yellow.png", false, false, false, true));
-            PowerUps.Add(new PowerUp(contentManager, new Vector2(500, 500), "naryu.png", false, true, false, false));
+            PowerUps.Add(new PowerUp(contentManager, new Vector2(500, 500), "naryu.png", false, true, false, false));*/
         }
 
         public Room(MainGame mg, Castle castle, String csvName)

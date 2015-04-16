@@ -38,21 +38,48 @@ namespace Escape
             CurrentRoom.UpRoom = MainRoom;
             MainRoom.DownRoom = CurrentRoom;
 
-            MainRoom.LeftRoom = new Room(mg, this, "RoomTemplate.csv");
-
-            MainRoom.LeftRoom.Enemies.Add(new FireBoss(mg.Content, mg.SpriteRender, new Vector2[] 
-                { 
-                    new Vector2(300, 100), new Vector2(500, 100), new Vector2(300, 300), new Vector2(500, 300)
-                }
-            ));
-
+            MainRoom.LeftRoom = new Room(mg, this, "RoomTemplateRight.csv");
             MainRoom.LeftRoom.RightRoom = MainRoom;
+            MainRoom.LeftRoom.Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, this.Player, new Vector2(450, 500)));
+            MainRoom.LeftRoom.Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, this.Player, new Vector2(150, 400)));
+            MainRoom.LeftRoom.Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, this.Player, new Vector2(500, 300)));
 
-            MainRoom.LeftRoom.UpRoom = new RoomEnd(mg, this);
-            MainRoom.LeftRoom.UpRoom.DownRoom = MainRoom.LeftRoom;
+            //MainRoom.LeftRoom.UpRoom = new RoomEnd(mg, this);
+            //MainRoom.LeftRoom.UpRoom.DownRoom = MainRoom.LeftRoom;
 
-            MainRoom.RightRoom = new Room(mg, this, "R2.csv");
+            MainRoom.RightRoom = new Room(mg, this, "RoomTemplateLeft.csv");
             MainRoom.RightRoom.LeftRoom = MainRoom;
+            MainRoom.RightRoom.Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, this.Player, new Vector2(450, 500)));
+            MainRoom.RightRoom.Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, this.Player, new Vector2(150, 400)));
+
+
+            MainRoom.UpRoom = new Room(mg, this, "RoomTemplateUpDown.csv");
+            MainRoom.UpRoom.DownRoom = MainRoom;
+            MainRoom.UpRoom.Obstacles.Add(new Hole(mg.Content, 400, 400, 1));
+            MainRoom.UpRoom.Obstacles.Add(new Hole(mg.Content, 425, 400, 2));
+            MainRoom.UpRoom.Obstacles.Add(new Hole(mg.Content, 450, 400, 2));
+            MainRoom.UpRoom.Obstacles.Add(new Hole(mg.Content, 475, 400, 3));
+            MainRoom.UpRoom.Obstacles.Add(new Hole(mg.Content, 475, 425, 4));
+            MainRoom.UpRoom.Obstacles.Add(new Hole(mg.Content, 475, 450, 5));
+            MainRoom.UpRoom.Obstacles.Add(new Hole(mg.Content, 450, 450, 6));
+            MainRoom.UpRoom.Obstacles.Add(new Hole(mg.Content, 425, 450, 6));
+            MainRoom.UpRoom.Obstacles.Add(new Hole(mg.Content, 400, 450, 7));
+            MainRoom.UpRoom.Obstacles.Add(new Hole(mg.Content, 400, 425, 8));
+            MainRoom.UpRoom.Obstacles.Add(new Hole(mg.Content, 425, 425, 9));
+            MainRoom.UpRoom.Obstacles.Add(new Hole(mg.Content, 450, 425, 9));
+
+            
+            MainRoom.UpRoom.UpRoom = new Room(mg, this, "RoomTemplateRightDown.csv");
+            MainRoom.UpRoom.UpRoom.DownRoom = MainRoom.UpRoom;
+            MainRoom.UpRoom.UpRoom.Obstacles.Add(new Hole(mg.Content, 400, 400, 0));
+            MainRoom.UpRoom.UpRoom.Obstacles.Add(new Hole(mg.Content, 300, 300, 0));
+            MainRoom.UpRoom.UpRoom.Obstacles.Add(new Hole(mg.Content, 450, 200, 0));
+            MainRoom.UpRoom.UpRoom.Obstacles.Add(new Hole(mg.Content, 175, 100, 0));
+            MainRoom.UpRoom.UpRoom.Obstacles.Add(new Hole(mg.Content, 500, 350, 0));
+            MainRoom.UpRoom.UpRoom.Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, this.Player, new Vector2(450, 500)));
+            MainRoom.UpRoom.UpRoom.Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, this.Player, new Vector2(150, 400)));
+            MainRoom.UpRoom.UpRoom.Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, this.Player, new Vector2(500, 300)));
+
 
             MainRoom.RightRoom.DownRoom = new Room(mg, this, "Boss2.csv");
             MainRoom.RightRoom.DownRoom.UpRoom = MainRoom.RightRoom;
@@ -63,21 +90,17 @@ namespace Escape
             MainRoom.LeftRoom.DownRoom = new Room(mg, this, "R4.csv");
             MainRoom.LeftRoom.DownRoom.UpRoom = MainRoom.LeftRoom;
 
-            MainRoom.UpRoom = new Room(mg, this, "R3.csv");
-            MainRoom.UpRoom.DownRoom = MainRoom;
-            MainRoom.UpRoom.Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, this.Player, new Vector2(400, 300)));
+            
 
-            MainRoom.UpRoom.Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, this.Player, new Vector2(400, 300)));
-            MainRoom.UpRoom.Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, this.Player, new Vector2(450, 500)));
-            MainRoom.UpRoom.Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, this.Player, new Vector2(150, 400)));
 
-            MainRoom.UpRoom.UpRoom = new Room(mg, this, "R5.csv");
+
+            /*MainRoom.UpRoom.UpRoom = new Room(mg, this, "R5.csv");
             MainRoom.UpRoom.UpRoom.DownRoom = MainRoom.UpRoom;
             MainRoom.UpRoom.UpRoom.Enemies.Add(new EarthBoss(mg.Content, mg.SpriteRender, new Vector2[] 
                 { 
                     new Vector2(100, 100), new Vector2(200, 100), new Vector2(300, 200), new Vector2(400, 300)
                 }
-            ));
+            ));*/
 
             // Infinite Room Loop!
             MainRoom.LeftRoom.LeftRoom = MainRoom;
