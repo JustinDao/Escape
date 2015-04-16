@@ -10,6 +10,7 @@ namespace Escape
         public int NumRows;
         public Room[,] Rooms;
         public Room StartRoom;
+        public Room EndRoom;
 
         public RoomReader(MainGame mg, Castle castle, string csvName)
         {
@@ -62,6 +63,12 @@ namespace Escape
                                         if (cells[i] == "StartRoom")
                                         {
                                             this.StartRoom = r;
+                                        }
+
+                                        if (cells[i] == "EndRoom")
+                                        {
+                                            r = new RoomEnd(mg, castle);
+                                            this.EndRoom = r;
                                         }
 
                                         Rooms[col, row] = r;

@@ -82,6 +82,8 @@
     <Compile Include="RoomReader.cs" />
     <Compile Include="Screen.cs" />
     <Compile Include="SoldierSprites.cs" />
+    <Compile Include="SpeedBoss.cs" />
+    <Compile Include="SpeedBossSprites.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="SpriteEntity.cs" />
     <Compile Include="StartMenu.cs" />
@@ -311,6 +313,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\spear.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\speed_boss_sprite_sheet.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\speed_boss_sprite_sheet.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\StartRoomEntities\Door.png">

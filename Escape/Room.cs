@@ -474,6 +474,12 @@ namespace Escape
                         case "ice":
                             this.Enemies.Add(new IceBoss(contentManager, mg.SpriteRender, this, new Vector2(int.Parse(cells[1]), int.Parse(cells[2]))));
                             break;
+                        case "fire":
+                            this.Enemies.Add(new FireBoss(contentManager, mg.SpriteRender, new Vector2[1]{new Vector2(int.Parse(cells[1]), int.Parse(cells[2]))} ));
+                            break;
+                        case "speed":
+                            this.Enemies.Add(new SpeedBoss(contentManager, mg.SpriteRender, this, new Vector2(int.Parse(cells[1]), int.Parse(cells[2]))));
+                            break;
 						case "boulder":
                             this.Boulders.Add(new Boulder(contentManager, new Vector2(int.Parse(cells[1]), int.Parse(cells[2]))));
 							break;
