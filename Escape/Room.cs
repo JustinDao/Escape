@@ -589,7 +589,7 @@ namespace Escape
                         {
                             if (!w.IsFrozen && p.Type == ProjectileType.SNOWFLAKE)
                             {
-                                w.IsFrozen = true;
+                                w.Freeze();
                                 projectilesToRemove.Add(p);
                             }
                         }

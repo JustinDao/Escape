@@ -211,6 +211,9 @@
     <Content Include="Content\hole9.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\ice.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\ice_boss_sprite_sheet.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

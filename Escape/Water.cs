@@ -10,6 +10,7 @@ namespace Escape
     class Water : StaticSpriteEntity
     {
         public bool IsFrozen = false;
+        ContentManager cm;
 
         public override Color Tint
         {
@@ -27,6 +28,7 @@ namespace Escape
         public Water(ContentManager cm, string spriteName, int x, int y)
             : base(cm, spriteName)
         {
+            this.cm = cm;
             Scale = 0.5f;
             Position = new Vector2(x, y);
         }
@@ -38,6 +40,8 @@ namespace Escape
         public void Freeze()
         {
             this.IsFrozen = true;
+            this.CurrentSprite = new Sprite(cm, "ice.png");
+            this.Scale = 0.26f;            
         }
     }
 }
