@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Tao.Sdl;
 using Microsoft.Xna.Framework.Media;
 using TexturePackerLoader;
+using Microsoft.Xna.Framework.Audio;
 #endregion
 
 namespace Escape
@@ -31,6 +32,7 @@ namespace Escape
         EndScreen endScreen;
         public Controls Control;
         SubmissionBar submissionBar;
+        public SoundEffectInstance CurrentSong;
 
         public int GAME_WIDTH = 1000;
         public int GAME_HEIGHT = 600;
@@ -180,13 +182,11 @@ namespace Escape
         public void Pause()
         {
             isPaused = true;
-            MediaPlayer.Pause();
         }
 
         public void UnPause()
         {
             isPaused = false;
-            MediaPlayer.Resume();
         }
 
         public void SwitchToCastle()

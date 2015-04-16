@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Escape
 {
@@ -25,8 +26,10 @@ namespace Escape
             this.BackgroundBox = new Rectangle(0, 0, mg.GAME_WIDTH, mg.GAME_HEIGHT);
             this.Active = false;
 
-			MediaPlayer.Play(mg.Content.Load<Song>("Songs\\start.wav"));
-
+            var song = mg.Content.Load<SoundEffect>("Songs\\start");
+            mg.CurrentSong = song.CreateInstance();
+            mg.CurrentSong.IsLooped = true;
+            mg.CurrentSong.Play();
         }
 
         public override void Draw(SpriteBatch sb)
@@ -44,9 +47,12 @@ namespace Escape
         {
             if (controls.onPress(Keys.Space, Buttons.Start))
             {
-				MediaPlayer.Stop();
+                mg.CurrentSong.Stop();
                 mg.SwitchToCastle();
-				MediaPlayer.Play(mg.Content.Load<Song>("Songs\\castle.wav"));
+                var song = mg.Content.Load<SoundEffect>("Songs\\castle.wav");
+                mg.CurrentSong = song.CreateInstance();
+                mg.CurrentSong.IsLooped = true;
+                mg.CurrentSong.Play();
             }
         }
     }
