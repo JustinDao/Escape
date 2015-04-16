@@ -12,9 +12,10 @@ namespace Escape
     {
         public Vector2[] PatrolPoints;
         int targetIndex = 0;
+        float lastDelta;
 
         public EnemyPatrol(ContentManager cm, SpriteRender sr,
-            string spriteSheetName, Vector2[] patrolPoints)
+            string spriteSheetName, params Vector2[] patrolPoints)
             : base(cm, sr, spriteSheetName)
         {
             PatrolPoints = patrolPoints;
@@ -23,7 +24,8 @@ namespace Escape
 
         public override void Update(GameTime gt, Screen s)
         {
-            var delta = gt.ElapsedGameTime.TotalSeconds;
+            float delta = (float) gt.ElapsedGameTime.TotalSeconds;
+            lastDelta = delta;
             var target = PatrolPoints[targetIndex];
             var distance = (target - Position).Length();
             if (distance <= MaxSpeed * delta)
@@ -39,6 +41,7 @@ namespace Escape
             {
                 var target = PatrolPoints[targetIndex];
                 var direction = target - Position;
+                if (direction.Length() < MaxSpeed * lastDelta) return Vector2.Zero;
                 direction.Normalize();
                 return direction * MaxSpeed;
             }

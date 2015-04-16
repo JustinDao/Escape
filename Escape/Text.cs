@@ -12,7 +12,6 @@ namespace Escape
     {
         public Color Color;
         public string Value;
-        public Vector2 Position;
         public SpriteFont Font;
 
         public override Rectangle HitBox

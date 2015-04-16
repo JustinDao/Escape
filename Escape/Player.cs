@@ -173,6 +173,10 @@ namespace Escape
             {
                 if (PlayerControl)
                 {
+                    if (AttackArea.HasValue)
+                    {
+                        return Vector2.Zero;
+                    }
                     var stick = Ctrls.gp.ThumbSticks.Left;
                     stick.Y *= -1;
 

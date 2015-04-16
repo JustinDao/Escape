@@ -82,6 +82,7 @@
     <Compile Include="Sprite.cs" />
     <Compile Include="SpriteEntity.cs" />
     <Compile Include="StartMenu.cs" />
+    <Compile Include="StaticSpriteEntity.cs" />
     <Compile Include="SubmissionBar.cs" />
     <Compile Include="Text.cs" />
     <Compile Include="TexturePackerLoader\SpriteFrame.cs" />
@@ -222,9 +223,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Content\Rooms\RoomTemplateLeftRight.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\Rooms\RoomTemplateUpDown.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Content\Rooms\RoomTemplateRight.csv">

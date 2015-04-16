@@ -78,6 +78,14 @@ namespace Escape
         {
             get { return 200; }
         }
+        public override float AnimationSpeed
+        {
+            get
+            {
+                return 1;
+                // return (float)Health/(float)MaxHealth;
+            }
+        }
 
         public override int Damage
         {
@@ -87,41 +95,101 @@ namespace Escape
             }
         }
 
-        private float currentBoulderInterval = 0;
-        private float boulderInterval = 1;
+        private bool recharging = true;
+        private int boulderIndex = 0;
+        private float boulderTimer = 0;
+        private Vector2 boulderTarget;
 
-        public EarthBoss(ContentManager cm, SpriteRender sr, Vector2[] patrolPoints)
-            : base(cm, sr, "earthboss_sprite_sheet.png", patrolPoints)
+        const float BOULDER_SPEED = 600f;
+        const float BOULDER_INTERVAL = 0.5f;
+        const float BOULDER_CHASE_TIME = 5;
+        const uint BOULDER_COUNT = 5;
+        private Boulder[] boulders = new Boulder[BOULDER_COUNT];
+
+        public EarthBoss(ContentManager cm, SpriteRender sr, Room room, Vector2 location)
+            : base(cm, sr, "earthboss_sprite_sheet.png", location)
         {
             ignoreHoles = true;
             Scale = 1.5f;
             Drop = new PowerUp(cm, Vector2.Zero, "farore.png", isStrength: true);
+            for (int i = 0; i < boulders.Count(); i++)
+            {
+                boulders[i] = new Boulder(cm, Position, 1f);
+                boulders[i].Center = Center;
+                float angle = 2 * (float)Math.PI * (float)i / (float)boulders.Count();
+                angle -= (float)Math.PI / 2f;
+                float dist = 100;
+                boulders[i].Position = Position + new Vector2(
+                    dist * (float)Math.Cos(angle),
+                    dist * (float)Math.Sin(angle)
+                );
+            }
+        }
+
+        public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch sb)
+        {
+            base.Draw(sb);
+            if (Health <= 0) return;
+            foreach (var boulder in boulders)
+            {
+                boulder.Draw(sb);
+            }
         }
 
         public override void Update(GameTime gt, Screen s)
         {
-            currentBoulderInterval += (float)gt.ElapsedGameTime.TotalSeconds;
 
-            if (currentBoulderInterval > boulderInterval)
+            var delta = (float)gt.ElapsedGameTime.TotalSeconds;
+            var castle = s as Castle;
+            if (castle == null) {
+                return;
+            }
+
+            var player = castle.Player;
+            boulderTimer += delta;
+            if (recharging)
             {
-                if (s is Castle)
+                if (boulderTimer >= BOULDER_INTERVAL)
                 {
-                    var castle = s as Castle;
-                    var player = castle.Player;
-
-                    ShootBoulder(castle, player);
+                    recharging = false;
+                    boulderTimer = 0;
+                    boulderTarget = player.Center;
                 }
-                currentBoulderInterval -= boulderInterval;
+            }
+            else
+            {
+                var boulder = boulders[boulderIndex];
+                var diff = boulderTarget - boulder.Position;
+                if (diff.Length() < BOULDER_SPEED * delta || boulderTimer >= BOULDER_CHASE_TIME)
+                {
+                    boulderIndex = (boulderIndex + 1) % boulders.Count();
+                    recharging = true;
+                    boulderTimer = 0;
+                }
+                else
+                {
+                    diff.Normalize();
+                    boulder.Center += diff * BOULDER_SPEED * delta;
+                    if (boulder.HitBox.Intersects(player.CollisionBox))
+                    {
+                        player.OnEnemyCollision(this);
+                    }
+                }
+            }
+
+            foreach (var boulder in boulders) {
+                player.CollideObstacle(boulder.HitBox);
             }
 
             base.Update(gt, s);
         }
 
-        public void ShootBoulder(Castle castle, Player player)
+        public override void OnDeath(Room r)
         {
-            var direction = player.Position - this.Position;
-            direction.Normalize();
-            castle.CurrentRoom.AddBoulder(this.Position, direction, this);
+            foreach (var boulder in boulders) {
+                r.Boulders.Add(boulder);
+            }
+            base.OnDeath(r);
         }
 
     }

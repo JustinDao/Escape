@@ -116,5 +116,9 @@ namespace Escape
             base.Update(gt, s);
         }
 
+        public virtual void OnDeath(Room r)
+        {
+            // do nothing by default
+        }
     }
 }

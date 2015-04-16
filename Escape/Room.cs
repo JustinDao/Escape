@@ -145,7 +145,7 @@ namespace Escape
 
             Doors = new Dictionary<Direction, Door>();
             Neighbors = new Dictionary<Direction, Room>();
-
+            Enemies.Add(new EarthBoss(contentManager, mg.SpriteRender,this, new Vector2(300,300)));
             //Doors.Add(Direction.LEFT, new Door(0, 11 * 25, true));
             //Doors.Add(Direction.RIGHT, new Door(mg.GAME_WIDTH - 25, 11 * 25, true));
             //Doors.Add(Direction.UP, new Door(19 * 25, 0, false));
@@ -273,7 +273,7 @@ namespace Escape
                                 break;
 							case 32:
 								Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count));
-							    Boulders.Add(new Boulder(contentManager, new Vector2((25 * x_count), (25 * y_count)), castle.Player));
+							    Boulders.Add(new Boulder(contentManager, new Vector2((25 * x_count), (25 * y_count))));
 								break;
                             default: // default to a hole
                                 if (int.Parse(cells[x_count]) > 11) break;
@@ -543,6 +543,7 @@ namespace Escape
                 var e = Enemies[i];
                 if (e.Health <= 0)
                 {
+                    e.OnDeath(this);
                     DyingEnemies.Add(e, e.DeathFadeTime);
                     Enemies.RemoveAt(i);
                     i--;

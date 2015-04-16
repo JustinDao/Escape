@@ -43,6 +43,14 @@ namespace Escape
             }
         }
 
+        public virtual float AnimationSpeed
+        {
+            get
+            {
+                return CurrentVelocity.Length() / MaxSpeed;
+            }
+        }
+
         // Velocity (direction AND magnitude) of the character
         public abstract Vector2 CurrentVelocity
         {
@@ -127,7 +135,7 @@ namespace Escape
 
         }
 
-        protected bool collideObstacle(Rectangle eBox)
+        public bool CollideObstacle(Rectangle eBox)
         {
             var pBox = CollisionBox;
             var overlap = Rectangle.Intersect(pBox, eBox);
@@ -168,17 +176,17 @@ namespace Escape
         {
             foreach (var wall in room.Walls)
             {
-                collideObstacle(wall.HitBox);
+                CollideObstacle(wall.HitBox);
             }
             foreach (var e in room.Obstacles)
             {
                 if (e is Hole && ignoreHoles) continue;
-                collideObstacle(e.HitBox);
+                CollideObstacle(e.HitBox);
             }
             foreach (var e in room.Enemies)
             {
                 if (e == this) continue;
-                if (collideObstacle(e.CollisionBox))
+                if (CollideObstacle(e.CollisionBox))
                 {
                     OnEnemyCollision(e);
                 }
@@ -212,25 +220,26 @@ namespace Escape
 
         protected void UpdateSprites(GameTime gt)
         {
+            // update sprites
+
+            var percentSpeed = AnimationSpeed;
+            currentSpriteInterval += (float)gt.ElapsedGameTime.TotalMilliseconds * percentSpeed;
+
+            if (currentSpriteInterval > SpriteInterval)
+            {
+                currentSpriteIndex += 1;
+                currentSpriteInterval = 0;
+
+                if (currentSpriteIndex > MaxSpriteIndex)
+                {
+                    currentSpriteIndex = 0;
+                }
+            }
+
             // If the velocity is > 0 in any direction
             // update the last direction
-            // update sprites
             if (CurrentVelocity.LengthSquared() > 0)
             {
-
-                var percentSpeed = CurrentVelocity.Length() / MaxSpeed;
-                currentSpriteInterval += (float)gt.ElapsedGameTime.TotalMilliseconds * percentSpeed;
-
-                if (currentSpriteInterval > SpriteInterval)
-                {
-                    currentSpriteIndex += 1;
-                    currentSpriteInterval = 0;
-
-                    if (currentSpriteIndex > MaxSpriteIndex)
-                    {
-                        currentSpriteIndex = 0;
-                    }
-                }
 
                 // Check Direction, and update Sprites accordingly
 

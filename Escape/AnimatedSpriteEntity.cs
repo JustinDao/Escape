@@ -13,7 +13,6 @@ namespace Escape
     {
         // transform stuff
         public float Scale = 1f;
-        public Vector2 Position;
         public Vector2 Origin;
         public float Rotation = 0f; // DEGREES CCW :(
         public virtual Color Tint 

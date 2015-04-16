@@ -9,16 +9,16 @@ namespace Escape
 {
     class Boulder : SpriteEntity
     {
-        Player Player;
         public bool Removed = false;
 
-        public Boulder(ContentManager cm, Vector2 position, Player player)
+        public const float SCALE = 0.75f;
+
+        public Boulder(ContentManager cm, Vector2 position, float scale = SCALE)
             : base(cm, "boulder.png")
         {
             Origin = new Vector2(0.5f);
-            Position = position;
-            Player = player;
-            Scale = 0.75f;
+            Center = position;
+            Scale = SCALE;
         }
 
         public override void Update(GameTime gt, Screen s)
@@ -28,8 +28,9 @@ namespace Escape
             var castle = s as Castle;
             if (castle == null) return;
             var room = castle.CurrentRoom;
+            var player = castle.Player;
 
-            CollideCharacter(Player, Player.UsingStrength);
+            CollideCharacter(player, player.UsingStrength);
 
             foreach (Enemy e in room.Enemies)
             {

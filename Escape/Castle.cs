@@ -56,7 +56,7 @@ namespace Escape
             MainRoom.RightRoom.Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, this.Player, new Vector2(150, 400)));
 
 
-            MainRoom.UpRoom = new Room(mg, this, "RoomTemplateUpDown.csv");
+            MainRoom.UpRoom = new Room(mg, this, "RoomTemplateUp.csv");
             MainRoom.UpRoom.DownRoom = MainRoom;
             MainRoom.UpRoom.Obstacles.Add(new Hole(mg.Content, 400, 400, 1));
             MainRoom.UpRoom.Obstacles.Add(new Hole(mg.Content, 425, 400, 2));
