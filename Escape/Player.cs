@@ -453,6 +453,7 @@ namespace Escape
                         if (p.IsStrength)
                         {
                             this.HasStrength = true;
+                            room.AddText("You feel stronger! Press A to activate strength power!", new Vector2(300, 300));
                             toRemove.Add(o);
                         }
 
