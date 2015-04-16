@@ -461,15 +461,18 @@ namespace Escape
 					var line = reader.ReadLine();
 					var cells = line.Split(',');
 
-					if (cells.Length != 3 || cells.Length != 4) continue;
+					if (cells.Length > 4) continue;
 
 					switch(cells[0])
 					{
 						case "ghost":
 							this.Enemies.Add(new Ghost(contentManager, mg.SpriteRender, Castle.Player, new Vector2(int.Parse(cells[1]), int.Parse(cells[2]))));
 							break;
+                        case "earth":
+                            this.Enemies.Add(new EarthBoss(contentManager, mg.SpriteRender, this,new Vector2(int.Parse(cells[1]), int.Parse(cells[2]))));
+                            break;
 						case "boulder":
-							this.Obstacles.Add(new Boulder(contentManager, new Vector2(int.Parse(cells[1]), int.Parse(cells[2])), Castle.Player));
+                            this.Boulders.Add(new Boulder(contentManager, new Vector2(int.Parse(cells[1]), int.Parse(cells[2]))));
 							break;
 						case "text":
 							AddText(cells[3], new Vector2(int.Parse(cells[1]), int.Parse(cells[2])));
