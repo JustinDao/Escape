@@ -83,6 +83,7 @@
     <Compile Include="SpriteEntity.cs" />
     <Compile Include="StartMenu.cs" />
     <Compile Include="SubmissionBar.cs" />
+    <Compile Include="Text.cs" />
     <Compile Include="TexturePackerLoader\SpriteFrame.cs" />
     <Compile Include="TexturePackerLoader\SpriteRender.cs" />
     <Compile Include="TexturePackerLoader\SpriteSheet.cs">

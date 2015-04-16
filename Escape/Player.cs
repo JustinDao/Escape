@@ -32,7 +32,7 @@ namespace Escape
         {
             get
             {
-                return (Ctrls.isPressed(Keys.D3, Buttons.B) && HasStrength);
+                return (Ctrls.isPressed(Keys.D3, Buttons.A) && HasStrength);
             }
         }
 
@@ -278,7 +278,7 @@ namespace Escape
                 lastDir.Normalize();
             }
 
-            // stuff that involves the castle
+            // stuff that involves the Castle
             var castle = s as Castle;
             if (castle != null)
             {
@@ -345,8 +345,10 @@ namespace Escape
             var rStick = Ctrls.gp.ThumbSticks.Right;
             rStick.Y *= -1;
             AttackVector = rStick;
-            if (AttackVector.LengthSquared() > 0)
+            // 0.15 buffer for control stick
+            if (AttackVector.LengthSquared() > 0.15)
             {
+                Console.WriteLine(AttackVector.LengthSquared());
                 var pCenter = HitBox.Center;
                 var area = new Rectangle(pCenter.X - ATTACK_SIZE / 2,
                     pCenter.Y - ATTACK_SIZE / 2,
@@ -359,7 +361,7 @@ namespace Escape
             }
 
             // fire
-            if (Ctrls.onPress(Keys.D1, Buttons.A) && HasFire && lastDir.LengthSquared() > 0)
+            if (Ctrls.onPress(Keys.D1, Buttons.B) && HasFire && lastDir.LengthSquared() > 0)
             {
                 var fbp = new Vector2(lastDir.X, lastDir.Y);
                 room.AddFireBall(Position, fbp);

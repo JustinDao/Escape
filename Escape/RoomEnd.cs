@@ -13,5 +13,16 @@ namespace Escape
         {
 
         }
+
+        public override void DrawText(SpriteBatch sb)
+        {
+            if (!this.Castle.Player.BeatTheGame)
+            {
+                foreach (Text t in OnScreenText)
+                {
+                    t.Draw(sb);
+                }
+            }            
+        }
     }
 }

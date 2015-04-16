@@ -24,7 +24,7 @@ namespace Escape
         public override void Update(GameTime gt, Screen s)
         {
 
-            // stuff that involves the castle
+            // stuff that involves the Castle
             var castle = s as Castle;
             if (castle == null) return;
             var room = castle.CurrentRoom;

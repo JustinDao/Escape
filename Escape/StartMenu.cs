@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Escape
 {
@@ -25,32 +26,33 @@ namespace Escape
             this.BackgroundBox = new Rectangle(0, 0, mg.GAME_WIDTH, mg.GAME_HEIGHT);
             this.Active = false;
 
-			MediaPlayer.Play(mg.Content.Load<Song>("Songs\\start.wav"));
-
+            var song = mg.Content.Load<SoundEffect>("Songs\\start");
+            mg.CurrentSong = song.CreateInstance();
+            mg.CurrentSong.IsLooped = true;
+            mg.CurrentSong.Play();
         }
 
         public override void Draw(SpriteBatch sb)
         {
             sb.Draw(BackgroundTexture, BackgroundBox, Color.White);
-//			sb.DrawString(Font, "ESCAPE", new Vector2((mg.GAME_WIDTH / 2)-30, 200), Color.Black);
-//			sb.DrawString(Font, "START", new Vector2((mg.GAME_WIDTH / 2)-25, 500), Color.Black);
         }
 
         public override void LoadContent(ContentManager cm)
         {
 			this.BackgroundTexture = cm.Load<Texture2D>("Cover.png");
-//            this.BackgroundTexture.SetData(new Color[] { Color.White });
             this.Font = cm.Load<SpriteFont>("QuestionFont");
         }
 
         public void Update(Controls controls)
         {
-
             if (controls.onPress(Keys.Space, Buttons.Start))
             {
-				MediaPlayer.Stop();
+                mg.CurrentSong.Stop();
                 mg.SwitchToCastle();
-				MediaPlayer.Play(mg.Content.Load<Song>("Songs\\castle.wav"));
+                var song = mg.Content.Load<SoundEffect>("Songs\\Castle.wav");
+                mg.CurrentSong = song.CreateInstance();
+                mg.CurrentSong.IsLooped = true;
+                mg.CurrentSong.Play();
             }
         }
     }

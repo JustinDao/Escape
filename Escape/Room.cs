@@ -13,7 +13,7 @@ namespace Escape
     {
         MainGame mg;
         ContentManager contentManager;
-        Castle castle;
+        public Castle Castle;
 
         public Vector2 Position { get; set; }
 
@@ -30,6 +30,7 @@ namespace Escape
         public List<Enemy> Enemies = new List<Enemy>();
         public Dictionary<Enemy, float> DyingEnemies = new Dictionary<Enemy, float>();
         public List<Item> Items { get; set; }
+        public List<Text> OnScreenText { get; set; }
 
         public Dictionary<Direction, Room> Neighbors { get; set; }
 
@@ -98,7 +99,7 @@ namespace Escape
         public Room(MainGame mg, Castle castle)
         {
             contentManager = mg.Content;
-            this.castle = castle;
+            this.Castle = castle;
             this.mg = mg;
             this.Width = mg.GAME_WIDTH;
             this.Height = mg.GAME_HEIGHT;
@@ -116,6 +117,7 @@ namespace Escape
 
             Walls = new List<Wall>();
             Obstacles = new List<Entity>();
+            OnScreenText = new List<Text>();
 
             for (int i = 0; i < this.Width / 25; i++)
             {
@@ -173,7 +175,7 @@ namespace Escape
         {
             contentManager = mg.Content;
             this.mg = mg;
-            this.castle = castle;
+            this.Castle = castle;
             this.Width = mg.GAME_WIDTH;
             this.Height = mg.GAME_HEIGHT;
 
@@ -182,6 +184,7 @@ namespace Escape
             Obstacles = new List<Entity>();
             Doors = new Dictionary<Direction, Door>();
             Neighbors = new Dictionary<Direction, Room>();
+            OnScreenText = new List<Text>();
 
             //http://stackoverflow.com/questions/25331714
             var path = @"Content\Rooms\" + csvName;
@@ -320,7 +323,7 @@ namespace Escape
 
             foreach (Enemy e in Enemies)
             {
-                e.Update(gameTime, this.castle);
+                e.Update(gameTime, this.Castle);
             }
 
             var dying = DyingEnemies.Keys.ToList();
@@ -396,6 +399,7 @@ namespace Escape
                 p.Draw(sb);
             }
 
+            DrawText(sb);
         }
 
         public void AddSnowflakes(Vector2 position)
@@ -422,6 +426,19 @@ namespace Escape
             Projectiles.Add(Projectile.CreateBoulder(contentManager, position, dir * 500, owner));
         }
 
+        public void AddText(string text, Vector2 position)
+        {
+            this.OnScreenText.Add(new Text(mg.Content, text, position, "QuestionFont"));
+        }
+
+        public virtual void DrawText(SpriteBatch sb)
+        {
+            foreach (Text t in OnScreenText)
+            {
+                t.Draw(sb);
+            }
+        }
+
         public Door LeftDoor()
         {
             return Doors.ContainsKey(Direction.LEFT) ? Doors[Direction.LEFT] : null;
@@ -444,7 +461,7 @@ namespace Escape
 
         private void checkMeleeAttacks()
         {
-            var p = castle.Player;
+            var p = Castle.Player;
             if (p.AttackArea.HasValue)
             {
                 var area = p.AttackArea.Value;
@@ -479,7 +496,7 @@ namespace Escape
             {
                 if (p.Evil)
                 {
-                    var player = castle.Player;
+                    var player = Castle.Player;
                     if (p.HitBox.Intersects(player.CollisionBox))
                     {
                         player.OnProjectileCollision(p);
