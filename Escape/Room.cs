@@ -25,7 +25,7 @@ namespace Escape
         public List<Entity> Obstacles { get; set; }
         public List<Projectile> Projectiles = new List<Projectile>();
         public List<PowerUp> PowerUps = new List<PowerUp>();
-		public List<Boulder> Boulders = new List<Boulder>();
+        public List<Boulder> Boulders = new List<Boulder>();
 
         public List<Enemy> Enemies = new List<Enemy>();
         public Dictionary<Enemy, float> DyingEnemies = new Dictionary<Enemy, float>();
@@ -44,7 +44,7 @@ namespace Escape
             }
             set
             {
-				if (value == null) return;
+                if (value == null) return;
 
                 this.Neighbors.Add(Direction.LEFT, value);
                 this.Doors.Add(Direction.LEFT, new Door(contentManager, 0, 11 * 25, true));
@@ -60,7 +60,7 @@ namespace Escape
             }
             set
             {
-				if (value == null) return;
+                if (value == null) return;
 
                 this.Neighbors.Add(Direction.RIGHT, value);
                 this.Doors.Add(Direction.RIGHT, new Door(contentManager, this.mg.GAME_WIDTH - 25, 11 * 25, true));
@@ -76,7 +76,7 @@ namespace Escape
             }
             set
             {
-				if (value == null) return;
+                if (value == null) return;
 
                 this.Neighbors.Add(Direction.UP, value);
                 this.Doors.Add(Direction.UP, new Door(contentManager, 19 * 25, 0, false));
@@ -92,7 +92,7 @@ namespace Escape
             }
             set
             {
-				if (value == null) return;
+                if (value == null) return;
 
                 this.Neighbors.Add(Direction.DOWN, value);
                 this.Doors.Add(Direction.DOWN, new Door(contentManager, 19 * 25, this.mg.GAME_HEIGHT - 25, false));
@@ -153,30 +153,30 @@ namespace Escape
 
             Doors = new Dictionary<Direction, Door>();
             Neighbors = new Dictionary<Direction, Room>();
-            Enemies.Add(new EarthBoss(contentManager, mg.SpriteRender,this, new Vector2(300,300)));
+            Enemies.Add(new EarthBoss(contentManager, mg.SpriteRender, this, new Vector2(300, 300)));
             //Doors.Add(Direction.LEFT, new Door(0, 11 * 25, true));
             //Doors.Add(Direction.RIGHT, new Door(mg.GAME_WIDTH - 25, 11 * 25, true));
             //Doors.Add(Direction.UP, new Door(19 * 25, 0, false));
             //Doors.Add(Direction.DOWN, new Door(19 * 25, mg.GAME_HEIGHT - 25, false));
 
-//            Obstacles.Add(new Hole(contentManager, 300, 300, 0));
-//            Obstacles.Add(new Hole(contentManager, 400, 400, 1));
-//            Obstacles.Add(new Hole(contentManager, 425, 400, 2));
-//            Obstacles.Add(new Hole(contentManager, 450, 400, 2));
-//            Obstacles.Add(new Hole(contentManager, 475, 400, 3));
-//            Obstacles.Add(new Hole(contentManager, 475, 425, 4));
-//            Obstacles.Add(new Hole(contentManager, 475, 450, 5));
-//            Obstacles.Add(new Hole(contentManager, 450, 450, 6));
-//            Obstacles.Add(new Hole(contentManager, 425, 450, 6));
-//            Obstacles.Add(new Hole(contentManager, 400, 450, 7));
-//            Obstacles.Add(new Hole(contentManager, 400, 425, 8));
-//            Obstacles.Add(new Hole(contentManager, 425, 425, 9));
-//            Obstacles.Add(new Hole(contentManager, 450, 425, 9));
-//
-//			  Boulders.Add(new Boulder(contentManager, new Vector2(175, 300), castle.Player));
-//
-//            PowerUps.Add(new PowerUp(contentManager, new Vector2(200, 300), "yellow.png", false, false, false, true));
-//            PowerUps.Add(new PowerUp(contentManager, new Vector2(500, 500), "naryu.png", false, true, false, false));
+            //            Obstacles.Add(new Hole(contentManager, 300, 300, 0));
+            //            Obstacles.Add(new Hole(contentManager, 400, 400, 1));
+            //            Obstacles.Add(new Hole(contentManager, 425, 400, 2));
+            //            Obstacles.Add(new Hole(contentManager, 450, 400, 2));
+            //            Obstacles.Add(new Hole(contentManager, 475, 400, 3));
+            //            Obstacles.Add(new Hole(contentManager, 475, 425, 4));
+            //            Obstacles.Add(new Hole(contentManager, 475, 450, 5));
+            //            Obstacles.Add(new Hole(contentManager, 450, 450, 6));
+            //            Obstacles.Add(new Hole(contentManager, 425, 450, 6));
+            //            Obstacles.Add(new Hole(contentManager, 400, 450, 7));
+            //            Obstacles.Add(new Hole(contentManager, 400, 425, 8));
+            //            Obstacles.Add(new Hole(contentManager, 425, 425, 9));
+            //            Obstacles.Add(new Hole(contentManager, 450, 425, 9));
+            //
+            //			  Boulders.Add(new Boulder(contentManager, new Vector2(175, 300), castle.Player));
+            //
+            //            PowerUps.Add(new PowerUp(contentManager, new Vector2(200, 300), "yellow.png", false, false, false, true));
+            //            PowerUps.Add(new PowerUp(contentManager, new Vector2(500, 500), "naryu.png", false, true, false, false));
         }
 
         public Room(MainGame mg, Castle castle, String csvName)
@@ -279,10 +279,10 @@ namespace Escape
                             case 31:
                                 Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count, sprite: "Candle\\Layer_3-002.png"));
                                 break;
-							case 32:
-								Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count));
-							    Boulders.Add(new Boulder(contentManager, new Vector2((25 * x_count), (25 * y_count))));
-								break;
+                            case 32:
+                                Floors.Add(new Floor(contentManager, 25 * x_count, 25 * y_count));
+                                Boulders.Add(new Boulder(contentManager, new Vector2((25 * x_count), (25 * y_count))));
+                                break;
                             default: // default to a hole
                                 if (int.Parse(cells[x_count]) > 11) break;
                                 Obstacles.Add(new Hole(contentManager, 25 * x_count, 25 * y_count, int.Parse(cells[x_count]) - 2));
@@ -297,7 +297,7 @@ namespace Escape
 
         public void Update(GameTime gameTime, Screen s)
         {
-            float delta = (float) gameTime.ElapsedGameTime.TotalSeconds;
+            float delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
             List<Projectile> outProjectiles = new List<Projectile>();
 
             foreach (Projectile p in Projectiles)
@@ -312,20 +312,20 @@ namespace Escape
                 }
             }
 
-			foreach (Entity o in Obstacles)
-			{
-				o.Update(gameTime, s);
-			}
+            foreach (Entity o in Obstacles)
+            {
+                o.Update(gameTime, s);
+            }
 
-			for (int i = 0; i < Boulders.Count(); i++)
-			{
-				var b = Boulders[i];
-				b.Update(gameTime, s);
-				if (b.Removed)
-				{
-					i--;
-				}
-			}
+            for (int i = 0; i < Boulders.Count(); i++)
+            {
+                var b = Boulders[i];
+                b.Update(gameTime, s);
+                if (b.Removed)
+                {
+                    i--;
+                }
+            }
 
             Projectiles = Projectiles.Except(outProjectiles).ToList();
 
@@ -383,10 +383,10 @@ namespace Escape
                 p.Draw(sb);
             }
 
-			foreach (Boulder b in Boulders)
-			{
-				b.Draw(sb);
-			}
+            foreach (Boulder b in Boulders)
+            {
+                b.Draw(sb);
+            }
 
             foreach (Enemy e in Enemies)
             {
@@ -447,50 +447,54 @@ namespace Escape
             }
         }
 
-		public void AddObjectsFromCsv(string csvName)
-		{
-			// CSV is formatted id,x,y
+        public void AddObjectsFromCsv(string csvName)
+        {
+            // CSV is formatted id,x,y
 
-			var path = @"Content\Enemies\" + csvName;
+            var path = @"Content\Enemies\" + csvName;
 
-			using (var stream = TitleContainer.OpenStream(path))
-			using (var reader = new StreamReader(stream))
-			{
-				while(!reader.EndOfStream)
-				{
-					var line = reader.ReadLine();
-					var cells = line.Split(',');
+            using (var stream = TitleContainer.OpenStream(path))
+            using (var reader = new StreamReader(stream))
+            {
+                while (!reader.EndOfStream)
+                {
+                    var line = reader.ReadLine();
+                    var cells = line.Split(',');
 
-					if (cells.Length > 4) continue;
+                    if (cells.Length > 4) continue;
 
-					switch(cells[0])
-					{
-						case "ghost":
-							this.Enemies.Add(new Ghost(contentManager, mg.SpriteRender, Castle.Player, new Vector2(int.Parse(cells[1]), int.Parse(cells[2]))));
-							break;
+                    switch (cells[0])
+                    {
+                        case "ghost":
+                            this.Enemies.Add(new Ghost(contentManager, mg.SpriteRender, Castle.Player, new Vector2(int.Parse(cells[1]), int.Parse(cells[2]))));
+                            break;
                         case "earth":
-                            this.Enemies.Add(new EarthBoss(contentManager, mg.SpriteRender, this,new Vector2(int.Parse(cells[1]), int.Parse(cells[2]))));
+                            this.Enemies.Add(new EarthBoss(contentManager, mg.SpriteRender, this, new Vector2(int.Parse(cells[1]), int.Parse(cells[2]))));
                             break;
                         case "ice":
                             this.Enemies.Add(new IceBoss(contentManager, mg.SpriteRender, this, new Vector2(int.Parse(cells[1]), int.Parse(cells[2]))));
                             break;
                         case "fire":
-                            this.Enemies.Add(new FireBoss(contentManager, mg.SpriteRender, new Vector2[1]{new Vector2(int.Parse(cells[1]), int.Parse(cells[2]))} ));
+                            this.Enemies.Add(new FireBoss(contentManager, mg.SpriteRender, new Vector2[]
+                                { 
+                                    new Vector2(300, 100), new Vector2(500, 100), new Vector2(300, 300), new Vector2(500, 300)
+                                }
+                            ));
                             break;
                         case "speed":
                             this.Enemies.Add(new SpeedBoss(contentManager, mg.SpriteRender, this, new Vector2(int.Parse(cells[1]), int.Parse(cells[2]))));
                             break;
-						case "boulder":
+                        case "boulder":
                             this.Boulders.Add(new Boulder(contentManager, new Vector2(int.Parse(cells[1]), int.Parse(cells[2]))));
-							break;
-						case "text":
-							AddText(cells[3], new Vector2(int.Parse(cells[1]), int.Parse(cells[2])));
-							break;
-					}
-				}
-			}
+                            break;
+                        case "text":
+                            AddText(cells[3], new Vector2(int.Parse(cells[1]), int.Parse(cells[2])));
+                            break;
+                    }
+                }
+            }
 
-		}
+        }
 
         public Door LeftDoor()
         {

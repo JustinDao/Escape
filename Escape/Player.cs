@@ -58,7 +58,7 @@ namespace Escape
         // power-ups
         public bool HasFire = false;
         public bool HasIce = false;
-        public bool HasSpeed = false;
+        public bool HasSpeed = true;
         public bool HasStrength = false;
         public bool UsingStrength
         {
@@ -69,6 +69,18 @@ namespace Escape
         }
 
         public bool BeatTheGame = false;
+
+        public bool IsDashing
+        {
+            get
+            {
+                return dashRemaining > 0;
+            }
+        }
+        private float dashRemaining = 0f;
+        private float dashCooldown = 0f;
+        const float DASH_TIME = 0.2f;
+        const float DASH_INTERVAL = 0.5f;
 
         // controls
         public readonly Controls Ctrls;
@@ -198,6 +210,8 @@ namespace Escape
             }
         }
 
+        const float DASH_MULT = 3;
+
         // Velocity (direction AND magnitude) of the player
         public override Vector2 CurrentVelocity
         {
@@ -209,6 +223,11 @@ namespace Escape
                     {
                         return Vector2.Zero;
                     }
+                    else if (IsDashing)
+                    {
+                        return lastDir * MaxSpeed * DASH_MULT;
+                    }
+
                     var stick = Ctrls.gp.ThumbSticks.Left;
                     stick.Y *= -1;
 
@@ -234,14 +253,9 @@ namespace Escape
                         }
                     }
 
-                    if (HasSpeed && Ctrls.isPressed(Keys.D4, Buttons.Y))
-                    {
-                        return stick * MaxSpeed * 2;
-                    }
-                    else
-                    {
-                        return stick * MaxSpeed;
-                    }
+                   
+                    return stick * MaxSpeed;
+                    
                 }
                 else
                 {
@@ -310,6 +324,22 @@ namespace Escape
                 UpdateAI(gt);
             }
 
+            if (dashCooldown > 0)
+            {
+                dashCooldown -= delta;
+            }
+
+            if (dashRemaining > 0)
+            {
+                dashRemaining -= delta;
+                if (dashRemaining <= 0)
+                {
+                    dashCooldown = DASH_INTERVAL;
+                    ignoreHoles = false;
+                    ignoreWater = false;
+                }
+            }
+
             // lastDir
             if (CurrentVelocity.LengthSquared() > 0)
             {
@@ -369,6 +399,18 @@ namespace Escape
             if (Ctrls.onPress(Keys.D2, Buttons.X) && HasIce)
             {
                 room.AddSnowflakes(Position);
+            }
+
+            // speed
+            if (HasSpeed && Ctrls.onPress(Keys.D4, Buttons.Y))
+            {
+                if (dashCooldown <= 0 && !IsDashing)
+                {
+                    dashRemaining = DASH_TIME;
+                    ignoreHoles = true;
+                    ignoreWater = true;
+                    
+                }
             }
         }
 
