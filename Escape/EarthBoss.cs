@@ -82,8 +82,7 @@ namespace Escape
         {
             get
             {
-                return 1;
-                // return (float)Health/(float)MaxHealth;
+                return base.AnimationSpeed * (float)Health/(float)MaxHealth;
             }
         }
 

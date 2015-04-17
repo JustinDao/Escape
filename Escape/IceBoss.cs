@@ -68,8 +68,7 @@ namespace Escape
         {
             get
             {
-                return 1;
-                // return (float)Health/(float)MaxHealth;
+                return base.AnimationSpeed * (float)Health / (float)MaxHealth;
             }
         }
 
@@ -81,10 +80,18 @@ namespace Escape
             }
         }
 
-        private bool recharging = true;
-        private float iceTimer = 0;
+        public override float TouchFreezeTimer
+        {
+            get
+            {
+                return 1f;
+            }
+        }
 
-        const float ICE_INTERVAL = 0.5f;
+        private float minionTimer = 0f;
+        const float MINION_INTERVAL = 2f;
+        const uint MAX_MINIONS = 3;
+        const float MINION_DIST = 50;
 
         public IceBoss(ContentManager cm, SpriteRender sr, Room room, Vector2 location)
             : base(cm, sr, "ice_boss_sprite_sheet.png", location)
@@ -111,19 +118,25 @@ namespace Escape
                 return;
             }
 
+            var room = castle.CurrentRoom;
             var player = castle.Player;
-            iceTimer += delta;
-            if (recharging)
+            var nMinions = room.Enemies.Count() - 1;
+            if (nMinions >= MAX_MINIONS)
             {
-                if (iceTimer >= ICE_INTERVAL)
-                {
-                    recharging = false;
-                    iceTimer = 0;
-                }
+                minionTimer = 0;
             }
             else
             {
-                // shoot ice
+                minionTimer += delta;
+                if (minionTimer >= MINION_INTERVAL)
+                {
+                    minionTimer -= MINION_INTERVAL;
+                    var dir = player.Center - Center;
+                    dir.Normalize();
+                    dir *= MINION_DIST;
+                    Spawn = new IceMinion(castle.mg.Content, castle.mg.SpriteRender, player, Center + dir);
+                    Spawn.Parent = this;
+                }
             }
 
             base.Update(gt, s);

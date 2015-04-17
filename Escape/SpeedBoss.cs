@@ -62,7 +62,7 @@ namespace Escape
 
         public override float MaxSpeed
         {
-            get { return 200; }
+            get { return 600; }
         }
         public override float AnimationSpeed
         {
@@ -86,7 +86,7 @@ namespace Escape
 
         const float ICE_INTERVAL = 0.5f;
 
-        public SpeedBoss(ContentManager cm, SpriteRender sr, Room room, Vector2 location)
+        public SpeedBoss(ContentManager cm, SpriteRender sr, Room room, params Vector2[] location)
             : base(cm, sr, "speed_boss_sprite_sheet.png", location)
         {
             ignoreHoles = true;

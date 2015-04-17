@@ -353,6 +353,15 @@ namespace Escape
             {
                 e.Update(gameTime, this.Castle);
             }
+            for (int i = 0; i < Enemies.Count(); i++)
+            {
+                var e = Enemies[i];
+                if (e.Spawn != null)
+                {
+                    Enemies.Add(e.Spawn);
+                    e.Spawn = null;
+                }
+            }
 
             var dying = DyingEnemies.Keys.ToList();
             foreach (Enemy e in dying)
@@ -493,6 +502,7 @@ namespace Escape
                             break;
                         case "ice":
                             this.Enemies.Add(new IceBoss(contentManager, mg.SpriteRender, this, new Vector2(int.Parse(cells[1]), int.Parse(cells[2]))));
+                            // Castle.DebugRoom = this;
                             break;
                         case "fire":
                             this.Enemies.Add(new FireBoss(contentManager, mg.SpriteRender, new Vector2[]
@@ -502,7 +512,14 @@ namespace Escape
                             ));
                             break;
                         case "speed":
-                            this.Enemies.Add(new SpeedBoss(contentManager, mg.SpriteRender, this, new Vector2(int.Parse(cells[1]), int.Parse(cells[2]))));
+                            var boss = new SpeedBoss(contentManager, mg.SpriteRender, this, new Vector2(int.Parse(cells[1]), int.Parse(cells[2])));
+                            boss.PatrolPoints = new Vector2[] {
+                                new Vector2(100, 100),
+                                new Vector2(900, 100),
+                                new Vector2(900, 500),
+                                new Vector2(100, 500),
+                            };
+                            this.Enemies.Add(boss);
                             break;
                         case "boulder":
                             this.Boulders.Add(new Boulder(contentManager, new Vector2(int.Parse(cells[1]), int.Parse(cells[2]))));

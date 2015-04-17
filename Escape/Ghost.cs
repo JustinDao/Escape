@@ -73,7 +73,7 @@ namespace Escape
         }
 
         // Constuctor
-        public Ghost(ContentManager cm, SpriteRender sr, AnimatedSpriteEntity target, Vector2 position)
+        public Ghost(ContentManager cm, SpriteRender sr, Entity target, Vector2 position)
             : base(cm, sr, target, "ghost_sprite_sheet.png")
         {
             ignoreHoles = true;

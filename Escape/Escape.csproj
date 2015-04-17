@@ -40,6 +40,7 @@
     <Compile Include="EndRoomScreen.cs" />
     <Compile Include="IceBoss.cs" />
     <Compile Include="IceBossSprites.cs" />
+    <Compile Include="IceMinion.cs" />
     <Compile Include="MacGuffin.cs" />
     <Compile Include="AnimatedSpriteEntity.cs" />
     <Compile Include="Bar.cs" />
@@ -163,6 +164,9 @@
     <Content Include="Content\earthboss_sprite_sheet.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Content\Enemies\E12.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="Content\farore.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -236,6 +240,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Content\Enemies\E1.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Enemies\E10.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Enemies\E11.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Content\Enemies\E2.csv">

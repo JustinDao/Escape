@@ -17,6 +17,7 @@ namespace Escape
         public int CastleHeight { get; set; }
         public int CastleWidth { get; set; }
         public Room CurrentRoom { get; set; }
+        public Room DebugRoom = null;
         public Player Player { get; set; }
         public RoomReader RR;
 
@@ -97,6 +98,12 @@ namespace Escape
 
         public void Update(Controls controls, GameTime gameTime)
         {
+            if (DebugRoom != null && CurrentRoom != DebugRoom)
+            {
+                CurrentRoom = DebugRoom;
+                DebugRoom = null;
+            }
+
             if (controls.onPress(Keys.Space, Buttons.Start))
             {
                 mg.Pause();

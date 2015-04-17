@@ -10,6 +10,30 @@ namespace Escape
 {
     abstract class Character : AnimatedSpriteEntity
     {
+        public Character Parent = null;
+        public float FreezeTimer = 0;
+        public bool Frozen
+        {
+            get
+            {
+                return FreezeTimer > 0;
+            }
+        }
+        public virtual float SpeedMult
+        {
+            get
+            {
+                return Frozen ? FreezeMult : 1f;
+            }
+        }
+        public virtual float FreezeMult
+        {
+            get
+            {
+                return 0.1f;
+            }
+        }
+
         protected bool ignoreHoles = false;
         protected bool ignoreWater = false;
         // Collision Box (bottom half of the HitBox)
@@ -36,19 +60,11 @@ namespace Escape
             get;
         }
 
-        public virtual float SpeedMult
-        {
-            get
-            {
-                return 1;
-            }
-        }
-
         public virtual float AnimationSpeed
         {
             get
             {
-                return CurrentVelocity.Length() / MaxSpeed;
+                return SpeedMult * CurrentVelocity.Length() / MaxSpeed;
             }
         }
 
@@ -128,6 +144,11 @@ namespace Escape
             if (castle == null) return;
             var room = castle.CurrentRoom;
 
+            if (FreezeTimer > 0)
+            {
+                FreezeTimer -= delta;
+            }
+
             // Check the boundaries
             CheckBoundaries(castle);
 
@@ -188,7 +209,7 @@ namespace Escape
             }
             foreach (var e in room.Enemies)
             {
-                if (e == this) continue;
+                if (e == this || e == Parent || e.Parent == this) continue;
                 if (CollideObstacle(e.CollisionBox))
                 {
                     OnEnemyCollision(e);

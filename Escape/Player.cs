@@ -58,7 +58,7 @@ namespace Escape
         // power-ups
         public bool HasFire = false;
         public bool HasIce = false;
-        public bool HasSpeed = true;
+        public bool HasSpeed = false;
         public bool HasStrength = false;
         public bool UsingStrength
         {
@@ -79,7 +79,7 @@ namespace Escape
         }
         private float dashRemaining = 0f;
         private float dashCooldown = 0f;
-        const float DASH_TIME = 0.2f;
+        const float DASH_TIME = 0.2f * (3f/2f);
         const float DASH_INTERVAL = 0.5f;
 
         // controls
@@ -120,7 +120,27 @@ namespace Escape
         {
             get
             {
-                return HitTimer > 0 ? Color.Red : base.Tint;
+                var baseColor = Color.White;
+                if (Frozen)
+                {
+                    baseColor = Color.Cyan;
+                }
+                else if (IsDashing)
+                {
+                    baseColor = Color.Yellow;
+                }
+                else if (UsingStrength)
+                {
+                    baseColor = Color.Green;
+                }
+                if (HitTimer > 0)
+                {
+                    return Color.Lerp(baseColor, Color.Red, HitTimer / HIT_TIME);
+                }
+                else
+                {
+                    return baseColor;
+                }
             }
         }
 
@@ -210,7 +230,7 @@ namespace Escape
             }
         }
 
-        const float DASH_MULT = 3;
+        const float DASH_MULT = 2;
 
         // Velocity (direction AND magnitude) of the player
         public override Vector2 CurrentVelocity
@@ -412,6 +432,12 @@ namespace Escape
                     
                 }
             }
+
+            // DEBUG
+            if (Ctrls.onPress(Keys.None, Buttons.LeftShoulder))
+            {
+                FreezeTimer = 2;
+            }
         }
 
         private void UpdateAttack()
@@ -526,6 +552,10 @@ namespace Escape
             if (HitTimer > 0) return;
             HitTimer = HIT_TIME;
             Submission -= e.Damage;
+            if (e.TouchFreezeTimer > FreezeTimer)
+            {
+                FreezeTimer = e.TouchFreezeTimer;
+            }
         }
 
         public void OnProjectileCollision(Projectile p)
