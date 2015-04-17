@@ -40,7 +40,12 @@ namespace Escape
         {
             get
             {
-                return this.Neighbors[Direction.LEFT];
+				if (this.Neighbors.ContainsKey(Direction.LEFT))
+				{
+                	return this.Neighbors[Direction.LEFT];
+				}
+				
+				return null;
             }
             set
             {
@@ -56,7 +61,12 @@ namespace Escape
         {
             get
             {
-                return this.Neighbors[Direction.RIGHT];
+				if (this.Neighbors.ContainsKey(Direction.RIGHT))
+				{
+					return this.Neighbors[Direction.RIGHT];
+				}
+
+				return null;
             }
             set
             {
@@ -72,7 +82,12 @@ namespace Escape
         {
             get
             {
-                return this.Neighbors[Direction.UP];
+				if (this.Neighbors.ContainsKey(Direction.UP))
+				{
+					return this.Neighbors[Direction.UP];
+				}
+
+				return null;
             }
             set
             {
@@ -88,7 +103,12 @@ namespace Escape
         {
             get
             {
-                return this.Neighbors[Direction.DOWN];
+				if (this.Neighbors.ContainsKey(Direction.DOWN))
+				{
+					return this.Neighbors[Direction.DOWN];
+				}
+
+				return null;
             }
             set
             {
@@ -195,7 +215,7 @@ namespace Escape
             OnScreenText = new List<Text>();
 
             //http://stackoverflow.com/questions/25331714
-            var path = @"Content\Rooms\" + csvName;
+            var path = @"Content/Rooms/" + csvName;
 
             using (var stream = TitleContainer.OpenStream(path))
             using (var reader = new StreamReader(stream))
@@ -512,6 +532,35 @@ namespace Escape
             }
 
         }
+
+		public void AddDoorWall(Direction dir)
+		{
+			if(dir == Direction.LEFT)
+			{
+				this.Walls.Add(new Wall(contentManager, 0, mg.GAME_HEIGHT / 2));
+				this.Walls.Add(new Wall(contentManager, 0, mg.GAME_HEIGHT / 2 - 25));
+			}
+
+			else if(dir == Direction.RIGHT)
+			{
+				this.Walls.Add(new Wall(contentManager, mg.GAME_WIDTH - 25, mg.GAME_HEIGHT / 2));
+				this.Walls.Add(new Wall(contentManager, mg.GAME_WIDTH - 25, mg.GAME_HEIGHT / 2 - 25));
+			}
+
+			else if(dir == Direction.UP)
+			{
+				this.Walls.Add(new Wall(contentManager, mg.GAME_WIDTH / 2, 0));
+				this.Walls.Add(new Wall(contentManager, mg.GAME_WIDTH / 2 - 25, 0));
+			}
+
+			else if(dir == Direction.DOWN)
+			{
+				this.Walls.Add(new Wall(contentManager, mg.GAME_WIDTH / 2, mg.GAME_HEIGHT - 25));
+				this.Walls.Add(new Wall(contentManager, mg.GAME_WIDTH / 2 - 25, mg.GAME_HEIGHT - 25));
+			}
+
+
+		}
 
         public Door LeftDoor()
         {
