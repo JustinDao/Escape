@@ -51,7 +51,7 @@ namespace Escape
         {
             var fire = new Projectile(cm, "fireball.png", ProjectileType.FIREBALL,
                 pos, vel, owner: owner);
-            fire.Scale = 0.15f;
+            fire.Scale = 0.5f;
             return fire;
         }
         public static Projectile CreateBoulder(ContentManager cm,
