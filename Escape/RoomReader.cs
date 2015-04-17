@@ -69,12 +69,14 @@ namespace Escape
                                         {
                                             r = new RoomEnd(mg, castle);
                                             this.EndRoom = r;
-                                            castle.Player.HasFire = true;
-                                            castle.Player.HasIce = true;
-                                            castle.Player.HasSpeed = true;
-                                            castle.Player.HasStrength = true;
 
-                                            castle.DebugRoom = r;
+                                            //// Start in End Room
+                                            //castle.Player.HasFire = true;
+                                            //castle.Player.HasIce = true;
+                                            //castle.Player.HasSpeed = true;
+                                            //castle.Player.HasStrength = true;
+
+                                            //castle.DebugRoom = r;
                                         }
 
                                         Rooms[col, row] = r;
