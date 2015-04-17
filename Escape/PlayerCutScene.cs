@@ -131,7 +131,7 @@ namespace Escape
 
                     var e = s as EndScreen;
 
-                    if (!e.DrawAmulet)
+                    if (!e.DrawAmulet && !e.DrawPortal && !e.EndAll)
                         e.DrawAmulet = true;
                     else if (!e.BackAway)
                         e.BackAway = true;
@@ -139,7 +139,12 @@ namespace Escape
                     {
                         e.DrawPortal = true;
                         e.DrawAmulet = false;
-                    }                        
+                        e.WalkBack = true;
+                    }
+                    else if(!e.EndAll)
+                    {
+                        e.EndAll = true;
+                    }
                 }               
 
                 return;
