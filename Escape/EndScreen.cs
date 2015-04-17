@@ -37,6 +37,7 @@ namespace Escape
             Portal = new Portal(mg, mg.Content, mg.SpriteRender);
             playerCutScene.Position = new Vector2(mg.GAME_WIDTH / 2, mg.GAME_HEIGHT);
             CurrentRoom = new RoomEnd(mg, this);
+            this.endRoomScreen = new EndRoomScreen(mg, mg.GraphicsDevice);
         }
 
         public override void Draw(SpriteBatch sb)
