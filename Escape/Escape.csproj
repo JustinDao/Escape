@@ -37,6 +37,7 @@
   <ItemGroup>
     <Compile Include="EarthBossSprites.cs" />
     <Compile Include="EarthBoss.cs" />
+    <Compile Include="EndRoomScreen.cs" />
     <Compile Include="IceBoss.cs" />
     <Compile Include="IceBossSprites.cs" />
     <Compile Include="MacGuffin.cs" />
@@ -264,6 +265,7 @@
     <None Include="Content\Master.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Content\QuestionFont.spritefont" />
     <None Include="Content\Rooms\Holes.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

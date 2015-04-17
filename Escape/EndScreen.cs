@@ -13,6 +13,8 @@ namespace Escape
         PlayerCutScene playerCutScene;
         MacGuffin Amulet;
         Portal Portal;
+        EndRoomScreen endRoomScreen;
+        Controls controls;
 
         public bool DrawAmulet = false;
         public bool BackAway = false;
@@ -59,13 +61,16 @@ namespace Escape
             else if (BackAway)
             {
                 playerCutScene.Target = new Vector2(playerCutScene.Target.X, 350);
+                endRoomScreen.Draw(sb);
             }
+
         }
 
         public void Update(GameTime gt)
         {
             playerCutScene.Update(gt, this);
             Portal.Update(gt, this);
+            //endRoomScreen.Update(controls);
         }        
 
         public override void LoadContent(ContentManager cm)
