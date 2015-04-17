@@ -519,7 +519,7 @@ namespace Escape
                                 new Vector2(100, 500),
                             };
                             this.Enemies.Add(boss);
-                            Castle.DebugRoom = this;
+                            // Castle.DebugRoom = this;
                             break;
                         case "boulder":
                             this.Boulders.Add(new Boulder(contentManager, new Vector2(int.Parse(cells[1]), int.Parse(cells[2]))));
