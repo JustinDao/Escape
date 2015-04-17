@@ -328,8 +328,12 @@ namespace Escape
                 // powerups
                 CheckPowerUps(room);
 
+                // Right Stick Attack
+                UpdateAttack();
+
                 // Controller Actions
                 Action(room);
+
             }
 
             // base update!
@@ -354,6 +358,22 @@ namespace Escape
 
         private void Action(Room room)
         {
+            // fire
+            if (Ctrls.onPress(Keys.D1, Buttons.B) && HasFire && lastDir.LengthSquared() > 0)
+            {
+                var fbp = new Vector2(lastDir.X, lastDir.Y);
+                room.AddFireBall(Position, fbp);
+            }
+
+            // ice
+            if (Ctrls.onPress(Keys.D2, Buttons.X) && HasIce)
+            {
+                room.AddSnowflakes(Position);
+            }
+        }
+
+        private void UpdateAttack()
+        {
             if (!PlayerControl)
             {
                 AttackArea = null;
@@ -362,7 +382,7 @@ namespace Escape
 
             // lance
             AttackArea = null;
-            
+
             // 0.15 buffer for control stick
             if (AttackVector.LengthSquared() > 0.15)
             {
@@ -376,19 +396,6 @@ namespace Escape
                 area.X += (int)(ATTACK_REACH * AttackVector.X);
                 area.Y += (int)(ATTACK_REACH * AttackVector.Y);
                 AttackArea = area;
-            }
-
-            // fire
-            if (Ctrls.onPress(Keys.D1, Buttons.B) && HasFire && lastDir.LengthSquared() > 0)
-            {
-                var fbp = new Vector2(lastDir.X, lastDir.Y);
-                room.AddFireBall(Position, fbp);
-            }
-
-            // ice
-            if (Ctrls.onPress(Keys.D2, Buttons.X) && HasIce)
-            {
-                room.AddSnowflakes(Position);
             }
         }
 
@@ -425,25 +432,28 @@ namespace Escape
                         if (p.IsFire)
                         {
                             this.HasFire = true;
+                            room.AddText("You feel a fiery rage! Press B to shoot fireballs!", new Vector2(300, 300));
                             toRemove.Add(o);
                         }
 
                         if (p.IsIce)
                         {
                             this.HasIce = true;
+                            room.AddText("You feel a chill breeze! Press X to shoot out ice power!", new Vector2(300, 300));
                             toRemove.Add(o);
                         }
 
                         if (p.IsStrength)
                         {
                             this.HasStrength = true;
-                            room.AddText("You feel stronger! Press A to activate strength power!", new Vector2(300, 300));
+                            room.AddText("Your muscles feel invincible! Press A to activate strength power!", new Vector2(300, 300));
                             toRemove.Add(o);
                         }
 
                         if (p.IsSpeed)
                         {
                             this.HasSpeed = true;
+                            room.AddText("You feel lighter than air! Press Y to use speed power!", new Vector2(300, 300));
                             toRemove.Add(o);
                         }
                     
