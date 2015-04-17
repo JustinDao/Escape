@@ -58,8 +58,8 @@ namespace Escape
         // power-ups
         public bool HasFire = false;
         public bool HasIce = false;
-        public bool HasSpeed = true;
-        public bool HasStrength = true;
+        public bool HasSpeed = false;
+        public bool HasStrength = false;
         public bool UsingStrength
         {
             get

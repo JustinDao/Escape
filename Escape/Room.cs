@@ -502,6 +502,7 @@ namespace Escape
                             break;
                         case "ice":
                             this.Enemies.Add(new IceBoss(contentManager, mg.SpriteRender, this, new Vector2(int.Parse(cells[1]), int.Parse(cells[2]))));
+                            // Castle.DebugRoom = this;
                             break;
                         case "fire":
                             this.Enemies.Add(new FireBoss(contentManager, mg.SpriteRender, new Vector2[]
@@ -519,7 +520,6 @@ namespace Escape
                                 new Vector2(100, 500),
                             };
                             this.Enemies.Add(boss);
-                            // Castle.DebugRoom = this;
                             break;
                         case "boulder":
                             this.Boulders.Add(new Boulder(contentManager, new Vector2(int.Parse(cells[1]), int.Parse(cells[2]))));

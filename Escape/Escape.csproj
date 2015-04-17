@@ -163,6 +163,9 @@
     <Content Include="Content\earthboss_sprite_sheet.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Content\Enemies\E12.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="Content\farore.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
