@@ -474,28 +474,32 @@ namespace Escape
                         if (p.IsFire)
                         {
                             this.HasFire = true;
-                            room.AddText("You feel a fiery rage! Press B to shoot fireballs!", new Vector2(300, 300));
+                            room.AddText("You are filled with a fiery rage!", new Vector2(300, 300));
+							room.AddText("Press B to shoot fireballs!", new Vector2(300, 325));
                             toRemove.Add(o);
                         }
 
                         if (p.IsIce)
                         {
                             this.HasIce = true;
-                            room.AddText("You feel a chill breeze! Press X to shoot out ice power!", new Vector2(300, 300));
+							room.AddText("You feel an overwhelming chill down your spine...", new Vector2(300, 300));
+							room.AddText("Let it go~! Press X to shoot out ice power!", new Vector2(300, 325));
                             toRemove.Add(o);
                         }
 
                         if (p.IsStrength)
                         {
                             this.HasStrength = true;
-                            room.AddText("Your muscles feel invincible! Press A to activate strength power!", new Vector2(300, 300));
+                            room.AddText("You feel a surge of power in your muscles!", new Vector2(300, 300));
+							room.AddText("Press A to activate strength power and move boulders!", new Vector2(300, 325));
                             toRemove.Add(o);
                         }
 
                         if (p.IsSpeed)
                         {
                             this.HasSpeed = true;
-                            room.AddText("You feel lighter than air! Press Y to use speed power!", new Vector2(300, 300));
+							room.AddText("You feel lighter than air! Press Y to use speed power ", new Vector2(300, 300));
+							room.AddText("and run as if your feet don't touch the ground!", new Vector2(300, 325));
                             toRemove.Add(o);
                         }
                     

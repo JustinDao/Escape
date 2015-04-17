@@ -17,7 +17,7 @@ namespace Escape
             NumCols = 0;
             NumRows = 0;
 
-            var path = @"Content\\" + csvName;
+            var path = @"Content/" + csvName;
 
             // Get Size of Castle
             using (var stream = TitleContainer.OpenStream(path))
@@ -120,6 +120,36 @@ namespace Escape
                     }
                 }
             }
+
+			for (int i = 0; i < NumCols; i++)
+			{
+				for (int j = 0; j < NumRows; j++)
+				{
+					Room r = Rooms[i, j];
+
+					if (r == null) continue;
+
+					if(r.LeftRoom == null)
+					{
+						r.AddDoorWall(Direction.LEFT);
+					}
+
+					if(r.RightRoom == null)
+					{
+						r.AddDoorWall(Direction.RIGHT);
+					}
+
+					if(r.UpRoom == null)
+					{
+						r.AddDoorWall(Direction.UP);
+					}
+
+					if(r.DownRoom == null)
+					{
+						r.AddDoorWall(Direction.DOWN);
+					}
+				}
+			}
 
         }
     }
