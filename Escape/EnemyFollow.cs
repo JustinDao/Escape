@@ -10,9 +10,9 @@ namespace Escape
 {
     abstract class EnemyFollow : Enemy
     {
-        public AnimatedSpriteEntity Target;
+        public Entity Target;
 
-        public EnemyFollow(ContentManager cm, SpriteRender sr, AnimatedSpriteEntity target,
+        public EnemyFollow(ContentManager cm, SpriteRender sr, Entity target,
             string spriteSheetName)
             : base(cm, sr, spriteSheetName)
         {
@@ -25,7 +25,7 @@ namespace Escape
             {
                 if (Target != null)
                 {
-                    var dist = Target.Position - Position;
+                    var dist = Target.Center - Center;
                     dist.Normalize();
                     return dist * MaxSpeed;
                 }

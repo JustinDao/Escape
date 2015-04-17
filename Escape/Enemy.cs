@@ -10,6 +10,7 @@ namespace Escape
 {
     abstract class Enemy : Character
     {
+        public Enemy Spawn = null;
         public virtual int Damage
         {
             get
@@ -45,21 +46,14 @@ namespace Escape
                 hp = value;
             }
         }
-        public float FreezeTimer = 0;
-        public bool Frozen
+        public virtual float TouchFreezeTimer
         {
             get
             {
-                return FreezeTimer > 0;
+                return 0;
             }
         }
-        public override float SpeedMult
-        {
-            get
-            {
-                return Frozen ? 0.1f : 1f;
-            }
-        }
+
         public virtual float DeathFadeTime
         {
             get
@@ -108,10 +102,6 @@ namespace Escape
             if (flashTimer > 0)
             {
                 flashTimer -= delta;
-            }
-            if (FreezeTimer > 0)
-            {
-                FreezeTimer -= delta;
             }
             base.Update(gt, s);
         }
