@@ -238,6 +238,12 @@
     <None Include="Content\Enemies\E1.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Content\Enemies\E10.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Enemies\E11.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Enemies\E2.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
