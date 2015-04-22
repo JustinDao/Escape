@@ -8,7 +8,7 @@ using TexturePackerLoader;
 
 namespace Escape
 {
-    class EarthBoss : EnemyPatrol
+    class EarthBoss : EnemyStationary
     {
         public override int MaxHealth
         {
@@ -86,7 +86,7 @@ namespace Escape
         {
             get
             {
-                return 1.2f * (float)Health/(float)MaxHealth;
+                return base.AnimationSpeed * (float)Health / (float)MaxHealth;
             }
         }
 

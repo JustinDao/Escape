@@ -9,7 +9,7 @@ using TexturePackerLoader;
 
 namespace Escape
 {
-    class IceBoss : EnemyPatrol
+    class IceBoss : EnemyStationary
     {
         public override int MaxHealth
         {

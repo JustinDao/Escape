@@ -37,6 +37,7 @@
   <ItemGroup>
     <Compile Include="EarthBoss.cs" />
     <Compile Include="EarthBossSprites.cs" />
+    <Compile Include="EnemyStationary.cs" />
     <Compile Include="IceBoss.cs" />
     <Compile Include="IceBossSprites.cs" />
     <Compile Include="IceMinion.cs" />
