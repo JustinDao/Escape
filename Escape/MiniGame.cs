@@ -23,10 +23,29 @@ namespace Escape
         private Rectangle BackgroundBox { get; set; }
         private SpriteFont Font { get; set; }
 
+        private bool answeredWrong = false;
+        private float wrongInterval = 1f;
+        private float wrongTime = 0;
+
         private int TOTAL_TIME = 60;
 
         private int numQuestions = 1;
         private int MAX_QUESTIONS = 5;
+
+        private Color[] colors = { Color.Yellow, Color.Blue, Color.Red, Color.Green };
+        private Vector2[] position 
+        {
+            get
+            {
+                return new Vector2[] 
+                {
+                    new Vector2(mg.GAME_WIDTH / 2, 300),
+                    new Vector2(mg.GAME_WIDTH / 2 - 200, 350),
+                    new Vector2(mg.GAME_WIDTH / 2 + 200, 350),
+                    new Vector2(mg.GAME_WIDTH / 2, 400),
+                };
+            }
+        }                             
 
         private Dictionary<Keys, Buttons> ValidInput = new Dictionary<Keys, Buttons>();
 
@@ -53,34 +72,28 @@ namespace Escape
             this.timeRemaining = TOTAL_TIME;
         }
 
+        public override void LoadContent(ContentManager cm)
+        {
+            this.BackgroundTexture = new Texture2D(this.gd, 1, 1);
+            this.BackgroundTexture.SetData(new Color[] { Color.White });
+            this.Font = cm.Load<SpriteFont>("QuestionFont");
+        }
+
         public override void Draw(SpriteBatch sb)
         {
             sb.Draw(BackgroundTexture, BackgroundBox, Color.White * 0.6f);
             sb.DrawString(Font, currentQuestion.QuestionText, new Vector2(mg.GAME_WIDTH / 2, 200), Color.Black);
 
             var middle = mg.GAME_WIDTH / 2;
-            Color[] colors = { Color.Yellow, Color.Blue, Color.Red, Color.Green };
-            Vector2[] position = {
-                                     new Vector2(middle, 300),
-                                     new Vector2(middle - 200, 350),
-                                     new Vector2(middle + 200, 350),
-                                     new Vector2(middle, 400),
-                                 };
 
             for(int i = 0; i < currentQuestion.Options.Count; i++)
             {
                 String option = currentQuestion.Options[i];
-                sb.DrawString(Font, option, position[i], /*new Vector2(mg.GAME_WIDTH / 2, 300 + 50 * i)*/ colors[i]);
+
+                sb.DrawString(Font, option, position[i], colors[i]);
             }
 
             sb.DrawString(Font, this.timeRemaining.ToString(), new Vector2(mg.GAME_WIDTH - 50, 50), Color.Black);
-        }
-
-        public override void LoadContent(ContentManager cm)
-        {
-            this.BackgroundTexture = new Texture2D(this.gd, 1, 1);
-            this.BackgroundTexture.SetData(new Color[] { Color.White });
-            this.Font = cm.Load<SpriteFont>("QuestionFont");
         }
 
         public void Update(Controls controls, GameTime gt, Player player)
@@ -120,7 +133,7 @@ namespace Escape
 
                     if (controls.onPress(key, ValidInput[key]))
                     {
-                        // Show wrong answer
+                        answeredWrong = true;
                         break;
                     }
                 }
