@@ -19,12 +19,13 @@ namespace Escape
         private List<Question> CurrentQuestions;
         private List<Question> AllQuestions;
         private int timeRemaining;
-        private int timeInterval;
+        private float timeInterval;
         private Rectangle BackgroundBox { get; set; }
         private SpriteFont Font { get; set; }
 
         private bool answeredWrong = false;
-        private float wrongInterval = 1f;
+        // How long the pentaly for a wrong answer is
+        private float wrongInterval = 2f;
         private float wrongTime = 0;
 
         private int TOTAL_TIME = 60;
@@ -32,17 +33,20 @@ namespace Escape
         private int numQuestions = 1;
         private int MAX_QUESTIONS = 5;
 
-        private Color[] colors = { Color.Yellow, Color.Blue, Color.Red, Color.Green };
+        private Color[] colors = 
+        { 
+            Color.Green, Color.Red, Color.Blue, Color.Yellow, 
+        };
         private Vector2[] position 
         {
             get
             {
                 return new Vector2[] 
                 {
-                    new Vector2(mg.GAME_WIDTH / 2, 300),
-                    new Vector2(mg.GAME_WIDTH / 2 - 200, 350),
-                    new Vector2(mg.GAME_WIDTH / 2 + 200, 350),
                     new Vector2(mg.GAME_WIDTH / 2, 400),
+                    new Vector2(mg.GAME_WIDTH / 2 + 200, 350),
+                    new Vector2(mg.GAME_WIDTH / 2 - 200, 350),                
+                    new Vector2(mg.GAME_WIDTH / 2, 300),
                 };
             }
         }                             
@@ -58,10 +62,10 @@ namespace Escape
             this.timeInterval = 0;
             this.Active = false;
             this.AllQuestions = new List<Question>(player.Questions);
-            this.ValidInput.Add(Keys.A, Buttons.A);
-            this.ValidInput.Add(Keys.B, Buttons.B);
-            this.ValidInput.Add(Keys.X, Buttons.X);
-            this.ValidInput.Add(Keys.Y, Buttons.Y);
+            this.ValidInput.Add(Keys.D1, Buttons.A);
+            this.ValidInput.Add(Keys.D2, Buttons.B);
+            this.ValidInput.Add(Keys.D3, Buttons.X);
+            this.ValidInput.Add(Keys.D4, Buttons.Y);
 
             randomizeQuestions();
         }
@@ -89,8 +93,23 @@ namespace Escape
             for(int i = 0; i < currentQuestion.Options.Count; i++)
             {
                 String option = currentQuestion.Options[i];
-
-                sb.DrawString(Font, option, position[i], colors[i]);
+                if (answeredWrong)
+                {
+                    if (option == currentQuestion.CorrectOption)
+                    {
+                        Console.WriteLine(currentQuestion.CorrectKey + " " + currentQuestion.CorrectButton);
+                        sb.DrawString(Font, option, position[i], Color.Lime);
+                    }
+                    else
+                    {
+                        sb.DrawString(Font, option, position[i], Color.Black);
+                    }                    
+                }
+                else
+                {
+                    sb.DrawString(Font, option, position[i], colors[i]);
+                }
+                
             }
 
             sb.DrawString(Font, this.timeRemaining.ToString(), new Vector2(mg.GAME_WIDTH - 50, 50), Color.Black);
@@ -98,13 +117,23 @@ namespace Escape
 
         public void Update(Controls controls, GameTime gt, Player player)
         {
-            this.timeInterval += (int)gt.ElapsedGameTime.TotalMilliseconds;
+            var delta = (float)gt.ElapsedGameTime.TotalSeconds;
+            this.timeInterval += delta;
 
-            if (this.timeInterval > 1000)
+            wrongTime += delta;
+
+            if (wrongTime > wrongInterval)
+            {
+                answeredWrong = false;
+                wrongTime = 0;
+            }
+
+            if (this.timeInterval > 1f)
             {
                 this.timeRemaining -= 1;
                 this.timeInterval = 0;
 
+                // If you run out of time, do something
                 if (timeRemaining == 0)
                 {
                     this.Active = false;
@@ -112,32 +141,35 @@ namespace Escape
                 }
             }
 
-            if (controls.onPress(currentQuestion.CorrectKey, currentQuestion.CorrectButton)) 
+            if (!answeredWrong)
             {
-                if (currentQuestion == CurrentQuestions.Last())
+                if (controls.onPress(currentQuestion.CorrectKey, currentQuestion.CorrectButton))
                 {
-                    this.Active = false;
-                    player.RegainControl();
-                    randomizeQuestions();
+                    if (currentQuestion == CurrentQuestions.Last())
+                    {
+                        this.Active = false;
+                        player.RegainControl();
+                        randomizeQuestions();
+                    }
+                    else
+                    {
+                        currentQuestion = CurrentQuestions[CurrentQuestions.IndexOf(currentQuestion) + 1];
+                    }
                 }
                 else
                 {
-                    currentQuestion = CurrentQuestions[CurrentQuestions.IndexOf(currentQuestion) + 1];
-                }
-            }
-            else
-            {
-                foreach (Keys key in ValidInput.Keys)
-                {
-                    if (currentQuestion.CorrectButton == ValidInput[key]) continue;
-
-                    if (controls.onPress(key, ValidInput[key]))
+                    foreach (Keys key in ValidInput.Keys)
                     {
-                        answeredWrong = true;
-                        break;
+                        if (currentQuestion.CorrectButton == ValidInput[key]) continue;
+
+                        if (controls.onPress(key, ValidInput[key]))
+                        {
+                            answeredWrong = true;
+                            break;
+                        }
                     }
                 }
-            }
+            }            
         }
 
         private void randomizeQuestions()

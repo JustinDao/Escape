@@ -12,7 +12,17 @@ namespace Escape
     {
         public String QuestionText { get; set; }
         public List<string> Options { get; set; }
+
+        public string CorrectOption
+        {
+            get
+            {
+                return Options[correctOptionIndex];
+            }
+        }
+
         private int correctOptionIndex;
+
         public Keys CorrectKey 
         { 
             get
@@ -32,6 +42,7 @@ namespace Escape
                 }
             }
         }
+
         public Buttons CorrectButton
         {
             get
@@ -39,13 +50,13 @@ namespace Escape
                 switch(correctOptionIndex)
                 {
                     case 0:
-                        return Buttons.Y;
-                    case 1:
-                        return Buttons.X;
-                    case 2:
-                        return Buttons.B;
-                    case 3:
                         return Buttons.A;
+                    case 1:
+                        return Buttons.B;
+                    case 2:
+                        return Buttons.X;
+                    case 3:
+                        return Buttons.Y;
                     default:
                         // what button is this
                         return Buttons.BigButton;
