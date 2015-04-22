@@ -4,33 +4,33 @@
  * Contains references to each image within the sprite sheet.
  *
  * http://www.codeandweb.com/texturepacker
- * $TexturePacker:SmartUpdate:2623185ff50bbe7c3e635ec68729e32f:776eaf447706f292ace245bd8af53cba:a89fc43fdc1f1939e619ec6bd9e8deea$
+ * $TexturePacker:SmartUpdate:69ee61aa4207dfabb12b1ccf64278aee:14bb5e980c1ee3f4d94cc94e47e86a47:c9d2d723ee084d714db16650889dd273$
  *
  */
 namespace TexturePackerMonoGameDefinitions
 {
 	public class EarthBossSprites
 	{
-		public const string Layer_1 = "Layer_1";
-		public const string Layer_10 = "Layer_10";
-		public const string Layer_11 = "Layer_11";
-		public const string Layer_12 = "Layer_12";
-		public const string Layer_13 = "Layer_13";
-		public const string Layer_15 = "Layer_15";
-		public const string Layer_16 = "Layer_16";
-		public const string Layer_17 = "Layer_17";
-		public const string Layer_18 = "Layer_18";
-		public const string Layer_19 = "Layer_19";
-		public const string Layer_2 = "Layer_2";
-		public const string Layer_20 = "Layer_20";
-		public const string Layer_21 = "Layer_21";
-		public const string Layer_22 = "Layer_22";
-		public const string Layer_23 = "Layer_23";
-		public const string Layer_3 = "Layer_3";
-		public const string Layer_4 = "Layer_4";
-		public const string Layer_5 = "Layer_5";
-		public const string Layer_6 = "Layer_6";
-		public const string Layer_7 = "Layer_7";
-		public const string Layer_8 = "Layer_8";
+		public const string Front1 = "Front1";
+		public const string Front2 = "Front2";
+		public const string Front3 = "Front3";
+		public const string Front4 = "Front4";
+		public const string Left1 = "Left1";
+		public const string Left2 = "Left2";
+		public const string Left3 = "Left3";
+		public const string Left4 = "Left4";
+		public const string Left5 = "Left5";
+		public const string Left6 = "Left6";
+		public const string Left7 = "Left7";
+		public const string Left8 = "Left8";
+		public const string Left9 = "Left9";
+		public const string Right1 = "Right1";
+		public const string Right2 = "Right2";
+		public const string Right3 = "Right3";
+		public const string Right4 = "Right4";
+		public const string Right5 = "Right5";
+		public const string Right6 = "Right6";
+		public const string Right7 = "Right7";
+		public const string Right8 = "Right8";
 	}
 }

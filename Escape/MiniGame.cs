@@ -28,6 +28,8 @@ namespace Escape
         private int numQuestions = 1;
         private int MAX_QUESTIONS = 5;
 
+        private Dictionary<Keys, Buttons> ValidInput = new Dictionary<Keys, Buttons>();
+
         public MiniGame(MainGame mg, GraphicsDevice gd, Player player)
         {
             this.mg = mg;
@@ -37,6 +39,10 @@ namespace Escape
             this.timeInterval = 0;
             this.Active = false;
             this.AllQuestions = new List<Question>(player.Questions);
+            this.ValidInput.Add(Keys.A, Buttons.A);
+            this.ValidInput.Add(Keys.B, Buttons.B);
+            this.ValidInput.Add(Keys.X, Buttons.X);
+            this.ValidInput.Add(Keys.Y, Buttons.Y);
 
             randomizeQuestions();
         }
@@ -105,7 +111,20 @@ namespace Escape
                 {
                     currentQuestion = CurrentQuestions[CurrentQuestions.IndexOf(currentQuestion) + 1];
                 }
-            }            
+            }
+            else
+            {
+                foreach (Keys key in ValidInput.Keys)
+                {
+                    if (currentQuestion.CorrectButton == ValidInput[key]) continue;
+
+                    if (controls.onPress(key, ValidInput[key]))
+                    {
+                        // Show wrong answer
+                        break;
+                    }
+                }
+            }
         }
 
         private void randomizeQuestions()

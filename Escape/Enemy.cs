@@ -29,7 +29,7 @@ namespace Escape
                 return 1;
             }
         }
-        private int hp;
+        protected int hp;
         public int Health
         {
             get

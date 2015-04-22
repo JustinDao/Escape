@@ -454,7 +454,6 @@ namespace Escape
             // 0.15 buffer for control stick
             if (AttackVector.LengthSquared() > 0.15)
             {
-                Console.WriteLine(AttackVector.LengthSquared());
                 var pCenter = HitBox.Center;
                 var area = new Rectangle(pCenter.X - ATTACK_SIZE / 2,
                     pCenter.Y - ATTACK_SIZE / 2,

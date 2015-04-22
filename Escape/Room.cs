@@ -495,10 +495,11 @@ namespace Escape
                     switch (cells[0])
                     {
                         case "ghost":
-                            this.Enemies.Add(new Ghost(contentManager, mg.SpriteRender, Castle.Player, new Vector2(int.Parse(cells[1]), int.Parse(cells[2]))));
+                            this.Enemies.Add(new Ghost(contentManager, mg.SpriteRender, Castle.Player, new Vector2(int.Parse(cells[1]), int.Parse(cells[2])), 2));
                             break;
                         case "earth":
                             this.Enemies.Add(new EarthBoss(contentManager, mg.SpriteRender, this, new Vector2(int.Parse(cells[1]), int.Parse(cells[2]))));
+                            // this.Castle.DebugRoom = this;
                             break;
                         case "ice":
                             this.Enemies.Add(new IceBoss(contentManager, mg.SpriteRender, this, new Vector2(int.Parse(cells[1]), int.Parse(cells[2]))));

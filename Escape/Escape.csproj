@@ -35,8 +35,8 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="EarthBossSprites.cs" />
     <Compile Include="EarthBoss.cs" />
+    <Compile Include="EarthBossSprites.cs" />
     <Compile Include="IceBoss.cs" />
     <Compile Include="IceBossSprites.cs" />
     <Compile Include="IceMinion.cs" />
@@ -157,15 +157,15 @@
     <Content Include="Content\din.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\earthboss_sprite_sheet.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\earthboss_sprite_sheet.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="Content\Enemies\E12.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Content Include="Content\earth_boss_sprite_sheet.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\earth_boss_sprite_sheet.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\farore.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

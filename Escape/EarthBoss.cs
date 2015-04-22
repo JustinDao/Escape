@@ -23,27 +23,31 @@ namespace Escape
             {
                 return new string[] {
 
-                    TexturePackerMonoGameDefinitions.EarthBossSprites.Layer_1,
-                    TexturePackerMonoGameDefinitions.EarthBossSprites.Layer_10,
-                    TexturePackerMonoGameDefinitions.EarthBossSprites.Layer_11,
-                    TexturePackerMonoGameDefinitions.EarthBossSprites.Layer_12,
-                    TexturePackerMonoGameDefinitions.EarthBossSprites.Layer_13,
-                    TexturePackerMonoGameDefinitions.EarthBossSprites.Layer_15,
-                    TexturePackerMonoGameDefinitions.EarthBossSprites.Layer_16,
-                    TexturePackerMonoGameDefinitions.EarthBossSprites.Layer_17,
-                    TexturePackerMonoGameDefinitions.EarthBossSprites.Layer_18,
-                    TexturePackerMonoGameDefinitions.EarthBossSprites.Layer_19,
-                    TexturePackerMonoGameDefinitions.EarthBossSprites.Layer_2,
-                    TexturePackerMonoGameDefinitions.EarthBossSprites.Layer_20,
-                    TexturePackerMonoGameDefinitions.EarthBossSprites.Layer_21,
-                    TexturePackerMonoGameDefinitions.EarthBossSprites.Layer_22,
-                    TexturePackerMonoGameDefinitions.EarthBossSprites.Layer_23,
-                    TexturePackerMonoGameDefinitions.EarthBossSprites.Layer_3,
-                    TexturePackerMonoGameDefinitions.EarthBossSprites.Layer_4,
-                    TexturePackerMonoGameDefinitions.EarthBossSprites.Layer_5,
-                    TexturePackerMonoGameDefinitions.EarthBossSprites.Layer_6,
-                    TexturePackerMonoGameDefinitions.EarthBossSprites.Layer_7,
-                    TexturePackerMonoGameDefinitions.EarthBossSprites.Layer_8,
+                    TexturePackerMonoGameDefinitions.EarthBossSprites.Front1,
+                    TexturePackerMonoGameDefinitions.EarthBossSprites.Front2,
+                    TexturePackerMonoGameDefinitions.EarthBossSprites.Front3,
+                    TexturePackerMonoGameDefinitions.EarthBossSprites.Front4,
+                    TexturePackerMonoGameDefinitions.EarthBossSprites.Left1,
+                    TexturePackerMonoGameDefinitions.EarthBossSprites.Left2,
+                    TexturePackerMonoGameDefinitions.EarthBossSprites.Left3,
+                    TexturePackerMonoGameDefinitions.EarthBossSprites.Left4,
+                    TexturePackerMonoGameDefinitions.EarthBossSprites.Left5,
+                    TexturePackerMonoGameDefinitions.EarthBossSprites.Left6,
+                    TexturePackerMonoGameDefinitions.EarthBossSprites.Left7,
+                    TexturePackerMonoGameDefinitions.EarthBossSprites.Left8,
+                    TexturePackerMonoGameDefinitions.EarthBossSprites.Left9,
+                    TexturePackerMonoGameDefinitions.EarthBossSprites.Front1,
+                    TexturePackerMonoGameDefinitions.EarthBossSprites.Front2,
+                    TexturePackerMonoGameDefinitions.EarthBossSprites.Front3,
+                    TexturePackerMonoGameDefinitions.EarthBossSprites.Front4,
+                    TexturePackerMonoGameDefinitions.EarthBossSprites.Right1,
+                    TexturePackerMonoGameDefinitions.EarthBossSprites.Right2,
+                    TexturePackerMonoGameDefinitions.EarthBossSprites.Right3,
+                    TexturePackerMonoGameDefinitions.EarthBossSprites.Right4,
+                    TexturePackerMonoGameDefinitions.EarthBossSprites.Right5,
+                    TexturePackerMonoGameDefinitions.EarthBossSprites.Right6,
+                    TexturePackerMonoGameDefinitions.EarthBossSprites.Right7,
+                    TexturePackerMonoGameDefinitions.EarthBossSprites.Right8,
                 };
             }
         }
@@ -82,7 +86,7 @@ namespace Escape
         {
             get
             {
-                return base.AnimationSpeed * (float)Health/(float)MaxHealth;
+                return 1.2f * (float)Health/(float)MaxHealth;
             }
         }
 
@@ -106,7 +110,7 @@ namespace Escape
         private Boulder[] boulders = new Boulder[BOULDER_COUNT];
 
         public EarthBoss(ContentManager cm, SpriteRender sr, Room room, Vector2 location)
-            : base(cm, sr, "earthboss_sprite_sheet.png", location)
+            : base(cm, sr, "earth_boss_sprite_sheet.png", location)
         {
             ignoreHoles = true;
             ignoreWater = true;

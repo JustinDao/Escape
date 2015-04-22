@@ -136,6 +136,7 @@ namespace Escape
 					Room r = Rooms[i, j];
 
 					if (r == null) continue;
+                    if (r == this.StartRoom) continue;
 
 					if(r.LeftRoom == null)
 					{

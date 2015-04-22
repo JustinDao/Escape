@@ -73,13 +73,14 @@ namespace Escape
         }
 
         // Constuctor
-        public Ghost(ContentManager cm, SpriteRender sr, Entity target, Vector2 position)
+        public Ghost(ContentManager cm, SpriteRender sr, Entity target, Vector2 position, int hp = 1)
             : base(cm, sr, target, "ghost_sprite_sheet.png")
         {
             ignoreHoles = true;
             ignoreWater = true;
             Target = target;
             Position = position;
+            this.hp = hp;
         }
 
         public override void Update(GameTime gt, Screen s)
