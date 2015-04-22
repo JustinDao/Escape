@@ -10,9 +10,6 @@ namespace Escape
 {
     abstract class EnemyStationary : Enemy
     {
-        int targetIndex = 0;
-        float lastDelta;
-
         public override float AnimationSpeed
         {
             get

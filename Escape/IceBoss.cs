@@ -30,6 +30,7 @@ namespace Escape
                     TexturePackerMonoGameDefinitions.IceBossSprites.Layer_4,
                     TexturePackerMonoGameDefinitions.IceBossSprites.Layer_5,
                     TexturePackerMonoGameDefinitions.IceBossSprites.Layer_6,
+                    TexturePackerMonoGameDefinitions.IceBossSprites.Layer_5,
                 };
             }
         }
@@ -100,6 +101,28 @@ namespace Escape
             ignoreWater = true;
             Scale = 1.5f;
             Drop = new PowerUp(cm, Vector2.Zero, "naryu.png", isIce: true);
+
+            var castle = room.Castle;
+            var player = castle.Player;
+            var dir = player.Center - Center;
+            dir.Normalize();
+
+            // Three initial IceMinions
+            var e1 = new IceMinion(castle.mg.Content, castle.mg.SpriteRender, player, Center + dir);
+            e1.Position = new Vector2(200, 300);
+            e1.Parent = this;
+
+            var e2 = new IceMinion(castle.mg.Content, castle.mg.SpriteRender, player, Center + dir);
+            e2.Position = new Vector2(400, 300);
+            e2.Parent = this;
+
+            var e3 = new IceMinion(castle.mg.Content, castle.mg.SpriteRender, player, Center + dir);
+            e3.Position = new Vector2(300, 400);
+            e3.Parent = this;
+
+            room.Enemies.Add(e1);
+            room.Enemies.Add(e2);
+            room.Enemies.Add(e3);
         }
 
         public override void Draw(SpriteBatch sb)

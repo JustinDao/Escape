@@ -11,10 +11,10 @@ namespace Escape
     class IceMinion : Ghost
     {
 
-        public IceMinion(ContentManager cm, SpriteRender sr, Entity target, Vector2 position)
+        public IceMinion(ContentManager cm, SpriteRender sr, Entity target, Vector2 position, int hp = 3)
             : base(cm, sr, target, position)
         {
-            // do nothing
+            this.hp = hp;
         }
         public override float TouchFreezeTimer
         {
