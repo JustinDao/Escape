@@ -20,8 +20,8 @@ namespace Escape
         static Controls()
         {
             ValidInput.Add(Keys.D1, Buttons.A);
-            ValidInput.Add(Keys.D2, Buttons.B);
-            ValidInput.Add(Keys.D3, Buttons.X);
+            ValidInput.Add(Keys.D2, Buttons.X);
+            ValidInput.Add(Keys.D3, Buttons.B);
             ValidInput.Add(Keys.D4, Buttons.Y);
         }
 

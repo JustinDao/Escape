@@ -45,8 +45,8 @@ namespace Escape
                 return new Vector2[] 
                 {
                     new Vector2(mg.GAME_WIDTH / 2, 400),
+                    new Vector2(mg.GAME_WIDTH / 2 - 200, 350),   
                     new Vector2(mg.GAME_WIDTH / 2 + 200, 350),
-                    new Vector2(mg.GAME_WIDTH / 2 - 200, 350),                
                     new Vector2(mg.GAME_WIDTH / 2, 300),
                 };
             }

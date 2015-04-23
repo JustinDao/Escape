@@ -23,23 +23,27 @@ namespace Escape
 
         private int correctOptionIndex;
 
+        private Dictionary<int, Keys> indexKeyMap = new Dictionary<int, Keys>
+        {
+            {0, Keys.D1},
+            {1, Keys.D2},
+            {2, Keys.D3},
+            {3, Keys.D4},
+        };
+
+        private Dictionary<int, Buttons> indexButtonMap = new Dictionary<int, Buttons>
+        {
+            {0, Buttons.A},
+            {1, Buttons.X},
+            {2, Buttons.B},
+            {3, Buttons.Y},
+        };
+
         public Keys CorrectKey 
         { 
             get
             {
-                switch (correctOptionIndex)
-                {
-                    case 0:
-                        return Keys.D1;
-                    case 1:
-                        return Keys.D2;
-                    case 2:
-                        return Keys.D3;
-                    case 3:
-                        return Keys.D4;
-                    default:
-                        return Keys.D0;
-                }
+                return indexKeyMap[correctOptionIndex];
             }
         }
 
@@ -47,20 +51,7 @@ namespace Escape
         {
             get
             {
-                switch(correctOptionIndex)
-                {
-                    case 0:
-                        return Buttons.A;
-                    case 1:
-                        return Buttons.B;
-                    case 2:
-                        return Buttons.X;
-                    case 3:
-                        return Buttons.Y;
-                    default:
-                        // what button is this
-                        return Buttons.BigButton;
-                }
+                return indexButtonMap[correctOptionIndex];
             }
         }
 
@@ -93,20 +84,9 @@ namespace Escape
                 return null;
             }
 
-            switch (optionIndex)
-            {
-                case 0:
-                    return Buttons.A.ToString();
-                case 1:
-                    return Buttons.B.ToString();
-                case 2:
-                    return Buttons.X.ToString();
-                case 3:
-                    return Buttons.Y.ToString();
-                default:
-                    // what button is this
-                    return Buttons.BigButton.ToString();
-            }
+            
+            return indexButtonMap[optionIndex].ToString();
+            
         }
 
         public void Initialize(ContentManager cm)
