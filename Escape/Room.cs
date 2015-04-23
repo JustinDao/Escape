@@ -11,7 +11,7 @@ namespace Escape
 {
     class Room
     {
-        MainGame mg;
+        public MainGame mg;
         ContentManager contentManager;
         public Castle Castle;
 
@@ -123,7 +123,7 @@ namespace Escape
         public Dictionary<Direction, Door> Doors { get; set; }
 
         // Methods
-        
+
         // Constructor
         public Room(MainGame mg, Castle castle, String csvName)
         {
