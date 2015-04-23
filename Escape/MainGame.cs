@@ -132,15 +132,16 @@ namespace Escape
                 {
                     miniGame.Reinitialize();
                     miniGame.Active = true;
+                    currentScreen = miniGame;
                 }
 
                 submissionBar.Update(castle.Player, graphics);
-
-                if (miniGame.Active)
-                {
-                    miniGame.Update(Control, gameTime, castle.Player);
-                }            
-            }      
+     
+            } 
+            else if (currentScreen == miniGame)
+            {
+                miniGame.Update(Control, gameTime, castle.Player);
+            }
 
             base.Update(gameTime);
         }

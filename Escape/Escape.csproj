@@ -57,6 +57,7 @@
     <Compile Include="FireBossSprites.cs" />
     <Compile Include="Ghost.cs" />
     <Compile Include="GhostSprites.cs" />
+    <Compile Include="PlayerClip.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Controls.cs" />
     <Compile Include="Direction.cs" />
@@ -154,6 +155,9 @@
     <Content Include="Content\Candle\Layer_3.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\castle_door.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Cover.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -233,6 +237,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\naryu.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\pixel.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\portal_sprite_sheet.png">

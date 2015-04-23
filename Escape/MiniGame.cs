@@ -14,14 +14,20 @@ namespace Escape
         public MainGame mg { get; set; }
         public GraphicsDevice gd { get; set; }
         public bool Active { get; set; }
+        public Texture2D DoorTexture;
+        public PlayerClip PlayerClip;
+        public Texture2D PathTexture;
+        public Rectangle PathRectangle;
 
         private Question currentQuestion;
         private List<Question> CurrentQuestions;
         private List<Question> AllQuestions;
-        private int timeRemaining;
-        private float timeInterval;
+        
         private Rectangle BackgroundBox { get; set; }
         private SpriteFont Font { get; set; }
+
+        private float clipX = 800;
+        private float clipY = 50;
 
         private bool answeredWrong = false;
         // How long the pentaly for a wrong answer is
@@ -32,14 +38,18 @@ namespace Escape
         private float rightInterval = 0.5f;
         private float rightTime = 0;
 
-        private int TOTAL_TIME = 60;
+        private float timeRemaining;
+        private int TOTAL_TIME = 30;
+
+        private int neededCorrectAnswers = 1;
+        private int currentCorrectAnswers = 0;
 
         private int numQuestions = 1;
         private int MAX_QUESTIONS = 5;
 
         private Color[] colors = 
         { 
-            Color.Green, Color.Red, Color.Blue, Color.Yellow, 
+            Color.Green, Color.Blue, Color.Red, Color.Yellow, 
         };
 
         private Vector2[] position 
@@ -62,21 +72,25 @@ namespace Escape
             this.gd = gd;
             this.BackgroundBox = new Rectangle(0, 0, mg.GAME_WIDTH, mg.GAME_HEIGHT);
             this.timeRemaining = TOTAL_TIME;
-            this.timeInterval = 0;
             this.Active = false;
             this.AllQuestions = new List<Question>(player.Questions);
+            this.PlayerClip = new PlayerClip(mg.Content, mg.SpriteRender);
+            this.PlayerClip.Position = new Vector2(clipX, clipY);
+
+            this.PathRectangle = new Rectangle(50, 50, (int)clipX - 50, 10);
+            this.PathTexture = mg.Content.Load<Texture2D>("pixel.png");
 
             randomizeQuestions();
         }
 
         public void Reinitialize()
         {
-            this.timeInterval = 0;
             this.timeRemaining = TOTAL_TIME;
         }
 
         public override void LoadContent(ContentManager cm)
         {
+            this.DoorTexture = cm.Load<Texture2D>("castle_door.png");
             this.BackgroundTexture = new Texture2D(this.gd, 1, 1);
             this.BackgroundTexture.SetData(new Color[] { Color.White });
             this.Font = cm.Load<SpriteFont>("QuestionFont");
@@ -85,11 +99,19 @@ namespace Escape
         public override void Draw(SpriteBatch sb)
         {
             // Background
-            sb.Draw(BackgroundTexture, BackgroundBox, Color.White * 0.6f);
+            sb.Draw(BackgroundTexture, BackgroundBox, Color.Black);
+            // Draw Path
+            var percentLeft = ((float)timeRemaining / (float)TOTAL_TIME);
+            var barColor = Color.Lerp(Color.Green, Color.Red, 1-percentLeft);
+            sb.Draw(PathTexture, PathRectangle, null, barColor);
+            // Draw Door
+            sb.Draw(DoorTexture, new Vector2(0,0), Color.White);
+            // Draw PlayerReference
+            PlayerClip.Draw(sb);
             // Question
-            sb.DrawString(Font, currentQuestion.QuestionText, new Vector2(mg.GAME_WIDTH / 2, 200), Color.Black);
+            sb.DrawString(Font, currentQuestion.QuestionText, new Vector2(mg.GAME_WIDTH / 2 - 50, 200), Color.White);
             // Time Remaining
-            sb.DrawString(Font, this.timeRemaining.ToString(), new Vector2(mg.GAME_WIDTH - 50, 50), Color.Black);
+            sb.DrawString(Font, ((int)this.timeRemaining).ToString(), new Vector2(mg.GAME_WIDTH - 50, 50), Color.White);
 
             var middle = mg.GAME_WIDTH / 2;
 
@@ -130,29 +152,34 @@ namespace Escape
 
         public void Update(Controls controls, GameTime gt, Player player)
         {
+            PlayerClip.Update(gt, this);
+            PlayerClip.Position.X = clipX * ((float)timeRemaining / (float)TOTAL_TIME);
+            PathRectangle.Width = (int)(clipX * ((float)timeRemaining / (float)TOTAL_TIME)) - PathRectangle.X;
+
             var delta = (float)gt.ElapsedGameTime.TotalSeconds;
-            this.timeInterval += delta;
 
             wrongTime += delta;
             rightTime += delta;
 
             if (wrongTime > wrongInterval)
             {
+                if (answeredWrong)
+                {
+                    moveToNextQuestion();
+                }               
+
                 answeredWrong = false;
             }
 
-            if (this.timeInterval > 1f)
-            {
-                this.timeRemaining -= 1;
-                this.timeInterval = 0;
+            this.timeRemaining -= delta;
 
-                // If you run out of time, do something
-                if (timeRemaining == 0)
-                {
-                    this.Active = false;
-                    player.RegainControl();
-                }
+            // If you run out of time, do something
+            if (timeRemaining <= 0)
+            {
+                this.Active = false;
+                player.RegainControl(0f);
             }
+            
 
             if (!answeredWrong && !answeredRight)
             {
@@ -160,6 +187,8 @@ namespace Escape
                 {
                     answeredRight = true;
                     rightTime = 0;
+                    currentCorrectAnswers++;
+                    CurrentQuestions.Remove(currentQuestion);
                 }
                 else
                 {
@@ -181,16 +210,23 @@ namespace Escape
             {
                 answeredRight = false;
 
-                if (currentQuestion == CurrentQuestions.Last())
+                if (currentCorrectAnswers >= neededCorrectAnswers)
                 {
                     answeredRight = false;
                     this.Active = false;
-                    player.RegainControl();
+                    player.RegainControl((float)timeRemaining / (float)TOTAL_TIME);
+                    mg.SwitchToCastle();
                     randomizeQuestions();
+                    neededCorrectAnswers++;
+                    currentCorrectAnswers = 0;
+                    if (neededCorrectAnswers > MAX_QUESTIONS)
+                    {
+                        neededCorrectAnswers = MAX_QUESTIONS;
+                    }
                 }
                 else
                 {
-                    currentQuestion = CurrentQuestions[CurrentQuestions.IndexOf(currentQuestion) + 1];
+                    moveToNextQuestion();                                      
                 }
             }
         }
@@ -202,6 +238,17 @@ namespace Escape
             CurrentQuestions = AllQuestions.OrderBy(item => rnd.Next()).ToList().Take(numQuestions++).ToList();
             if (numQuestions > MAX_QUESTIONS) numQuestions = MAX_QUESTIONS;
             this.currentQuestion = CurrentQuestions.First();
+        }
+
+        private void moveToNextQuestion()
+        {
+            int index = CurrentQuestions.IndexOf(currentQuestion) + 1;
+            if (index >= CurrentQuestions.Count())
+            {
+                index = 0;
+            }
+
+            currentQuestion = CurrentQuestions[index];
         }
     }
 }
