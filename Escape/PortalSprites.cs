@@ -11,9 +11,9 @@ namespace TexturePackerMonoGameDefinitions
 {
 	public class PortalSprites
 	{
-		public const string First = "First";
-		public const string Second = "Second";
-		public const string Third = "Third";
-        public const string Fourth = "Fourth";
+		public const string First = "portal1";
+        public const string Second = "portal2";
+        public const string Third = "portal3";
+        public const string Fourth = "portal4";
 	}
 }

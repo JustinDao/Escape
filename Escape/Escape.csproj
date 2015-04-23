@@ -83,6 +83,7 @@
     <Compile Include="Room.cs" />
     <Compile Include="RoomEnd.cs" />
     <Compile Include="RoomReader.cs" />
+    <Compile Include="RoomSub.cs" />
     <Compile Include="Screen.cs" />
     <Compile Include="SoldierSprites.cs" />
     <Compile Include="SpeedBoss.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="StartMenu.cs" />
     <Compile Include="StaticSpriteEntity.cs" />
     <Compile Include="SubmissionBar.cs" />
+    <Compile Include="SubmissionRoom.cs" />
     <Compile Include="Text.cs" />
     <Compile Include="TexturePackerLoader\SpriteFrame.cs" />
     <Compile Include="TexturePackerLoader\SpriteRender.cs" />
@@ -255,6 +257,9 @@
     <None Include="Content\Enemies\E11.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Content\Enemies\E13.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Enemies\E2.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -283,6 +288,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Content\QuestionFont.spritefont" />
+    <None Include="Content\Rooms\SubmissionRoom.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Rooms\Holes.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -322,16 +330,28 @@
     <Content Include="Content\soldier_sprite_sheet.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Songs\castle.wav">
+    <Content Include="Content\Songs\Credits.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Songs\start.wav">
+    <Content Include="Content\Songs\Main.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Songs\Prelude.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\questions.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Sounds\swish.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Songs\StartMenu.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Songs\Submission.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Songs\Victory.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\spear.png">

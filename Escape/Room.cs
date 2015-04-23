@@ -11,7 +11,7 @@ namespace Escape
 {
     class Room
     {
-        MainGame mg;
+        public MainGame mg;
         ContentManager contentManager;
         public Castle Castle;
 
@@ -124,81 +124,7 @@ namespace Escape
 
         // Methods
 
-        public Room(MainGame mg, Castle castle)
-        {
-            contentManager = mg.Content;
-            this.Castle = castle;
-            this.mg = mg;
-            this.Width = mg.GAME_WIDTH;
-            this.Height = mg.GAME_HEIGHT;
-
-            Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, castle.Player, new Vector2(750, 100)));
-
-            Floors = new List<Floor>();
-            for (int i = 0; i < this.Width / 25; i++)
-            {
-                for (int j = 0; j < this.Height / 25; j++)
-                {
-                    Floors.Add(new Floor(contentManager, 25 * i, 25 * j));
-                }
-            }
-
-            Walls = new List<Wall>();
-            Obstacles = new List<Entity>();
-            OnScreenText = new List<Text>();
-
-            for (int i = 0; i < this.Width / 25; i++)
-            {
-                if (i == 0 || i == this.Width / 25 - 1)
-                {
-                    for (int j = 0; j < this.Height / 25; j++)
-                    {
-                        if (j != this.Height / 2 / 25 && j != (this.Height / 2 / 25) - 1)
-                        {
-                            Walls.Add(new Wall(contentManager, 25 * i, 25 * j));
-                        }
-                    }
-                }
-                else if (i == this.Width / 2 / 25 || i == (this.Width / 2 / 25) - 1)
-                {
-                    // Skip
-                }
-                else
-                {
-                    Walls.Add(new Wall(contentManager, 25 * i, 0));
-                    Walls.Add(new Wall(contentManager, 25 * i, 25 * (this.Height / 25 - 1)));
-                }
-
-            }
-
-            Doors = new Dictionary<Direction, Door>();
-            Neighbors = new Dictionary<Direction, Room>();
-            Enemies.Add(new EarthBoss(contentManager, mg.SpriteRender, this, new Vector2(300, 300)));
-            //Doors.Add(Direction.LEFT, new Door(0, 11 * 25, true));
-            //Doors.Add(Direction.RIGHT, new Door(mg.GAME_WIDTH - 25, 11 * 25, true));
-            //Doors.Add(Direction.UP, new Door(19 * 25, 0, false));
-            //Doors.Add(Direction.DOWN, new Door(19 * 25, mg.GAME_HEIGHT - 25, false));
-
-            //            Obstacles.Add(new Hole(contentManager, 300, 300, 0));
-            //            Obstacles.Add(new Hole(contentManager, 400, 400, 1));
-            //            Obstacles.Add(new Hole(contentManager, 425, 400, 2));
-            //            Obstacles.Add(new Hole(contentManager, 450, 400, 2));
-            //            Obstacles.Add(new Hole(contentManager, 475, 400, 3));
-            //            Obstacles.Add(new Hole(contentManager, 475, 425, 4));
-            //            Obstacles.Add(new Hole(contentManager, 475, 450, 5));
-            //            Obstacles.Add(new Hole(contentManager, 450, 450, 6));
-            //            Obstacles.Add(new Hole(contentManager, 425, 450, 6));
-            //            Obstacles.Add(new Hole(contentManager, 400, 450, 7));
-            //            Obstacles.Add(new Hole(contentManager, 400, 425, 8));
-            //            Obstacles.Add(new Hole(contentManager, 425, 425, 9));
-            //            Obstacles.Add(new Hole(contentManager, 450, 425, 9));
-            //
-            //			  Boulders.Add(new Boulder(contentManager, new Vector2(175, 300), castle.Player));
-            //
-            //            PowerUps.Add(new PowerUp(contentManager, new Vector2(200, 300), "yellow.png", false, false, false, true));
-            //            PowerUps.Add(new PowerUp(contentManager, new Vector2(500, 500), "naryu.png", false, true, false, false));
-        }
-
+        // Constructor
         public Room(MainGame mg, Castle castle, String csvName)
         {
             contentManager = mg.Content;
@@ -503,7 +429,7 @@ namespace Escape
                             break;
                         case "ice":
                             this.Enemies.Add(new IceBoss(contentManager, mg.SpriteRender, this, new Vector2(int.Parse(cells[1]), int.Parse(cells[2]))));
-                            Castle.DebugRoom = this;
+                            // Castle.DebugRoom = this;
                             break;
                         case "fire":
                             this.Enemies.Add(new FireBoss(contentManager, mg.SpriteRender, new Vector2[]
