@@ -342,6 +342,9 @@
     <Content Include="Content\questions.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Songs\Transition.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Sounds\swish.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

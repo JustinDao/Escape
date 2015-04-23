@@ -216,6 +216,8 @@ namespace Escape
                     this.Active = false;
                     player.RegainControl((float)timeRemaining / (float)TOTAL_TIME);
                     mg.SwitchToCastle();
+                    mg.SubmissionSong.Stop();
+                    mg.CurrentSong.Resume();
                     randomizeQuestions();
                     neededCorrectAnswers++;
                     currentCorrectAnswers = 0;
