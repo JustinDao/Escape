@@ -191,6 +191,11 @@ namespace Escape
                     }
                 }
             }
+            else if (currentScreen is CreditsScreen)
+            {
+                var cs = currentScreen as CreditsScreen;
+                cs.Update(gameTime);
+            }
 
             base.Update(gameTime);
         }
