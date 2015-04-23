@@ -11,6 +11,7 @@ namespace Escape
         public Room[,] Rooms;
         public Room StartRoom;
         public Room EndRoom;
+        public Room SubmissionRoom;
 
         public RoomReader(MainGame mg, Castle castle, string csvName)
         {
@@ -81,8 +82,8 @@ namespace Escape
 
                                         if (cells[i] == "SubmissionRoom")
                                         {
-                                            r = new RoomSub(mg, castle);
-
+                                            r = new SubmissionRoom(mg, castle);
+                                            //this.SubmissionRoom = r;
                                         }
 
                                         Rooms[col, row] = r;

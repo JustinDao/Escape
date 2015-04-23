@@ -241,7 +241,7 @@ namespace Escape
             }
         }
 
-        public void Update(GameTime gameTime, Screen s)
+        public virtual void Update(GameTime gameTime, Screen s)
         {
             float delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
             List<Projectile> outProjectiles = new List<Projectile>();

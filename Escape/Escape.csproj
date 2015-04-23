@@ -83,7 +83,6 @@
     <Compile Include="Room.cs" />
     <Compile Include="RoomEnd.cs" />
     <Compile Include="RoomReader.cs" />
-    <Compile Include="RoomSub.cs" />
     <Compile Include="Screen.cs" />
     <Compile Include="SoldierSprites.cs" />
     <Compile Include="SpeedBoss.cs" />
