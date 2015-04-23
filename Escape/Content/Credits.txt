@@ -1,0 +1,61 @@
+﻿Escape
+
+
+
+
+Team Members
+
+Andy Barron
+Justin Dao
+Jonathan Kim
+Li-Chang Wang
+
+
+
+Director
+
+Justin Dao
+
+
+
+Sound Effects
+
+Freesound.org
+Andy Barron
+
+
+
+Music Producer
+
+Jonathan Kim
+
+
+
+Level Designers
+
+Jonathan Kim
+Li-Chang Wang
+
+
+
+Art 
+
+OpenGameArt
+Jonathan Kim
+Li-Chang Wang
+
+
+
+
+
+
+Thanks to
+
+Professor Sherriff
+TexturePacker
+Tiled
+Our Beta Testers
+
+
+
+
