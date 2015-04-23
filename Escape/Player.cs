@@ -381,8 +381,11 @@ namespace Escape
                 // Right Stick Attack
                 UpdateAttack();
 
-                // Controller Actions
-                Action(room);
+                if (PlayerControl)
+                {
+                    // Controller Actions
+                    Action(room);
+                }
 
             }
 
@@ -434,10 +437,10 @@ namespace Escape
             }
 
             // DEBUG
-            if (Ctrls.onPress(Keys.None, Buttons.LeftShoulder))
-            {
-                FreezeTimer = 2;
-            }
+            //if (Ctrls.onPress(Keys.None, Buttons.LeftShoulder))
+            //{
+            //    FreezeTimer = 2;
+            //}
         }
 
         private void UpdateAttack()

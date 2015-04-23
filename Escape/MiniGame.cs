@@ -125,7 +125,6 @@ namespace Escape
             if (wrongTime > wrongInterval)
             {
                 answeredWrong = false;
-                wrongTime = 0;
             }
 
             if (this.timeInterval > 1f)
@@ -165,6 +164,7 @@ namespace Escape
                         if (controls.onPress(key, ValidInput[key]))
                         {
                             answeredWrong = true;
+                            wrongTime = 0;
                             break;
                         }
                     }

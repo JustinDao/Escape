@@ -93,6 +93,7 @@ namespace Escape
             ignoreWater = true;
             Scale = 1.5f;
             Drop = new PowerUp(cm, Vector2.Zero, "yellow.png", isSpeed: true);
+            Position = location[0];
         }
 
         public override void Draw(SpriteBatch sb)
