@@ -28,10 +28,10 @@ namespace Escape
         const float HIT_TIME = 1;
         public float HitTimer = 0;
         // power-ups
-        public bool HasFire = true;
-        public bool HasIce = true;
-        public bool HasSpeed = true;
-        public bool HasStrength = true;
+        public bool HasFire = false;
+        public bool HasIce = false;
+        public bool HasSpeed = false;
+        public bool HasStrength = false;
         bool strengthActive = false;
         public bool UsingStrength
         {
