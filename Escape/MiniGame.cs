@@ -39,7 +39,7 @@ namespace Escape
         private float rightTime = 0;
 
         private float timeRemaining;
-        private int TOTAL_TIME = 60;
+        private int TOTAL_TIME = 30;
 
         private int neededCorrectAnswers = 1;
         private int currentCorrectAnswers = 0;
@@ -75,7 +75,7 @@ namespace Escape
             this.Active = false;
             this.AllQuestions = new List<Question>(player.Questions);
             this.PlayerClip = new PlayerClip(mg.Content, mg.SpriteRender);
-            this.PlayerClip.Position = new Vector2(800, 50);
+            this.PlayerClip.Position = new Vector2(clipX, clipY);
 
             this.PathRectangle = new Rectangle(50, 50, (int)clipX - 50, 10);
             this.PathTexture = mg.Content.Load<Texture2D>("pixel.png");
@@ -174,10 +174,10 @@ namespace Escape
             this.timeRemaining -= delta;
 
             // If you run out of time, do something
-            if (timeRemaining == 0)
+            if (timeRemaining <= 0)
             {
                 this.Active = false;
-                player.RegainControl();
+                player.RegainControl(0f);
             }
             
 
@@ -188,6 +188,7 @@ namespace Escape
                     answeredRight = true;
                     rightTime = 0;
                     currentCorrectAnswers++;
+                    CurrentQuestions.Remove(currentQuestion);
                 }
                 else
                 {
@@ -213,7 +214,8 @@ namespace Escape
                 {
                     answeredRight = false;
                     this.Active = false;
-                    player.RegainControl();
+                    player.RegainControl((float)timeRemaining / (float)TOTAL_TIME);
+                    mg.SwitchToCastle();
                     randomizeQuestions();
                     neededCorrectAnswers++;
                     currentCorrectAnswers = 0;

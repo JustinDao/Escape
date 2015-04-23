@@ -13,7 +13,8 @@ namespace Escape
 {
     class Player : Character
     {
-        public Castle Castle;
+        Castle Castle;
+        MainGame mg;
 
         // player stuff
         // attacking!
@@ -83,6 +84,7 @@ namespace Escape
         private float dashCooldown = 0f;
         const float DASH_TIME = 0.2f * (3f/2f);
         const float DASH_INTERVAL = 0.5f;
+        const float STICK_BUFFER = 0.15f;
 
         // List of visited rooms
         public List<Room> VisitedRooms = new List<Room>();
@@ -106,14 +108,6 @@ namespace Escape
         // the last direction moved
         Vector2 lastDir = new Vector2();
 
-        // AI direction
-
-        private Vector2 aiVelocity;
-
-        private int aiTime;
-        private int aiInterval;
-        // The Maximum interval to update the AI
-        const int AI_SWITCH_TIME = 3000;
         // Random number generator
         private Random rand = new Random();
 
@@ -256,6 +250,9 @@ namespace Escape
                     var stick = Ctrls.gp.ThumbSticks.Left;
                     stick.Y *= -1;
 
+                    // Buffer for stick
+                    if (stick.LengthSquared() <= STICK_BUFFER) return Vector2.Zero;
+
                     // If not using controller check keyboard input
                     if (stick.LengthSquared() == 0)
                     {
@@ -284,7 +281,7 @@ namespace Escape
                 }
                 else
                 {
-                    return aiVelocity * MaxSpeed * 2;
+                    return Vector2.Zero;
                 }
             }
         }
@@ -293,6 +290,8 @@ namespace Escape
         public Player(ContentManager cm, SpriteRender sr, Controls ctrls, Screen s)
             : base(cm, sr, "soldier_sprite_sheet.png")
         {
+            this.mg = mg;
+
             if (s is Castle)
             {
                 var castle = s as Castle;
@@ -348,12 +347,6 @@ namespace Escape
 
             // submission
             UpdateSubmission(gt);
-
-            // AI
-            if (!PlayerControl)
-            {
-                UpdateAI(gt);
-            }
 
             if (dashCooldown > 0)
             {
@@ -466,7 +459,7 @@ namespace Escape
             AttackArea = null;
 
             // 0.15 buffer for control stick
-            if (AttackVector.LengthSquared() > 0.15)
+            if (AttackVector.LengthSquared() > STICK_BUFFER)
             {
                 var pCenter = HitBox.Center;
                 var area = new Rectangle(pCenter.X - ATTACK_SIZE / 2,
@@ -548,18 +541,6 @@ namespace Escape
             room.PowerUps = room.PowerUps.Except(toRemove).ToList();
         }
 
-        private void UpdateAI(GameTime gt)
-        {
-            this.aiTime += (int)gt.ElapsedGameTime.TotalMilliseconds;
-
-            if (this.aiTime > this.aiInterval)
-            {
-                aiVelocity = GetRandomVelocity();
-                aiTime = 0;
-                aiInterval = rand.Next(AI_SWITCH_TIME);
-            }
-        }
-
         public override void OnEnemyCollision(Enemy e)
         {
             if (HitTimer > 0) return;
@@ -607,6 +588,8 @@ namespace Escape
                         castle.MoveDown();
                         this.FlipPosition(room);
                     }
+
+                    this.VisitRoom(castle.CurrentRoom);
                 }
 
                 StandingOnDoor = true;
@@ -645,10 +628,38 @@ namespace Escape
             PlayerControl = false;
         }
 
-        public void RegainControl()
+        public void RegainControl(float timeFraction)
         {
             this.PlayerControl = true;
             this.Submission = MAX_SUBMISSION;
+            int roomIndex = (int)((VisitedRooms.Count()-1) * timeFraction);
+            this.Castle.CurrentRoom = VisitedRooms[roomIndex];
+            var room = this.Castle.CurrentRoom;
+            
+            foreach (Direction dir in room.Doors.Keys)
+            {
+                StandingOnDoor = true;
+
+                switch(dir)
+                {
+                    case Direction.UP:
+                        this.Position = new Vector2(room.Width / 2, 0);
+                        break;
+                    case Direction.DOWN:
+                        this.Position = new Vector2(room.Width / 2, room.Height);
+                        break;
+                    case Direction.LEFT:
+                        this.Position = new Vector2(0, room.Height / 2);
+                        break;
+                    case Direction.RIGHT:
+                        this.Position = new Vector2(room.Width, room.Height / 2);
+                        break;
+                }
+
+                break;
+            }
+           
+
         }
 
         private void Respawn()
@@ -678,15 +689,6 @@ namespace Escape
         private Vector2 GetRandomVelocity()
         {
             return new Vector2((float)rand.NextDouble() * 2 - 1, (float)rand.NextDouble() * 2 - 1);
-        }
-
-        private void ChangeAIDirection()
-        {
-            // Flip Direction of AI if intersecting with c
-            if (!PlayerControl)
-            {
-                aiVelocity = GetRandomVelocity();
-            }
         }
 
         private void FlipPosition(Room room)
@@ -721,6 +723,14 @@ namespace Escape
             }
 
             this.Position = new Vector2(x, y);
+        }
+
+        private void VisitRoom(Room room)
+        {
+            if (!this.VisitedRooms.Contains(room))
+            {
+                this.VisitedRooms.Add(room);
+            }
         }
 
 
