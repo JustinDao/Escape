@@ -13,6 +13,8 @@ namespace Escape
 {
     class Player : Character
     {
+        public Castle Castle;
+
         // player stuff
         // attacking!
         const int ATTACK_SIZE = 20;
@@ -285,9 +287,10 @@ namespace Escape
         }
 
         // Constructor
-        public Player(ContentManager cm, SpriteRender sr, Controls ctrls)
+        public Player(ContentManager cm, SpriteRender sr, Controls ctrls, Castle castle)
             : base(cm, sr, "soldier_sprite_sheet.png")
         {
+            this.Castle = castle;
             Ctrls = ctrls;
             PlayerControl = true;
             Submission = MAX_SUBMISSION;

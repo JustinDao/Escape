@@ -28,6 +28,10 @@ namespace Escape
         private float wrongInterval = 2f;
         private float wrongTime = 0;
 
+        private bool answeredRight = false;
+        private float rightInterval = 0.5f;
+        private float rightTime = 0;
+
         private int TOTAL_TIME = 60;
 
         private int numQuestions = 1;
@@ -103,7 +107,18 @@ namespace Escape
                     else
                     {
                         sb.DrawString(Font, optionText, position[i], Color.DarkRed);
-                    }                    
+                    }              
+                }
+                else if (answeredRight)
+                {
+                    if (option == currentQuestion.CorrectOption)
+                    {
+                        sb.DrawString(Font, optionText, position[i], Color.Lime);
+                    }
+                    //else
+                    //{
+                    //    sb.DrawString(Font, optionText, position[i], Color.Black);
+                    //}
                 }
                 else
                 {
@@ -119,6 +134,7 @@ namespace Escape
             this.timeInterval += delta;
 
             wrongTime += delta;
+            rightTime += delta;
 
             if (wrongTime > wrongInterval)
             {
@@ -138,20 +154,12 @@ namespace Escape
                 }
             }
 
-            if (!answeredWrong)
+            if (!answeredWrong && !answeredRight)
             {
                 if (controls.onPress(currentQuestion.CorrectKey, currentQuestion.CorrectButton))
                 {
-                    if (currentQuestion == CurrentQuestions.Last())
-                    {
-                        this.Active = false;
-                        player.RegainControl();
-                        randomizeQuestions();
-                    }
-                    else
-                    {
-                        currentQuestion = CurrentQuestions[CurrentQuestions.IndexOf(currentQuestion) + 1];
-                    }
+                    answeredRight = true;
+                    rightTime = 0;
                 }
                 else
                 {
@@ -167,7 +175,24 @@ namespace Escape
                         }
                     }
                 }
-            }            
+            }
+
+            if (answeredRight && rightTime > rightInterval)
+            {
+                answeredRight = false;
+
+                if (currentQuestion == CurrentQuestions.Last())
+                {
+                    answeredRight = false;
+                    this.Active = false;
+                    player.RegainControl();
+                    randomizeQuestions();
+                }
+                else
+                {
+                    currentQuestion = CurrentQuestions[CurrentQuestions.IndexOf(currentQuestion) + 1];
+                }
+            }
         }
 
         private void randomizeQuestions()

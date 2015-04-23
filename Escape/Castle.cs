@@ -25,7 +25,7 @@ namespace Escape
         {
             this.mg = mg;
 
-            Player = new Player(mg.Content, mg.SpriteRender, mg.Control);
+            Player = new Player(mg.Content, mg.SpriteRender, mg.Control, this);
             Player.Position += new Vector2(mg.GAME_WIDTH / 2, mg.GAME_HEIGHT - 100);
 
             InitializeRooms();
