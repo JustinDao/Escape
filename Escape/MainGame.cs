@@ -36,6 +36,9 @@ namespace Escape
 
         public int GAME_WIDTH = 1000;
         public int GAME_HEIGHT = 600;
+        public bool PlayingPrelude = false;
+        private float preludeCounter = 0;
+        private int preludeLength = 2*60 + 23; // 2m23s song length
 
         public MainGame()
             : base()
@@ -102,6 +105,21 @@ namespace Escape
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            if (PlayingPrelude)
+            {
+                preludeCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (preludeCounter > preludeLength)
+                {
+                    this.CurrentSong.Stop();
+                    var song = Content.Load<SoundEffect>("Songs\\Main");
+                    this.CurrentSong = song.CreateInstance();
+                    this.PlayingPrelude = false;
+                    this.CurrentSong.IsLooped = true;
+                    this.CurrentSong.Play();
+                }
+            }
+
             //set our keyboardstate tracker update can change the gamestate on every cycle
             Control.Update();
 
