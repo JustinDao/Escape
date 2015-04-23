@@ -79,6 +79,12 @@ namespace Escape
                                             //castle.DebugRoom = r;
                                         }
 
+                                        if (cells[i] == "SubmissionRoom")
+                                        {
+                                            r = new RoomSub(mg, castle);
+
+                                        }
+
                                         Rooms[col, row] = r;
                                         break;
                                     case 1: // Entities

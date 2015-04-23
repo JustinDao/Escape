@@ -20,6 +20,7 @@ namespace Escape
         public Room DebugRoom = null;
         public Player Player { get; set; }
         public RoomReader RR;
+        public SubmissionRoom Subroom { get; set; }
 
         public Castle(MainGame mg)
         {
@@ -35,6 +36,8 @@ namespace Escape
         {
             this.RR = new RoomReader(mg, this, "Master.csv");
             CurrentRoom = this.RR.StartRoom;
+
+            
         }
 
         //        public void InitializeRooms()
