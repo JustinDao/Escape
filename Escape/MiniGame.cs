@@ -14,14 +14,20 @@ namespace Escape
         public MainGame mg { get; set; }
         public GraphicsDevice gd { get; set; }
         public bool Active { get; set; }
+        public Texture2D DoorTexture;
+        public PlayerClip PlayerClip;
+        public Texture2D PathTexture;
+        public Rectangle PathRectangle;
 
         private Question currentQuestion;
         private List<Question> CurrentQuestions;
         private List<Question> AllQuestions;
-        private int timeRemaining;
-        private float timeInterval;
+        
         private Rectangle BackgroundBox { get; set; }
         private SpriteFont Font { get; set; }
+
+        private float clipX = 800;
+        private float clipY = 50;
 
         private bool answeredWrong = false;
         // How long the pentaly for a wrong answer is
@@ -32,6 +38,7 @@ namespace Escape
         private float rightInterval = 0.5f;
         private float rightTime = 0;
 
+        private float timeRemaining;
         private int TOTAL_TIME = 60;
 
         private int neededCorrectAnswers = 1;
@@ -65,21 +72,25 @@ namespace Escape
             this.gd = gd;
             this.BackgroundBox = new Rectangle(0, 0, mg.GAME_WIDTH, mg.GAME_HEIGHT);
             this.timeRemaining = TOTAL_TIME;
-            this.timeInterval = 0;
             this.Active = false;
             this.AllQuestions = new List<Question>(player.Questions);
+            this.PlayerClip = new PlayerClip(mg.Content, mg.SpriteRender);
+            this.PlayerClip.Position = new Vector2(800, 50);
+
+            this.PathRectangle = new Rectangle(50, 50, (int)clipX - 50, 10);
+            this.PathTexture = mg.Content.Load<Texture2D>("pixel.png");
 
             randomizeQuestions();
         }
 
         public void Reinitialize()
         {
-            this.timeInterval = 0;
             this.timeRemaining = TOTAL_TIME;
         }
 
         public override void LoadContent(ContentManager cm)
         {
+            this.DoorTexture = cm.Load<Texture2D>("castle_door.png");
             this.BackgroundTexture = new Texture2D(this.gd, 1, 1);
             this.BackgroundTexture.SetData(new Color[] { Color.White });
             this.Font = cm.Load<SpriteFont>("QuestionFont");
@@ -89,10 +100,18 @@ namespace Escape
         {
             // Background
             sb.Draw(BackgroundTexture, BackgroundBox, Color.Black);
+            // Draw Path
+            var percentLeft = ((float)timeRemaining / (float)TOTAL_TIME);
+            var barColor = Color.Lerp(Color.Green, Color.Red, 1-percentLeft);
+            sb.Draw(PathTexture, PathRectangle, null, barColor);
+            // Draw Door
+            sb.Draw(DoorTexture, new Vector2(0,0), Color.White);
+            // Draw PlayerReference
+            PlayerClip.Draw(sb);
             // Question
             sb.DrawString(Font, currentQuestion.QuestionText, new Vector2(mg.GAME_WIDTH / 2 - 50, 200), Color.White);
             // Time Remaining
-            sb.DrawString(Font, this.timeRemaining.ToString(), new Vector2(mg.GAME_WIDTH - 50, 50), Color.White);
+            sb.DrawString(Font, ((int)this.timeRemaining).ToString(), new Vector2(mg.GAME_WIDTH - 50, 50), Color.White);
 
             var middle = mg.GAME_WIDTH / 2;
 
@@ -133,8 +152,11 @@ namespace Escape
 
         public void Update(Controls controls, GameTime gt, Player player)
         {
+            PlayerClip.Update(gt, this);
+            PlayerClip.Position.X = clipX * ((float)timeRemaining / (float)TOTAL_TIME);
+            PathRectangle.Width = (int)(clipX * ((float)timeRemaining / (float)TOTAL_TIME)) - PathRectangle.X;
+
             var delta = (float)gt.ElapsedGameTime.TotalSeconds;
-            this.timeInterval += delta;
 
             wrongTime += delta;
             rightTime += delta;
@@ -149,18 +171,15 @@ namespace Escape
                 answeredWrong = false;
             }
 
-            if (this.timeInterval > 1f)
-            {
-                this.timeRemaining -= 1;
-                this.timeInterval = 0;
+            this.timeRemaining -= delta;
 
-                // If you run out of time, do something
-                if (timeRemaining == 0)
-                {
-                    this.Active = false;
-                    player.RegainControl();
-                }
+            // If you run out of time, do something
+            if (timeRemaining == 0)
+            {
+                this.Active = false;
+                player.RegainControl();
             }
+            
 
             if (!answeredWrong && !answeredRight)
             {
@@ -197,6 +216,7 @@ namespace Escape
                     player.RegainControl();
                     randomizeQuestions();
                     neededCorrectAnswers++;
+                    currentCorrectAnswers = 0;
                     if (neededCorrectAnswers > MAX_QUESTIONS)
                     {
                         neededCorrectAnswers = MAX_QUESTIONS;

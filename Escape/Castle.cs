@@ -89,6 +89,7 @@ namespace Escape
             string[] preloadTextures = {
                                            "fireball.png",
                                            "snowflake.png",
+                                           "castle_door.png",
                                        };
             foreach (var textureName in preloadTextures)
             {

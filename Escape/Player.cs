@@ -290,10 +290,15 @@ namespace Escape
         }
 
         // Constructor
-        public Player(ContentManager cm, SpriteRender sr, Controls ctrls, Castle castle)
+        public Player(ContentManager cm, SpriteRender sr, Controls ctrls, Screen s)
             : base(cm, sr, "soldier_sprite_sheet.png")
         {
-            this.Castle = castle;
+            if (s is Castle)
+            {
+                var castle = s as Castle;
+                this.Castle = castle;
+            }
+
             Ctrls = ctrls;
             PlayerControl = true;
             Submission = MAX_SUBMISSION;
