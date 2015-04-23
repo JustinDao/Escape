@@ -250,9 +250,6 @@ namespace Escape
                     var stick = Ctrls.gp.ThumbSticks.Left;
                     stick.Y *= -1;
 
-                    // Buffer for stick
-                    if (stick.LengthSquared() <= STICK_BUFFER) return Vector2.Zero;
-
                     // If not using controller check keyboard input
                     if (stick.LengthSquared() == 0)
                     {
@@ -275,6 +272,8 @@ namespace Escape
                         }
                     }
 
+                    // Buffer for stick
+                    if (stick.LengthSquared() <= STICK_BUFFER) return Vector2.Zero;
                    
                     return stick * MaxSpeed;
                     
