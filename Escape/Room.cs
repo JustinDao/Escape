@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -124,10 +125,12 @@ namespace Escape
 
         // Methods
 
+        SoundEffect slashSound = null;
         // Constructor
         public Room(MainGame mg, Castle castle, String csvName)
         {
             contentManager = mg.Content;
+            slashSound = contentManager.Load<SoundEffect>("Sounds/slash");
             this.mg = mg;
             this.Castle = castle;
             this.Width = mg.GAME_WIDTH;
@@ -525,6 +528,7 @@ namespace Escape
                     {
                         baddie.BeingAttacked = true;
                         baddie.Health--;
+                        slashSound.Play();
                     }
                 }
             }

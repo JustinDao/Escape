@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -20,54 +21,23 @@ namespace Escape
         // attacking!
         const int ATTACK_SIZE = 20;
         const float ATTACK_REACH = 100 - ATTACK_SIZE;
-        public Vector2 AttackVector
-        {
-            get
-            {
-                var rStick = Ctrls.gp.ThumbSticks.Right;
-                rStick.Y *= -1;
-
-                if (rStick.LengthSquared() == 0)
-                {
-                    if(this.Ctrls.isPressed(Keys.W))
-                    {
-                        rStick.Y = -1;
-                    }
-
-                    if (this.Ctrls.isPressed(Keys.A))
-                    {
-                        rStick.X = -1;
-                    }
-
-                    if (this.Ctrls.isPressed(Keys.S))
-                    {
-                        rStick.Y = 1;
-                    }
-
-                    if (this.Ctrls.isPressed(Keys.D))
-                    {
-                        rStick.X = 1;
-                    }
-                }
-
-               return rStick;
-            }
-        }
+        public Vector2 AttackVector;
         public Rectangle? AttackArea = null;
         Texture2D weaponTexture;
         // getting hit
         const float HIT_TIME = 1;
         public float HitTimer = 0;
         // power-ups
-        public bool HasFire = false;
-        public bool HasIce = false;
-        public bool HasSpeed = false;
-        public bool HasStrength = false;
+        public bool HasFire = true;
+        public bool HasIce = true;
+        public bool HasSpeed = true;
+        public bool HasStrength = true;
+        bool strengthActive = false;
         public bool UsingStrength
         {
             get
             {
-                return (Ctrls.isPressed(Keys.D3, Buttons.A) && HasStrength);
+                return strengthActive && HasStrength;
             }
         }
 
@@ -84,7 +54,7 @@ namespace Escape
         private float dashCooldown = 0f;
         const float DASH_TIME = 0.2f * (3f/2f);
         const float DASH_INTERVAL = 0.5f;
-        const float STICK_BUFFER = 0.15f;
+        const float STICK_BUFFER = 0.4f;
 
         // List of visited rooms
         public List<Room> VisitedRooms = new List<Room>();
@@ -231,6 +201,13 @@ namespace Escape
 
         const float DASH_MULT = 2;
 
+        SoundEffect swishSound = null;
+        SoundEffect hurtSound = null;
+        SoundEffect fireballSound = null;
+        SoundEffect iceSound = null;
+        SoundEffect strengthSound = null;
+        SoundEffect dashSound = null;
+
         // Velocity (direction AND magnitude) of the player
         public override Vector2 CurrentVelocity
         {
@@ -302,6 +279,12 @@ namespace Escape
             Submission = MAX_SUBMISSION;
 
             weaponTexture = cm.Load<Texture2D>("spear.png");
+            swishSound = cm.Load<SoundEffect>("Sounds/swish");
+            hurtSound = cm.Load<SoundEffect>("Sounds/ow");
+            fireballSound = cm.Load<SoundEffect>("Sounds/fireball");
+            iceSound = cm.Load<SoundEffect>("Sounds/ice");
+            strengthSound = cm.Load<SoundEffect>("Sounds/grunt");
+            dashSound = cm.Load<SoundEffect>("Sounds/zoom");
 
             Questions = new List<Question>();
 
@@ -381,15 +364,15 @@ namespace Escape
                 // powerups
                 CheckPowerUps(room);
 
-                // Right Stick Attack
-                UpdateAttack();
-
                 if (PlayerControl)
                 {
                     // Controller Actions
                     Action(room);
                 }
 
+
+                // Right Stick Attack
+                UpdateAttack();
             }
 
             // base update!
@@ -414,17 +397,72 @@ namespace Escape
 
         private void Action(Room room)
         {
+            // set attack vector
+            var rStick = Ctrls.gp.ThumbSticks.Right;
+            rStick.Y *= -1;
+
+            if (this.Ctrls.isPressed(Keys.W))
+            {
+                rStick.Y = -1;
+            }
+
+            if (this.Ctrls.isPressed(Keys.A))
+            {
+                rStick.X = -1;
+            }
+
+            if (this.Ctrls.isPressed(Keys.S))
+            {
+                rStick.Y = 1;
+            }
+
+            if (this.Ctrls.isPressed(Keys.D))
+            {
+                rStick.X = 1;
+            }
+            if (rStick.Length() > 1)
+            {
+                rStick.Normalize();
+            }
+            else if (rStick.Length() < STICK_BUFFER)
+            {
+                rStick = Vector2.Zero;
+            }
+            else
+            {
+                var playSwish = (rStick - AttackVector).Length() > 0.45f;
+                if (playSwish)
+                {
+                    swishSound.Play();
+                }
+            }
+            AttackVector = rStick;
+
+            // strength
+            if (Ctrls.isPressed(Keys.D3, Buttons.A) && HasStrength)
+            {
+                if (!strengthActive)
+                    strengthSound.Play();
+                strengthActive = true;
+            }
+            else
+            {
+                strengthActive = false;
+            }
+
             // fire
             if (Ctrls.onPress(Keys.D1, Buttons.B) && HasFire && lastDir.LengthSquared() > 0)
             {
                 var fbp = new Vector2(lastDir.X, lastDir.Y);
                 room.AddFireBall(Position, fbp);
+                fireballSound.Play();
             }
 
             // ice
             if (Ctrls.onPress(Keys.D2, Buttons.X) && HasIce)
             {
                 room.AddSnowflakes(Position);
+                iceSound.Play();
             }
 
             // speed
@@ -432,6 +470,7 @@ namespace Escape
             {
                 if (dashCooldown <= 0 && !IsDashing)
                 {
+                    dashSound.Play();
                     dashRemaining = DASH_TIME;
                     ignoreHoles = true;
                     ignoreWater = true;
@@ -457,8 +496,7 @@ namespace Escape
             // lance
             AttackArea = null;
 
-            // 0.15 buffer for control stick
-            if (AttackVector.LengthSquared() > STICK_BUFFER)
+            if (AttackVector.LengthSquared() > 0)
             {
                 var pCenter = HitBox.Center;
                 var area = new Rectangle(pCenter.X - ATTACK_SIZE / 2,
@@ -543,6 +581,7 @@ namespace Escape
         public override void OnEnemyCollision(Enemy e)
         {
             if (HitTimer > 0) return;
+            hurtSound.Play();
             HitTimer = HIT_TIME;
             Submission -= e.Damage;
             if (e.TouchFreezeTimer > FreezeTimer)

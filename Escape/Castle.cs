@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -92,9 +93,22 @@ namespace Escape
                                            "snowflake.png",
                                            "castle_door.png",
                                        };
+            string[] preloadSounds = {
+                                         "swish",
+                                         "ow",
+                                         "slash",
+                                         "fireball",
+                                         "ice",
+                                         "grunt",
+                                         "zoom",
+                                     };
             foreach (var textureName in preloadTextures)
             {
                 cm.Load<Texture2D>(textureName);
+            }
+            foreach (var soundName in preloadSounds)
+            {
+                cm.Load<SoundEffect>("Sounds/" + soundName);
             }
         }
 
