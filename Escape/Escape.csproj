@@ -35,6 +35,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CreditsScreen.cs" />
     <Compile Include="EarthBoss.cs" />
     <Compile Include="EarthBossSprites.cs" />
     <Compile Include="EnemyStationary.cs" />
@@ -83,7 +84,6 @@
     <Compile Include="Room.cs" />
     <Compile Include="RoomEnd.cs" />
     <Compile Include="RoomReader.cs" />
-    <Compile Include="RoomSub.cs" />
     <Compile Include="Screen.cs" />
     <Compile Include="SoldierSprites.cs" />
     <Compile Include="SpeedBoss.cs" />
@@ -159,6 +159,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Cover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Credits.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\din.png">

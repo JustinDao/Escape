@@ -33,12 +33,19 @@ namespace Escape
         public Controls Control;
         SubmissionBar submissionBar;
         public SoundEffectInstance CurrentSong;
+        public SoundEffectInstance SubmissionSong;
+        public SoundEffectInstance TransitionSong;
 
         public int GAME_WIDTH = 1000;
         public int GAME_HEIGHT = 600;
+
         public bool PlayingPrelude = false;
         private float preludeCounter = 0;
         private int preludeLength = 2*60 + 23; // 2m23s song length
+
+        public bool PlayedTransition = false;
+        private float transitionCounter = 0;
+        private int transitionLength = 1; // 2m23s song length
 
         public MainGame()
             : base()
@@ -71,6 +78,14 @@ namespace Escape
             currentScreen = start;            
 
             submissionBar = new SubmissionBar(new Rectangle(20, 20, 200, 20), graphics);
+
+            var song = Content.Load<SoundEffect>("Songs\\Submission");
+            SubmissionSong = song.CreateInstance();
+            SubmissionSong.IsLooped = true;
+
+            song = Content.Load<SoundEffect>("Songs/Transition");
+            TransitionSong = song.CreateInstance();
+
             base.Initialize();
 
             Joystick.Init();
@@ -137,6 +152,10 @@ namespace Escape
             {
                 currentScreen = endScreen;
                 endScreen.Update(gameTime);
+                var song = Content.Load<SoundEffect>("Songs\\Victory");
+                CurrentSong.Stop();
+                CurrentSong = song.CreateInstance();
+                CurrentSong.Play();
             }
             else if (currentScreen == start)
             {
@@ -151,6 +170,9 @@ namespace Escape
                     miniGame.Reinitialize();
                     miniGame.Active = true;
                     currentScreen = miniGame;
+                    this.CurrentSong.Pause();
+                    PlayedTransition = true;
+                    this.TransitionSong.Play();
                 }
 
                 submissionBar.Update(castle.Player, graphics);
@@ -159,6 +181,20 @@ namespace Escape
             else if (currentScreen == miniGame)
             {
                 miniGame.Update(Control, gameTime, castle.Player);
+                if (PlayedTransition)
+                {
+                    transitionCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if(transitionCounter > transitionLength)
+                    {
+                        SubmissionSong.Play();
+                        PlayedTransition = false;
+                    }
+                }
+            }
+            else if (currentScreen is CreditsScreen)
+            {
+                var cs = currentScreen as CreditsScreen;
+                cs.Update(gameTime);
             }
 
             base.Update(gameTime);
