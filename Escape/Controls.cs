@@ -15,6 +15,15 @@ namespace Escape
         public KeyboardState kbo;
         public GamePadState gp;
         public GamePadState gpo;
+        public static Dictionary<Keys, Buttons> ValidInput = new Dictionary<Keys, Buttons>();
+
+        static Controls()
+        {
+            ValidInput.Add(Keys.D1, Buttons.A);
+            ValidInput.Add(Keys.D2, Buttons.B);
+            ValidInput.Add(Keys.D3, Buttons.X);
+            ValidInput.Add(Keys.D4, Buttons.Y);
+        }
 
         public Controls()
         {
@@ -23,7 +32,6 @@ namespace Escape
             this.gp = GamePad.GetState(PlayerIndex.One);
             this.gpo = GamePad.GetState(PlayerIndex.One);
             Console.WriteLine(Sdl.SDL_JoystickName(0));
-
         }
 
         public void Update()

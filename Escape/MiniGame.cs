@@ -37,6 +37,7 @@ namespace Escape
         { 
             Color.Green, Color.Red, Color.Blue, Color.Yellow, 
         };
+
         private Vector2[] position 
         {
             get
@@ -51,8 +52,6 @@ namespace Escape
             }
         }                             
 
-        private Dictionary<Keys, Buttons> ValidInput = new Dictionary<Keys, Buttons>();
-
         public MiniGame(MainGame mg, GraphicsDevice gd, Player player)
         {
             this.mg = mg;
@@ -62,10 +61,6 @@ namespace Escape
             this.timeInterval = 0;
             this.Active = false;
             this.AllQuestions = new List<Question>(player.Questions);
-            this.ValidInput.Add(Keys.D1, Buttons.A);
-            this.ValidInput.Add(Keys.D2, Buttons.B);
-            this.ValidInput.Add(Keys.D3, Buttons.X);
-            this.ValidInput.Add(Keys.D4, Buttons.Y);
 
             randomizeQuestions();
         }
@@ -85,34 +80,37 @@ namespace Escape
 
         public override void Draw(SpriteBatch sb)
         {
+            // Background
             sb.Draw(BackgroundTexture, BackgroundBox, Color.White * 0.6f);
+            // Question
             sb.DrawString(Font, currentQuestion.QuestionText, new Vector2(mg.GAME_WIDTH / 2, 200), Color.Black);
+            // Time Remaining
+            sb.DrawString(Font, this.timeRemaining.ToString(), new Vector2(mg.GAME_WIDTH - 50, 50), Color.Black);
 
             var middle = mg.GAME_WIDTH / 2;
 
             for(int i = 0; i < currentQuestion.Options.Count; i++)
             {
-                String option = currentQuestion.Options[i];
+                string option = currentQuestion.Options[i];
+                string optionText = currentQuestion.GetButton(option) + ": " + option;
+
                 if (answeredWrong)
                 {
                     if (option == currentQuestion.CorrectOption)
                     {
-                        Console.WriteLine(currentQuestion.CorrectKey + " " + currentQuestion.CorrectButton);
-                        sb.DrawString(Font, option, position[i], Color.Lime);
+                        sb.DrawString(Font, optionText, position[i], Color.Lime);
                     }
                     else
                     {
-                        sb.DrawString(Font, option, position[i], Color.Black);
+                        sb.DrawString(Font, optionText, position[i], Color.DarkRed);
                     }                    
                 }
                 else
                 {
-                    sb.DrawString(Font, option, position[i], colors[i]);
+                    sb.DrawString(Font, optionText, position[i], colors[i]);
                 }
                 
             }
-
-            sb.DrawString(Font, this.timeRemaining.ToString(), new Vector2(mg.GAME_WIDTH - 50, 50), Color.Black);
         }
 
         public void Update(Controls controls, GameTime gt, Player player)
@@ -157,11 +155,11 @@ namespace Escape
                 }
                 else
                 {
-                    foreach (Keys key in ValidInput.Keys)
+                    foreach (Keys key in Controls.ValidInput.Keys)
                     {
-                        if (currentQuestion.CorrectButton == ValidInput[key]) continue;
+                        if (currentQuestion.CorrectButton == Controls.ValidInput[key]) continue;
 
-                        if (controls.onPress(key, ValidInput[key]))
+                        if (controls.onPress(key, Controls.ValidInput[key]))
                         {
                             answeredWrong = true;
                             wrongTime = 0;

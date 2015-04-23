@@ -83,6 +83,32 @@ namespace Escape
             return answerId == correctOptionIndex;
         }
 
+        public string GetButton(string option)
+        {
+            int optionIndex = Options.IndexOf(option);
+
+            if (optionIndex < 0)
+            {
+                // didn't find option
+                return null;
+            }
+
+            switch (optionIndex)
+            {
+                case 0:
+                    return Buttons.A.ToString();
+                case 1:
+                    return Buttons.B.ToString();
+                case 2:
+                    return Buttons.X.ToString();
+                case 3:
+                    return Buttons.Y.ToString();
+                default:
+                    // what button is this
+                    return Buttons.BigButton.ToString();
+            }
+        }
+
         public void Initialize(ContentManager cm)
         {
 
