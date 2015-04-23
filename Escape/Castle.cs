@@ -35,72 +35,16 @@ namespace Escape
         {
             this.RR = new RoomReader(mg, this, "Master.csv");
             CurrentRoom = this.RR.StartRoom;
+            Player.VisitedRooms.Add(CurrentRoom);
         }
-
-        //        public void InitializeRooms()
-        //        {
-        //            CurrentRoom = new Room(mg, this, "StartRoom.csv");
-        //
-        //            CurrentRoom.AddText("Left Stick to move.", new Vector2(100, 500));
-        //            CurrentRoom.AddText("Right Stick to attack.", new Vector2(750, 500));
-        //
-        //            Room MainRoom = new Room(mg, this);
-        //
-        //            CurrentRoom.UpRoom = MainRoom;
-        //            MainRoom.DownRoom = CurrentRoom;
-        //
-        //            MainRoom.LeftRoom = new Room(mg, this, "RoomTemplate.csv");
-        //
-        //            MainRoom.LeftRoom.Enemies.Add(new FireBoss(mg.Content, mg.SpriteRender, new Vector2[] 
-        //                { 
-        //                    new Vector2(300, 100), new Vector2(500, 100), new Vector2(300, 300), new Vector2(500, 300)
-        //                }
-        //            ));
-        //
-        //            MainRoom.LeftRoom.RightRoom = MainRoom;
-        //
-        //            MainRoom.LeftRoom.UpRoom = new RoomEnd(mg, this);
-        //            MainRoom.LeftRoom.UpRoom.AddText("You feel a mysterious force in this room...", new Vector2(mg.GAME_WIDTH / 2 - 200, mg.GAME_HEIGHT / 2));
-        //
-        //            MainRoom.LeftRoom.UpRoom.DownRoom = MainRoom.LeftRoom;
-        //
-        //            MainRoom.RightRoom = new Room(mg, this, "R2.csv");
-        //            MainRoom.RightRoom.LeftRoom = MainRoom;
-        //
-        //            MainRoom.RightRoom.DownRoom = new Room(mg, this, "Boss2.csv");
-        //            MainRoom.RightRoom.DownRoom.UpRoom = MainRoom.RightRoom;
-        //
-        //            MainRoom.RightRoom.UpRoom = new Room(mg, this, "BoulderRoom.csv");
-        //            MainRoom.RightRoom.UpRoom.DownRoom = MainRoom.RightRoom;
-        //
-        //            MainRoom.LeftRoom.DownRoom = new Room(mg, this, "R4.csv");
-        //            MainRoom.LeftRoom.DownRoom.UpRoom = MainRoom.LeftRoom;
-        //
-        //            MainRoom.UpRoom = new Room(mg, this, "R3.csv");
-        //            MainRoom.UpRoom.DownRoom = MainRoom;
-        //            MainRoom.UpRoom.Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, this.Player, new Vector2(400, 300)));
-        //
-        //            MainRoom.UpRoom.Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, this.Player, new Vector2(400, 300)));
-        //            MainRoom.UpRoom.Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, this.Player, new Vector2(450, 500)));
-        //            MainRoom.UpRoom.Enemies.Add(new Ghost(mg.Content, mg.SpriteRender, this.Player, new Vector2(150, 400)));
-        //
-        //            MainRoom.UpRoom.UpRoom = new Room(mg, this, "R5.csv");
-        //            MainRoom.UpRoom.UpRoom.DownRoom = MainRoom.UpRoom;
-        //            MainRoom.UpRoom.UpRoom.Enemies.Add(new EarthBoss(mg.Content, mg.SpriteRender, new Vector2[] 
-        //                { 
-        //                    new Vector2(100, 100), new Vector2(200, 100), new Vector2(300, 200), new Vector2(400, 300)
-        //                }
-        //            ));
-        //
-        //            // Infinite Room Loop!
-        //            MainRoom.LeftRoom.LeftRoom = MainRoom;
-        //        }
 
         public void Update(Controls controls, GameTime gameTime)
         {
             if (DebugRoom != null && CurrentRoom != DebugRoom)
             {
                 CurrentRoom = DebugRoom;
+                Player.VisitedRooms.Clear();
+                Player.VisitedRooms.Add(CurrentRoom);
                 DebugRoom = null;
             }
 

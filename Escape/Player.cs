@@ -84,6 +84,9 @@ namespace Escape
         const float DASH_TIME = 0.2f * (3f/2f);
         const float DASH_INTERVAL = 0.5f;
 
+        // List of visited rooms
+        public List<Room> VisitedRooms = new List<Room>();
+
         // controls
         public readonly Controls Ctrls;
         // Value of the Player's current Submission
@@ -488,7 +491,7 @@ namespace Escape
             }
             else if (Submission <= 0)
             {
-                PlayerControl = false;
+                LoseControl();
             }
         }
 
@@ -631,6 +634,11 @@ namespace Escape
         }
 
         // Helper / Other Methods
+
+        public void LoseControl()
+        {
+            PlayerControl = false;
+        }
 
         public void RegainControl()
         {

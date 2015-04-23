@@ -34,12 +34,15 @@ namespace Escape
 
         private int TOTAL_TIME = 60;
 
+        private int neededCorrectAnswers = 1;
+        private int currentCorrectAnswers = 0;
+
         private int numQuestions = 1;
         private int MAX_QUESTIONS = 5;
 
         private Color[] colors = 
         { 
-            Color.Green, Color.Red, Color.Blue, Color.Yellow, 
+            Color.Green, Color.Blue, Color.Red, Color.Yellow, 
         };
 
         private Vector2[] position 
@@ -85,11 +88,11 @@ namespace Escape
         public override void Draw(SpriteBatch sb)
         {
             // Background
-            sb.Draw(BackgroundTexture, BackgroundBox, Color.White * 0.6f);
+            sb.Draw(BackgroundTexture, BackgroundBox, Color.Black);
             // Question
-            sb.DrawString(Font, currentQuestion.QuestionText, new Vector2(mg.GAME_WIDTH / 2, 200), Color.Black);
+            sb.DrawString(Font, currentQuestion.QuestionText, new Vector2(mg.GAME_WIDTH / 2 - 50, 200), Color.White);
             // Time Remaining
-            sb.DrawString(Font, this.timeRemaining.ToString(), new Vector2(mg.GAME_WIDTH - 50, 50), Color.Black);
+            sb.DrawString(Font, this.timeRemaining.ToString(), new Vector2(mg.GAME_WIDTH - 50, 50), Color.White);
 
             var middle = mg.GAME_WIDTH / 2;
 
@@ -138,6 +141,11 @@ namespace Escape
 
             if (wrongTime > wrongInterval)
             {
+                if (answeredWrong)
+                {
+                    moveToNextQuestion();
+                }               
+
                 answeredWrong = false;
             }
 
@@ -160,6 +168,7 @@ namespace Escape
                 {
                     answeredRight = true;
                     rightTime = 0;
+                    currentCorrectAnswers++;
                 }
                 else
                 {
@@ -181,16 +190,21 @@ namespace Escape
             {
                 answeredRight = false;
 
-                if (currentQuestion == CurrentQuestions.Last())
+                if (currentCorrectAnswers >= neededCorrectAnswers)
                 {
                     answeredRight = false;
                     this.Active = false;
                     player.RegainControl();
                     randomizeQuestions();
+                    neededCorrectAnswers++;
+                    if (neededCorrectAnswers > MAX_QUESTIONS)
+                    {
+                        neededCorrectAnswers = MAX_QUESTIONS;
+                    }
                 }
                 else
                 {
-                    currentQuestion = CurrentQuestions[CurrentQuestions.IndexOf(currentQuestion) + 1];
+                    moveToNextQuestion();                                      
                 }
             }
         }
@@ -202,6 +216,17 @@ namespace Escape
             CurrentQuestions = AllQuestions.OrderBy(item => rnd.Next()).ToList().Take(numQuestions++).ToList();
             if (numQuestions > MAX_QUESTIONS) numQuestions = MAX_QUESTIONS;
             this.currentQuestion = CurrentQuestions.First();
+        }
+
+        private void moveToNextQuestion()
+        {
+            int index = CurrentQuestions.IndexOf(currentQuestion) + 1;
+            if (index >= CurrentQuestions.Count())
+            {
+                index = 0;
+            }
+
+            currentQuestion = CurrentQuestions[index];
         }
     }
 }
