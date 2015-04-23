@@ -33,8 +33,8 @@ namespace Escape
         public Controls Control;
         SubmissionBar submissionBar;
         public SoundEffectInstance CurrentSong;
-        public SoundEffect subSong;
         public SoundEffectInstance SubmissionSong;
+        public SoundEffectInstance TransitionSong;
 
         public int GAME_WIDTH = 1000;
         public int GAME_HEIGHT = 600;
@@ -42,6 +42,10 @@ namespace Escape
         public bool PlayingPrelude = false;
         private float preludeCounter = 0;
         private int preludeLength = 2*60 + 23; // 2m23s song length
+
+        public bool PlayedTransition = false;
+        private float transitionCounter = 0;
+        private int transitionLength = 1; // 2m23s song length
 
         public MainGame()
             : base()
@@ -75,9 +79,12 @@ namespace Escape
 
             submissionBar = new SubmissionBar(new Rectangle(20, 20, 200, 20), graphics);
 
-            subSong = Content.Load<SoundEffect>("Songs\\Submission");
-            SubmissionSong = subSong.CreateInstance();
+            var song = Content.Load<SoundEffect>("Songs\\Submission");
+            SubmissionSong = song.CreateInstance();
             SubmissionSong.IsLooped = true;
+
+            song = Content.Load<SoundEffect>("Songs/Transition");
+            TransitionSong = song.CreateInstance();
 
             base.Initialize();
 
@@ -164,7 +171,8 @@ namespace Escape
                     miniGame.Active = true;
                     currentScreen = miniGame;
                     this.CurrentSong.Pause();
-                    this.SubmissionSong.Play();
+                    PlayedTransition = true;
+                    this.TransitionSong.Play();
                 }
 
                 submissionBar.Update(castle.Player, graphics);
@@ -173,6 +181,15 @@ namespace Escape
             else if (currentScreen == miniGame)
             {
                 miniGame.Update(Control, gameTime, castle.Player);
+                if (PlayedTransition)
+                {
+                    transitionCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if(transitionCounter > transitionLength)
+                    {
+                        SubmissionSong.Play();
+                        PlayedTransition = false;
+                    }
+                }
             }
 
             base.Update(gameTime);

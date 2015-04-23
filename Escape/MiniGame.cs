@@ -178,6 +178,9 @@ namespace Escape
             {
                 this.Active = false;
                 player.RegainControl(0f);
+                mg.SwitchToCastle();
+                mg.SubmissionSong.Stop();
+                mg.CurrentSong.Resume();
             }
             
 
