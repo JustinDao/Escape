@@ -26,7 +26,7 @@ namespace Escape
             this.BackgroundBox = new Rectangle(0, 0, mg.GAME_WIDTH, mg.GAME_HEIGHT);
             this.Active = false;
 
-            var song = mg.Content.Load<SoundEffect>("Songs\\start");
+            var song = mg.Content.Load<SoundEffect>("Songs\\StartMenu");
             mg.CurrentSong = song.CreateInstance();
             mg.CurrentSong.IsLooped = true;
             mg.CurrentSong.Play();
@@ -49,9 +49,9 @@ namespace Escape
             {
                 mg.CurrentSong.Stop();
                 mg.SwitchToCastle();
-                var song = mg.Content.Load<SoundEffect>("Songs\\Castle.wav");
+                var song = mg.Content.Load<SoundEffect>("Songs\\Prelude");
                 mg.CurrentSong = song.CreateInstance();
-                mg.CurrentSong.IsLooped = true;
+                mg.PlayingPrelude = true;
                 mg.CurrentSong.Play();
             }
         }
