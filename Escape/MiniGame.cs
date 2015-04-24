@@ -177,10 +177,10 @@ namespace Escape
             if (timeRemaining <= 0)
             {
                 this.Active = false;
-                player.RegainControl(0f);
-                mg.SwitchToCastle();
                 mg.SubmissionSong.Stop();
-                mg.CurrentSong.Resume();
+                mg.PreludeSong.Play(); // Game Over Screen Song
+                mg.SwitchToGameOver();
+                return;
             }
             
 

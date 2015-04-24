@@ -35,6 +35,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="GameOverScreen.cs" />
     <Compile Include="IceMinionSprites.cs" />
     <Compile Include="CreditsScreen.cs" />
     <Compile Include="EarthBoss.cs" />
@@ -274,6 +275,9 @@
     <None Include="Content\Enemies\E1.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Content\Enemies\Tut5.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Enemies\E2.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -507,6 +511,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Content\Rooms\StartRoom.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Rooms\SubmissionRoom.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Content\Rooms\Water1.csv">

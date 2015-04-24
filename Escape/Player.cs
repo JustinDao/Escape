@@ -676,21 +676,19 @@ namespace Escape
             
             foreach (Direction dir in room.Doors.Keys)
             {
-                StandingOnDoor = true;
-
                 switch(dir)
                 {
                     case Direction.UP:
-                        this.Position = new Vector2(room.Width / 2, 0);
+                        this.Position = new Vector2(room.Width / 2, 50);
                         break;
                     case Direction.DOWN:
-                        this.Position = new Vector2(room.Width / 2, room.Height);
+                        this.Position = new Vector2(room.Width / 2, room.Height - 50);
                         break;
                     case Direction.LEFT:
-                        this.Position = new Vector2(0, room.Height / 2);
+                        this.Position = new Vector2(50, room.Height / 2);
                         break;
                     case Direction.RIGHT:
-                        this.Position = new Vector2(room.Width, room.Height / 2);
+                        this.Position = new Vector2(room.Width - 50, room.Height / 2);
                         break;
                 }
 
@@ -741,22 +739,22 @@ namespace Escape
             {
                 if (y < hei / 2)
                 {
-                    y = hei;
+                    y = hei - 50;
                 }
                 else
                 {
-                    y = 0;
+                    y = 50;
                 }
             }
             if (y > (hei / 2) - 50 && y < (hei / 2) + 50)
             {
                 if (x < wid / 2)
                 {
-                    x = wid;
+                    x = wid - 50;
                 }
                 else
                 {
-                    x = 0;
+                    x = 50;
                 }
             }
 

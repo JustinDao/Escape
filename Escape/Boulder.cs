@@ -139,45 +139,33 @@ namespace Escape
 
         public bool InAHole(Room r)
         {
-            int xl = this.HitBox.Left;
-            int xr = this.HitBox.Right;
-            int yt = this.HitBox.Top;
-            int yb = this.HitBox.Bottom;
-            Point c = this.HitBox.Center;
 
-            int tl = 0;
-            int tr = 0;
-            int bl = 0;
-            int br = 0;
-            int cc = 0;
+            float intersectingArea = 0;
 
             foreach (var e in r.Obstacles)
             {
-                if (e is Hole)
-                {
-                    if (e.HitBox.Contains(new Point(xl, yt)))
-                    {
-                        tl += 1;
-                    }
-                    if (e.HitBox.Contains(new Point(xr, yt)))
-                    {
-                        tr += 1;
-                    }
-                    if (e.HitBox.Contains(new Point(xl, yb)))
-                    {
-                        tl += 1;
-                    }
-                    if (e.HitBox.Contains(new Point(xr, yb)))
-                    {
-                        tl += 1;
-                    }
-                    if (e.HitBox.Contains(c))
-                    {
-                        cc += 1;
-                    }
-                }
+
+                if (!(e is Hole)) continue;
+                
+                var h = e as Hole;
+
+                var intersection = Rectangle.Intersect(h.HitBox, this.HitBox);
+                if (intersection.Width <= 0 && intersection.Height <= 0) continue;
+
+                var intersectArea = intersection.Width * intersection.Height;
+
+                intersectingArea += intersectArea;
+                                 
             }
-            return (tl + tr + bl + br + cc) >= 5;
+
+            float boulderArea = this.HitBox.Width * this.HitBox.Height;
+
+            if (intersectingArea / boulderArea > 0.75f)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

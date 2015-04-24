@@ -60,11 +60,6 @@ namespace Escape
         {
             CurrentRoom.Draw(sb);
 
-            if(DrawPlayer)
-            {
-                playerCutScene.Draw(sb);
-            }
-            
             if(DrawAmulet)
             {
                 Amulet.Draw(sb);
@@ -86,9 +81,16 @@ namespace Escape
             else if (WalkBack && !SelectedChoice)
             {
                 sb.Draw(BackgroundTexture, BackgroundBox, Color.White * 0.6f);
-                sb.DrawString(Font, "Choose who to escape:", new Vector2(mg.GAME_WIDTH / 2 - 150, 200), Color.Black);
-                sb.DrawString(Font, "X: Max", new Vector2(mg.GAME_WIDTH / 2 - 300, 300), Color.Black);
-                sb.DrawString(Font, "B: You", new Vector2(mg.GAME_WIDTH / 2 + 300, 300), Color.Black);
+
+                var first = "For you to escape the castle, something else must take your place.";
+                var second = "You must choose between yourself and Max...";
+                var third = "Choose who to Escape:";
+
+                sb.DrawString(Font, first, new Vector2(mg.GAME_WIDTH / 2 - (Font.MeasureString(first).X / 2), 200), Color.Black);
+                sb.DrawString(Font, second, new Vector2(mg.GAME_WIDTH / 2 - (Font.MeasureString(second).X / 2), 250), Color.Black);
+                sb.DrawString(Font, third, new Vector2(mg.GAME_WIDTH / 2 - (Font.MeasureString(third).X / 2), 300), Color.Black);
+                sb.DrawString(Font, "X: Max", new Vector2(mg.GAME_WIDTH / 2 - 300, 350), Color.Black);
+                sb.DrawString(Font, "B: You", new Vector2(mg.GAME_WIDTH / 2 + 300, 350), Color.Black);
             }
             else if (EndAll)
             {
@@ -98,6 +100,11 @@ namespace Escape
                 }
 
                 DrawPlayer = false;
+            }
+
+            if (DrawPlayer)
+            {
+                playerCutScene.Draw(sb);
             }
             
 
