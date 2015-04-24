@@ -71,13 +71,13 @@ namespace Escape
                                             r = new RoomEnd(mg, castle);
                                             this.EndRoom = r;
 
-                                            // Start in End Room
-                                            castle.Player.HasFire = true;
-                                            castle.Player.HasIce = true;
-                                            castle.Player.HasSpeed = true;
-                                            castle.Player.HasStrength = true;
+                                            //// Start in End Room
+                                            //castle.Player.HasFire = true;
+                                            //castle.Player.HasIce = true;
+                                            //castle.Player.HasSpeed = true;
+                                            //castle.Player.HasStrength = true;
 
-                                            castle.DebugRoom = r;
+                                            //castle.DebugRoom = r;
                                         }
 
                                         if (cells[i] == "SubmissionRoom")
