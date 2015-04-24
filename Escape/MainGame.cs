@@ -45,7 +45,7 @@ namespace Escape
 
         public bool PlayedTransition = false;
         private float transitionCounter = 0;
-        private int transitionLength = 1; // 2m23s song length
+        private float transitionLength = 1.15f; // transition length
 
         public MainGame()
             : base()
