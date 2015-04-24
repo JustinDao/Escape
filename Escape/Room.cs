@@ -438,7 +438,7 @@ namespace Escape
                         case "fire":
                             this.Enemies.Add(new FireBoss(contentManager, mg.SpriteRender, new Vector2[]
                                 { 
-                                    new Vector2(300, 100), new Vector2(500, 100), new Vector2(300, 300), new Vector2(500, 300)
+                                    new Vector2(700, 300), new Vector2(500, 400), new Vector2(300, 300), new Vector2(500, 300)
                                 }
                             ));
                             break;
