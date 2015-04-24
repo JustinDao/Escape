@@ -109,15 +109,15 @@ namespace Escape
 
             // Three initial IceMinions
             var e1 = new IceMinion(castle.mg.Content, castle.mg.SpriteRender, player, Center + dir);
-            e1.Position = new Vector2(200, 300);
+            e1.Position = new Vector2(400, 300);
             e1.Parent = this;
 
             var e2 = new IceMinion(castle.mg.Content, castle.mg.SpriteRender, player, Center + dir);
-            e2.Position = new Vector2(400, 300);
+            e2.Position = new Vector2(600, 300);
             e2.Parent = this;
 
             var e3 = new IceMinion(castle.mg.Content, castle.mg.SpriteRender, player, Center + dir);
-            e3.Position = new Vector2(300, 400);
+            e3.Position = new Vector2(500, 400);
             e3.Parent = this;
 
             room.Enemies.Add(e1);
