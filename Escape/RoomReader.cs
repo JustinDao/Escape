@@ -71,7 +71,7 @@ namespace Escape
                                             r = new RoomEnd(mg, castle);
                                             this.EndRoom = r;
 
-                                            //// Start in End Room
+                                            // Start in End Room
                                             //castle.Player.HasFire = true;
                                             //castle.Player.HasIce = true;
                                             //castle.Player.HasSpeed = true;

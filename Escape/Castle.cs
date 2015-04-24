@@ -29,7 +29,7 @@ namespace Escape
         {
             this.mg = mg;
 
-            Player = new Player(mg.Content, mg.SpriteRender, mg.Control, this);
+            Player = new Player(mg.Content, mg.SpriteRender, mg.Control, mg, this);
             Player.Position += new Vector2(mg.GAME_WIDTH / 2, mg.GAME_HEIGHT - 100);
 
             InitializeRooms();
@@ -42,7 +42,6 @@ namespace Escape
             var mapArea = Minimap.HitBox;
             Minimap.Center = new Vector2(500, 300);
             CurrentRoom = this.RR.StartRoom;
-            Player.VisitedRooms.Add(CurrentRoom);
         }
 
         public void Update(Controls controls, GameTime gameTime)
@@ -51,7 +50,6 @@ namespace Escape
             {
                 CurrentRoom = DebugRoom;
                 Player.VisitedRooms.Clear();
-                Player.VisitedRooms.Add(CurrentRoom);
                 DebugRoom = null;
             }
 
@@ -66,7 +64,7 @@ namespace Escape
             }
 
             Player.Update(gameTime, this);
-            CurrentRoom.Visited = true;
+            if (!CurrentRoom.Visited) CurrentRoom.Visited = true;
             CurrentRoom.Update(gameTime, this);
         }
 
