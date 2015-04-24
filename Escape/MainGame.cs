@@ -31,6 +31,7 @@ namespace Escape
         MiniGame miniGame;
         EndScreen endScreen;
         CreditsScreen credits;
+        GameOverScreen gameOver;
         public Controls Control;
         SubmissionBar submissionBar;
         public SoundEffectInstance CurrentSong;
@@ -90,6 +91,7 @@ namespace Escape
             miniGame = new MiniGame(this, GraphicsDevice, castle.Player);
             endScreen = new EndScreen(this);
             credits = new CreditsScreen(Content, this);
+            gameOver = new GameOverScreen(Content, this);
             currentScreen = start;            
 
             submissionBar = new SubmissionBar(new Rectangle(20, 20, 200, 20), graphics);
@@ -114,10 +116,25 @@ namespace Escape
             song = Content.Load<SoundEffect>("Songs/Credits");
             CreditsSong = song.CreateInstance();
 
+            PlayingPrelude = false;
+            preludeCounter = 0;
+            PlayedTransition = false;
+            transitionCounter = 0;
+            Fading = false;
+            Faded = false;
+            SwitchedToCredits = false;
+            FadeOpacity = 0f;
+            fadeCounter = 0;
+
             base.Initialize();
 
             Joystick.Init();
             Console.WriteLine("Number of joysticks: " + Sdl.SDL_NumJoysticks());
+        }
+
+        public void ReInitialize()
+        {
+            this.Initialize();
         }
 
         /// <summary>
@@ -245,6 +262,10 @@ namespace Escape
                     }
                 }
             }
+            else if (currentScreen == gameOver)
+            {
+                gameOver.Update(gameTime);
+            }
 
             base.Update(gameTime);
         }
@@ -304,6 +325,11 @@ namespace Escape
         public void SwitchToCastle()
         {
             currentScreen = castle;
+        }
+
+        public void SwitchToGameOver()
+        {
+            currentScreen = gameOver;
         }
     }
 }

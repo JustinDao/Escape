@@ -89,7 +89,7 @@ namespace Escape
             {
                 if(mg.Control.onPress(Keys.Space, Buttons.Start))
                 {
-                    mg = new MainGame();
+                    mg.ReInitialize();
                 }
                 else if(mg.Control.onPress(Keys.Escape, Buttons.Back))
                 {
