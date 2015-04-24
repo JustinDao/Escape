@@ -10,6 +10,7 @@ namespace Escape
 {
     abstract class Character : AnimatedSpriteEntity
     {
+        public bool DetectEnemyCollision = false;
         public Character Parent = null;
         public float FreezeTimer = 0;
         public bool Frozen
@@ -207,12 +208,15 @@ namespace Escape
                 if (e is Water && (e as Water).IsFrozen) continue;
                 CollideObstacle(e.HitBox);
             }
-            foreach (var e in room.Enemies)
+            if (DetectEnemyCollision)
             {
-                if (e == this || e == Parent || e.Parent == this) continue;
-                if (CollideObstacle(e.CollisionBox))
+                foreach (var e in room.Enemies)
                 {
-                    OnEnemyCollision(e);
+                    if (e == this || e == Parent || e.Parent == this) continue;
+                    if (CollideObstacle(e.CollisionBox))
+                    {
+                        OnEnemyCollision(e);
+                    }
                 }
             }
         }

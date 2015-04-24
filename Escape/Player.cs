@@ -267,6 +267,7 @@ namespace Escape
             : base(cm, sr, "soldier_sprite_sheet.png")
         {
             this.mg = mg;
+            DetectEnemyCollision = true;
 
             if (s is Castle)
             {
