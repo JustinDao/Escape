@@ -49,8 +49,7 @@ namespace Escape
             {
                 mg.CurrentSong.Stop();
                 mg.SwitchToCastle();
-                var song = mg.Content.Load<SoundEffect>("Songs\\Prelude");
-                mg.CurrentSong = song.CreateInstance();
+                mg.CurrentSong = mg.PreludeSong;
                 mg.PlayingPrelude = true;
                 mg.CurrentSong.Play();
             }

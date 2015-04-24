@@ -34,6 +34,7 @@ namespace Escape
         public Controls Control;
         SubmissionBar submissionBar;
         public SoundEffectInstance CurrentSong;
+        public SoundEffectInstance PreludeSong;
         public SoundEffectInstance SubmissionSong;
         public SoundEffectInstance TransitionSong;
         public SoundEffectInstance EndingSong;
@@ -47,11 +48,11 @@ namespace Escape
 
         public bool PlayingPrelude = false;
         private float preludeCounter = 0;
-        private int preludeLength = 2*60 + 23; // 2m23s song length
+        private float preludeLength = 2 * 60 + 23.30f; // 2m23s song time
 
         public bool PlayedTransition = false;
         private float transitionCounter = 0;
-        private float transitionLength = 1.15f; // transition length
+        private float transitionLength = 1.15f;
 
         public bool Fading = false;
         public bool Faded = false;
@@ -97,9 +98,12 @@ namespace Escape
             EndingBackground.SetData(new Color[] { Color.Black });
             EndingBackgroundBox = new Rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
-            var song = Content.Load<SoundEffect>("Songs\\Submission");
+            var song = Content.Load<SoundEffect>("Songs/Submission");
             SubmissionSong = song.CreateInstance();
             SubmissionSong.IsLooped = true;
+
+            song = Content.Load<SoundEffect>("Songs/Prelude");
+            PreludeSong = song.CreateInstance();
 
             song = Content.Load<SoundEffect>("Songs/Transition");
             TransitionSong = song.CreateInstance();
@@ -144,21 +148,6 @@ namespace Escape
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (PlayingPrelude)
-            {
-                preludeCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-                if (preludeCounter > preludeLength)
-                {
-                    this.CurrentSong.Stop();
-                    var song = Content.Load<SoundEffect>("Songs\\Main");
-                    this.CurrentSong = song.CreateInstance();
-                    this.PlayingPrelude = false;
-                    this.CurrentSong.IsLooped = true;
-                    this.CurrentSong.Play();
-                }
-            }
-
             //set our keyboardstate tracker update can change the gamestate on every cycle
             Control.Update();
 
@@ -213,6 +202,21 @@ namespace Escape
             }
             else if (currentScreen == castle)
             {
+                if (PlayingPrelude)
+                {
+                    preludeCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                    if (preludeCounter > preludeLength)
+                    {
+                        this.CurrentSong.Stop();
+                        var song = Content.Load<SoundEffect>("Songs/Main");
+                        this.CurrentSong = song.CreateInstance();
+                        this.PlayingPrelude = false;
+                        this.CurrentSong.IsLooped = true;
+                        this.CurrentSong.Play();
+                    }
+                }
+
                 castle.Update(Control, gameTime);
 
                 if (!miniGame.Active && !castle.Player.PlayerControl)
