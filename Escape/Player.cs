@@ -56,8 +56,8 @@ namespace Escape
         const float DASH_INTERVAL = 0.5f;
         const float STICK_BUFFER = 0.4f;
 
-        // List of visited rooms
-        public List<Room> VisitedRooms = new List<Room>();
+        // Stack of visited rooms
+        public Stack<Room> VisitedRooms = new Stack<Room>();
 
         // controls
         public readonly Controls Ctrls;
@@ -67,7 +67,7 @@ namespace Escape
         public bool PlayerControl { get; protected set; }
 
         // The maximum submission value
-        public const int MAX_SUBMISSION = 1000;
+        public const int MAX_SUBMISSION = 5000;
         // Variables to hold Submission Time and Interval
         private float SubmissionInterval = 100; // Time in milliseconds
         private float SubmissionTime = 0;
@@ -263,7 +263,7 @@ namespace Escape
         }
 
         // Constructor
-        public Player(ContentManager cm, SpriteRender sr, Controls ctrls, Screen s)
+        public Player(ContentManager cm, SpriteRender sr, Controls ctrls, MainGame mg, Screen s)
             : base(cm, sr, "soldier_sprite_sheet.png")
         {
             this.mg = mg;
@@ -512,19 +512,20 @@ namespace Escape
 
         private void UpdateSubmission(GameTime gt)
         {
-            if (Submission > 0)
-            {
-                if (SubmissionTime > SubmissionInterval)
-                {
-                    Submission--;
-                    SubmissionTime = 0;
-                }
-                else
-                {
-                    SubmissionTime += (float)gt.ElapsedGameTime.TotalMilliseconds;
-                }
-            }
-            else if (Submission <= 0)
+            //if (Submission > 0)
+            //{
+            //    if (SubmissionTime > SubmissionInterval)
+            //    {
+            //        Submission--;
+            //        SubmissionTime = 0;
+            //    }
+            //    else
+            //    {
+            //        SubmissionTime += (float)gt.ElapsedGameTime.TotalMilliseconds;
+            //    }
+            //}
+            //else 
+            if (Submission <= 0)
             {
                 LoseControl();
             }
@@ -606,6 +607,7 @@ namespace Escape
             {
                 if (!StandingOnDoor)
                 {
+
                     if (door.Equals(room.LeftDoor()))
                     {
                         castle.MoveLeft();
@@ -627,7 +629,7 @@ namespace Escape
                         this.FlipPosition(room);
                     }
 
-                    this.VisitRoom(castle.CurrentRoom);
+                    VisitRoom(room, castle.CurrentRoom);
                 }
 
                 StandingOnDoor = true;
@@ -671,30 +673,47 @@ namespace Escape
             this.PlayerControl = true;
             this.Submission = MAX_SUBMISSION;
             int roomIndex = (int)((VisitedRooms.Count()-1) * timeFraction);
-            this.Castle.CurrentRoom = VisitedRooms[roomIndex];
-            var room = this.Castle.CurrentRoom;
             
-            foreach (Direction dir in room.Doors.Keys)
+            // Set room
+            var numPop = VisitedRooms.Count() * (1 - timeFraction);
+
+            if (numPop == 0) numPop = 1;
+
+            Room lastPoppedRoom = null;
+
+            for(int i = 0; i < numPop && VisitedRooms.Count() > 1; i++)
             {
-                switch(dir)
+                lastPoppedRoom = VisitedRooms.Pop();
+            }
+
+            if(VisitedRooms.Count() <= 1)
+            {
+                if (VisitedRooms.Count() != 0) Castle.CurrentRoom = VisitedRooms.Pop();
+                this.Center = new Vector2(mg.GAME_WIDTH / 2, mg.GAME_HEIGHT / 2);
+            }
+            else
+            {
+                Room previousRoom = VisitedRooms.Peek();
+                this.Castle.CurrentRoom = lastPoppedRoom;
+
+                if (lastPoppedRoom.LeftRoom == previousRoom)
                 {
-                    case Direction.UP:
-                        this.Position = new Vector2(room.Width / 2, 50);
-                        break;
-                    case Direction.DOWN:
-                        this.Position = new Vector2(room.Width / 2, room.Height - 50);
-                        break;
-                    case Direction.LEFT:
-                        this.Position = new Vector2(50, room.Height / 2);
-                        break;
-                    case Direction.RIGHT:
-                        this.Position = new Vector2(room.Width - 50, room.Height / 2);
-                        break;
+                    this.Position = new Vector2(50, mg.GAME_HEIGHT / 2);
+                }
+                else if(lastPoppedRoom.RightRoom == previousRoom)
+                {
+                    this.Position = new Vector2(mg.GAME_WIDTH - 50, mg.GAME_HEIGHT / 2);
+                }
+                else if(lastPoppedRoom.UpRoom == previousRoom)
+                {
+                    this.Position = new Vector2(mg.GAME_HEIGHT / 2, 50);
+                }
+                else if(lastPoppedRoom.DownRoom == previousRoom)
+                {
+                    this.Position = new Vector2(mg.GAME_WIDTH / 2, mg.GAME_HEIGHT - 50);
                 }
 
-                break;
             }
-           
 
         }
 
@@ -761,12 +780,17 @@ namespace Escape
             this.Position = new Vector2(x, y);
         }
 
-        private void VisitRoom(Room room)
+        private void VisitRoom(Room oldRoom, Room newRoom)
         {
-            if (!this.VisitedRooms.Contains(room))
+            if(VisitedRooms.Count() != 0 && VisitedRooms.Peek() == newRoom)
             {
-                this.VisitedRooms.Add(room);
+                VisitedRooms.Pop();
             }
+            else
+            {
+                VisitedRooms.Push(oldRoom);
+            }
+            
         }
 
 

@@ -324,6 +324,7 @@ namespace Escape
 
         public void SwitchToCastle()
         {
+            transitionCounter = 0;
             currentScreen = castle;
         }
 

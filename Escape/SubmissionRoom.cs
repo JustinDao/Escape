@@ -16,7 +16,7 @@ namespace Escape
         Castle castle;
 
         public Room CurrentRoom { get; set; }
-        public Boolean visited = false;
+        public Boolean done = false;
 
 
 
@@ -27,19 +27,15 @@ namespace Escape
             this.controls = mg.Control;
             this.cm = mg.Content;
             this.castle = castle;
-
-
-            //castle.Player.Submission = 10;
-
         }
 
 
         public override void Update(GameTime gt, Screen s)
         {
-            if (!visited)
+            if (!done && castle.Player.Position.Y < 200)
             {
-                castle.Player.Submission = 10;
-                visited = true;
+                castle.Player.Submission = 0;
+                done = true;
             }
 
             base.Update(gt, s);
