@@ -59,6 +59,7 @@
     <Compile Include="FireBossSprites.cs" />
     <Compile Include="Ghost.cs" />
     <Compile Include="GhostSprites.cs" />
+    <Compile Include="Map.cs" />
     <Compile Include="PlayerClip.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Controls.cs" />

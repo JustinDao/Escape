@@ -12,6 +12,7 @@ namespace Escape
 {
     class Room
     {
+        public bool Visited = false;
         public MainGame mg;
         ContentManager contentManager;
         public Castle Castle;

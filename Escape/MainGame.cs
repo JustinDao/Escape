@@ -92,7 +92,7 @@ namespace Escape
             credits = new CreditsScreen(Content, this);
             currentScreen = start;            
 
-            submissionBar = new SubmissionBar(new Rectangle(20, 20, 200, 20), graphics);
+            submissionBar = new SubmissionBar(new Rectangle(0, 0, 200, 20), graphics);
 
             EndingBackground = new Texture2D(GraphicsDevice, 1, 1);
             EndingBackground.SetData(new Color[] { Color.Black });
@@ -151,8 +151,8 @@ namespace Escape
             //set our keyboardstate tracker update can change the gamestate on every cycle
             Control.Update();
 
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            //    Exit();
 
             // TODO: Add your update logic here
             //Up, down, left, right affect the coordinates of the sprite

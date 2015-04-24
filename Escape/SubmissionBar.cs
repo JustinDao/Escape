@@ -12,7 +12,7 @@ namespace Escape
     {
 
         public SubmissionBar(Rectangle bounds, GraphicsDeviceManager graphics)
-            : base(graphics, bounds, Color.Red, Color.Black)
+            : base(graphics, bounds, new Color(Color.Red, 0.5f), new Color(Color.Black, 0.5f))
         {
 
         }

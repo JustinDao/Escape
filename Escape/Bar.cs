@@ -33,9 +33,15 @@ namespace Escape
 
         public void Draw(SpriteBatch batch)
         {
-            batch.Draw(tex, Bounds, BGColor);
-            var fg = new Rectangle(Bounds.X, Bounds.Y, (int)(Percent * Bounds.Width), Bounds.Height);
+            // batch.Draw(tex, Bounds, BGColor);
+            int filledWidth = (int)(Percent * Bounds.Width);
+            var fg = new Rectangle(Bounds.X, Bounds.Y, filledWidth, Bounds.Height);
             batch.Draw(tex, fg, FGColor);
+            if (filledWidth < Bounds.Width)
+            {
+                var bg = new Rectangle(Bounds.X + filledWidth, Bounds.Y, Bounds.Width - filledWidth, Bounds.Height);
+                batch.Draw(tex, bg, BGColor);
+            }
         }
     }
 }

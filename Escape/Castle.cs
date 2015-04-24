@@ -22,6 +22,8 @@ namespace Escape
         public Player Player { get; set; }
         public RoomReader RR;
         public SubmissionRoom Subroom { get; set; }
+        public Map Minimap;
+        public bool ShowMap = false;
 
         public Castle(MainGame mg)
         {
@@ -36,6 +38,9 @@ namespace Escape
         public void InitializeRooms()
         {
             this.RR = new RoomReader(mg, this, "Master.csv");
+            Minimap = new Map(mg.Content, this, RR);
+            var mapArea = Minimap.HitBox;
+            Minimap.Center = new Vector2(500, 300);
             CurrentRoom = this.RR.StartRoom;
             Player.VisitedRooms.Add(CurrentRoom);
         }
@@ -55,7 +60,13 @@ namespace Escape
                 mg.Pause();
             }
 
+            if (controls.onPress(Keys.Enter, Buttons.Back))
+            {
+                ShowMap = !ShowMap;
+            }
+
             Player.Update(gameTime, this);
+            CurrentRoom.Visited = true;
             CurrentRoom.Update(gameTime, this);
         }
 
@@ -83,6 +94,7 @@ namespace Escape
         {
             CurrentRoom.Draw(sb);
             Player.Draw(sb);
+            if (ShowMap) Minimap.Draw(sb);
         }
 
         public override void LoadContent(ContentManager cm)
