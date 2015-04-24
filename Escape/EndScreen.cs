@@ -30,8 +30,6 @@ namespace Escape
 
         private Rectangle BackgroundBox;
         private SpriteFont Font;
-        private Texture2D BackgroundTexture;
-
 
         Vector2[] playerMovePoints;
 
@@ -119,7 +117,7 @@ namespace Escape
                     playerCutScene.Target = new Vector2(playerCutScene.Target.X, mg.GAME_HEIGHT - 25);
                     SelectedChoice = true;
                 }
-                else if (controls.onPress(Keys.D1, Buttons.B))
+                else if (controls.onPress(Keys.D3, Buttons.B))
                 {
                     this.ChoosePlayer = true;
                     playerCutScene.Target = new Vector2(playerCutScene.Target.X, Portal.HitBox.Y);

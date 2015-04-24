@@ -30,11 +30,17 @@ namespace Escape
         bool isPaused = false;
         MiniGame miniGame;
         EndScreen endScreen;
+        CreditsScreen credits;
         public Controls Control;
         SubmissionBar submissionBar;
         public SoundEffectInstance CurrentSong;
         public SoundEffectInstance SubmissionSong;
         public SoundEffectInstance TransitionSong;
+        public SoundEffectInstance EndingSong;
+        public SoundEffectInstance CreditsSong;
+
+        public Texture2D EndingBackground;
+        public Rectangle EndingBackgroundBox;
 
         public int GAME_WIDTH = 1000;
         public int GAME_HEIGHT = 600;
@@ -46,6 +52,13 @@ namespace Escape
         public bool PlayedTransition = false;
         private float transitionCounter = 0;
         private float transitionLength = 1.15f; // transition length
+
+        public bool Fading = false;
+        public bool Faded = false;
+        public bool SwitchedToCredits = false;
+        public float FadeOpacity = 0f;
+        private float fadeCounter = 0;
+        private float fadeInterval = 0.05f;
 
         public MainGame()
             : base()
@@ -75,9 +88,14 @@ namespace Escape
             pause = new PauseMenu(this, GraphicsDevice);
             miniGame = new MiniGame(this, GraphicsDevice, castle.Player);
             endScreen = new EndScreen(this);
+            credits = new CreditsScreen(Content, this);
             currentScreen = start;            
 
             submissionBar = new SubmissionBar(new Rectangle(20, 20, 200, 20), graphics);
+
+            EndingBackground = new Texture2D(GraphicsDevice, 1, 1);
+            EndingBackground.SetData(new Color[] { Color.Black });
+            EndingBackgroundBox = new Rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
             var song = Content.Load<SoundEffect>("Songs\\Submission");
             SubmissionSong = song.CreateInstance();
@@ -85,6 +103,12 @@ namespace Escape
 
             song = Content.Load<SoundEffect>("Songs/Transition");
             TransitionSong = song.CreateInstance();
+
+            song = Content.Load<SoundEffect>("Songs/Victory");
+            EndingSong = song.CreateInstance();
+
+            song = Content.Load<SoundEffect>("Songs/Credits");
+            CreditsSong = song.CreateInstance();
 
             base.Initialize();
 
@@ -148,14 +172,40 @@ namespace Escape
             {
                 pause.Update(Control);
             }
+            else if (currentScreen == credits)
+            {
+                if(!SwitchedToCredits) SwitchedToCredits = true;
+                credits.Update(gameTime);
+            }
             else if (castle.Player.BeatTheGame)
             {
                 currentScreen = endScreen;
                 endScreen.Update(gameTime);
-                var song = Content.Load<SoundEffect>("Songs\\Victory");
                 CurrentSong.Stop();
-                CurrentSong = song.CreateInstance();
-                CurrentSong.Play();
+                EndingSong.Play();
+
+                if (Fading)
+                {
+                    if (Faded)
+                    {
+                        currentScreen = credits;
+                        EndingSong.Stop();
+                        CreditsSong.Play();
+                    }
+
+                    fadeCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                    if (fadeCounter > fadeInterval)
+                    {
+                        FadeOpacity += 0.01f;
+
+                        if (FadeOpacity >= 1f)
+                        {
+                            Faded = true;
+                        }
+                    }
+                }
+                
             }
             else if (currentScreen == start)
             {
@@ -191,11 +241,6 @@ namespace Escape
                     }
                 }
             }
-            else if (currentScreen is CreditsScreen)
-            {
-                var cs = currentScreen as CreditsScreen;
-                cs.Update(gameTime);
-            }
 
             base.Update(gameTime);
         }
@@ -210,6 +255,8 @@ namespace Escape
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+
+            if (Faded) spriteBatch.Draw(EndingBackground, EndingBackgroundBox, null, Color.Black * FadeOpacity);
 
             currentScreen.Draw(spriteBatch);
 
@@ -226,7 +273,13 @@ namespace Escape
             if (this.isPaused)
             {
                 pause.Draw(spriteBatch);
-            }  
+            }
+
+            if (endScreen.EndAll && !SwitchedToCredits)
+            {
+                if (!Fading) Fading = true;
+                spriteBatch.Draw(EndingBackground, EndingBackgroundBox, null, Color.Black * FadeOpacity);
+            }
 
 
             spriteBatch.End();

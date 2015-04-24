@@ -22,6 +22,8 @@ namespace Escape
 
         string fontString = "QuestionFont";
 
+        float SCROLL_SPEED = 75;
+
         public CreditsScreen(ContentManager cm, MainGame mg)
         {
             this.mg = mg;
@@ -67,7 +69,7 @@ namespace Escape
         {
             foreach (Text t in TextList)
             {
-                t.Position.Y -= 100 * (float)gt.ElapsedGameTime.TotalSeconds;
+                t.Position.Y -= SCROLL_SPEED * (float)gt.ElapsedGameTime.TotalSeconds;
             }
 
             PlayerClip.Update(gt, this);

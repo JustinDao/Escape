@@ -85,7 +85,7 @@ namespace Escape
         }
         public override float MaxSpeed
         {
-            get { return 200; }
+            get { return 100; }
         }
 
         public Vector2 Target;
