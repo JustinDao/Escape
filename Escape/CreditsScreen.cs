@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,6 +24,7 @@ namespace Escape
         string fontString = "QuestionFont";
 
         float SCROLL_SPEED = 75;
+        bool Finished = false;
 
         public CreditsScreen(ContentManager cm, MainGame mg)
         {
@@ -46,7 +48,7 @@ namespace Escape
                     var line = reader.ReadLine();
                     var stringLength = Font.MeasureString(line);
                     TextList.Add(new Text(cm, line, new Vector2(mg.GAME_WIDTH / 2 - stringLength.X / 2, height), fontString));
-                    height += 50;
+                    height += 30;
                 }
                 
             }
@@ -62,15 +64,39 @@ namespace Escape
                 t.Draw(sb);
             }
 
+            if(Finished)
+            {
+                var s = "Start to Play Again, Back to Quit.";
+                sb.DrawString(Font, s, new Vector2(mg.GAME_WIDTH / 2 - (Font.MeasureString(s).X / 2), TextList.Last().Position.Y + 30), Color.White);
+            }
+
             PlayerClip.Draw(sb);
         }
 
         public void Update(GameTime gt)
         {
-            foreach (Text t in TextList)
+            if (!Finished)
             {
-                t.Position.Y -= SCROLL_SPEED * (float)gt.ElapsedGameTime.TotalSeconds;
+                foreach (Text t in TextList)
+                {
+                    t.Position.Y -= SCROLL_SPEED * (float)gt.ElapsedGameTime.TotalSeconds;
+                }
+
+                var last = TextList.Last();
+                if (last.Position.Y <= mg.GAME_HEIGHT / 2) Finished = true;
             }
+            else
+            {
+                if(mg.Control.onPress(Keys.Space, Buttons.Start))
+                {
+                    mg = new MainGame();
+                }
+                else if(mg.Control.onPress(Keys.Escape, Buttons.Back))
+                {
+                    mg.Exit();
+                }
+            }
+           
 
             PlayerClip.Update(gt, this);
         }
