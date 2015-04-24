@@ -35,6 +35,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="IceMinionSprites.cs" />
     <Compile Include="CreditsScreen.cs" />
     <Compile Include="EarthBoss.cs" />
     <Compile Include="EarthBossSprites.cs" />
@@ -228,6 +229,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\ice.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ice_minion_sprite_sheet.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ice_minion_sprite_sheet.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\ice_boss_sprite_sheet.png">

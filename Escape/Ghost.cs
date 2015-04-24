@@ -73,8 +73,8 @@ namespace Escape
         }
 
         // Constuctor
-        public Ghost(ContentManager cm, SpriteRender sr, Entity target, Vector2 position, int hp = 1)
-            : base(cm, sr, target, "ghost_sprite_sheet.png")
+        public Ghost(ContentManager cm, SpriteRender sr, Entity target, Vector2 position, int hp = 1, string spriteSheet = "ghost_sprite_sheet.png")
+            : base(cm, sr, target, spriteSheet)
         {
             ignoreHoles = true;
             ignoreWater = true;

@@ -99,7 +99,7 @@ namespace Escape
         {
             ignoreHoles = true;
             ignoreWater = true;
-            Scale = 1.5f;
+            Scale = 2f;
             Drop = new PowerUp(cm, Vector2.Zero, "naryu.png", isIce: true);
 
             var castle = room.Castle;
